@@ -1,14 +1,14 @@
 //
-//  SupportUITests.swift
-//  SupportUITests
+//  Support_ClientUITests.swift
+//  Support-ClientUITests
 //
-//  Created by Omar Rasheed on 1/26/20.
+//  Created by Omar Rasheed on 2/12/20.
 //  Copyright © 2020 Cornell Appdev. All rights reserved.
 //
 
 import XCTest
 
-class SupportUITests: XCTestCase {
+class Support_ClientUITests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.

@@ -1,15 +1,15 @@
 //
-//  SupportTests.swift
-//  SupportTests
+//  Support_ClientTests.swift
+//  Support-ClientTests
 //
-//  Created by Omar Rasheed on 1/26/20.
+//  Created by Omar Rasheed on 2/12/20.
 //  Copyright © 2020 Cornell Appdev. All rights reserved.
 //
 
 import XCTest
-@testable import Support
+@testable import Support_Client
 
-class SupportTests: XCTestCase {
+class Support_ClientTests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
