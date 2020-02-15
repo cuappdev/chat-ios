@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  Support
+//  SupportClient
 //
-//  Created by Omar Rasheed on 1/26/20.
+//  Created by Omar Rasheed on 2/15/20.
 //  Copyright © 2020 Cornell Appdev. All rights reserved.
 //
 
