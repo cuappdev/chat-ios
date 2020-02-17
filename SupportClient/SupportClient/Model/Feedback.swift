@@ -6,21 +6,11 @@
 //  Copyright © 2020 Cornell Appdev. All rights reserved.
 //
 
-import Foundation
-
 // TODO: replace this class once we hook up to database
-class Feedback {
+struct Feedback: Codable {
     
-    var title: String!
-    var message: String!
-    var hasUnread: Bool!
-    
-    init(title: String, message: String, hasUnread: Bool) {
-        
-        self.title = title
-        self.message = message
-        self.hasUnread = hasUnread
-        
-    }
+    var title: String
+    var message: String
+    var hasRead: Bool
     
 }
