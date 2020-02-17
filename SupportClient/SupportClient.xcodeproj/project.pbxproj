@@ -12,9 +12,10 @@
 		228DC1DD23F8A06500DE95E6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228DC1DC23F8A06500DE95E6 /* ViewController.swift */; };
 		228DC1E223F8A06600DE95E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 228DC1E123F8A06600DE95E6 /* Assets.xcassets */; };
 		228DC1E523F8A06600DE95E6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 228DC1E323F8A06600DE95E6 /* LaunchScreen.storyboard */; };
+		7EB3DDBC23FA296600994B68 /* UIFont+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB3DDBB23FA296600994B68 /* UIFont+Extensions.swift */; };
+		7EB3DDBF23FA2C2000994B68 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB3DDBE23FA2C2000994B68 /* UIColor+Extension.swift */; };
 		7EB5E7E623F8CDB10051F209 /* FeedbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB5E7E523F8CDB10051F209 /* FeedbackTableViewCell.swift */; };
 		7EB5E7E923F8D0AE0051F209 /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB5E7E823F8D0AE0051F209 /* Feedback.swift */; };
-		7ECA081F23F8A4B100BBFD51 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECA081E23F8A4B100BBFD51 /* Constants.swift */; };
 		7ECA085923F8BB6800BBFD51 /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7ECA084B23F8BAB500BBFD51 /* Roboto-BlackItalic.ttf */; };
 		7ECA085A23F8BB6800BBFD51 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7ECA084C23F8BAB500BBFD51 /* Roboto-Bold.ttf */; };
 		7ECA085B23F8BB6800BBFD51 /* Roboto-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7ECA085123F8BAB500BBFD51 /* Roboto-BoldItalic.ttf */; };
@@ -37,9 +38,10 @@
 		228DC1E423F8A06600DE95E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		228DC1E623F8A06600DE95E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4E295BBE13ECDC2B7EB9A550 /* Pods-SupportClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SupportClient.debug.xcconfig"; path = "Target Support Files/Pods-SupportClient/Pods-SupportClient.debug.xcconfig"; sourceTree = "<group>"; };
+		7EB3DDBB23FA296600994B68 /* UIFont+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
+		7EB3DDBE23FA2C2000994B68 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		7EB5E7E523F8CDB10051F209 /* FeedbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackTableViewCell.swift; sourceTree = "<group>"; };
 		7EB5E7E823F8D0AE0051F209 /* Feedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feedback.swift; sourceTree = "<group>"; };
-		7ECA081E23F8A4B100BBFD51 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		7ECA084923F8BAB500BBFD51 /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
 		7ECA084A23F8BAB500BBFD51 /* Roboto-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Italic.ttf"; sourceTree = "<group>"; };
 		7ECA084B23F8BAB500BBFD51 /* Roboto-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-BlackItalic.ttf"; sourceTree = "<group>"; };
@@ -97,7 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				7ECA082023F8B77000BBFD51 /* Resources */,
-				7E715F2223F8FBF1002533CD /* Utilities */,
+				7EB3DDBD23FA2A2700994B68 /* Extensions */,
 				7EB5E7E723F8D09F0051F209 /* Model */,
 				7EB5E7E423F8CD9A0051F209 /* Views */,
 				7ECA086A23F8BB8E00BBFD51 /* Controllers */,
@@ -110,12 +112,13 @@
 			path = SupportClient;
 			sourceTree = "<group>";
 		};
-		7E715F2223F8FBF1002533CD /* Utilities */ = {
+		7EB3DDBD23FA2A2700994B68 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				7ECA081E23F8A4B100BBFD51 /* Constants.swift */,
+				7EB3DDBB23FA296600994B68 /* UIFont+Extensions.swift */,
+				7EB3DDBE23FA2C2000994B68 /* UIColor+Extension.swift */,
 			);
-			path = Utilities;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		7EB5E7E423F8CD9A0051F209 /* Views */ = {
@@ -302,9 +305,10 @@
 				228DC1DD23F8A06500DE95E6 /* ViewController.swift in Sources */,
 				7EB5E7E623F8CDB10051F209 /* FeedbackTableViewCell.swift in Sources */,
 				7EB5E7E923F8D0AE0051F209 /* Feedback.swift in Sources */,
+				7EB3DDBC23FA296600994B68 /* UIFont+Extensions.swift in Sources */,
 				228DC1D923F8A06500DE95E6 /* AppDelegate.swift in Sources */,
 				228DC1DB23F8A06500DE95E6 /* SceneDelegate.swift in Sources */,
-				7ECA081F23F8A4B100BBFD51 /* Constants.swift in Sources */,
+				7EB3DDBF23FA2C2000994B68 /* UIColor+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

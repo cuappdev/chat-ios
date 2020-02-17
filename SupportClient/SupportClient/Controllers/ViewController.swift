@@ -11,76 +11,92 @@ import SnapKit
 
 class ViewController: UIViewController {
     
-    
-    var newConversationButton: UIButton!
-    var feedbackLabel: UILabel!
-    var searchController: UISearchController! // TODO: For later
-    var feedbackTableView: UITableView!
+    private let feedbackLabel = UILabel()
+    private let feedbackTableView = UITableView(frame: .zero)
+    private let newConversationButton = UIButton()
+    private let searchController = UISearchController() // TODO: For later
         
-    var feedbackData: [Feedback]!
+    var feedbackData = [Feedback]()
     var filteredFeedbackData = [Feedback]() // TODO: For later
     
-    var countEditTaps: Int = 0
-    var isFeedback: Bool!
-    let cellHeight: CGFloat = 75
-    let reuseID: String = "FeedbackTableViewCell"
+    private(set) var countEditTaps: Int = 0
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = Constants.backgroundColor
+        view.backgroundColor = UIColor.backgroundColor
         // Do any additional setup after loading the view.
         
-        isFeedback = setUpData() == 0 ? false : true
-        setUpNavigationBar()
-        setUpFeedbackLabel()
-        setUpConversationButton()
-        setUpFeedbackTableView()
-        setUpConstraints()
-        
+        setupData()
+        setupNavigationBar()
+        setupFeedbackLabel()
+        setupConversationButton()
+        setupFeedbackTableView()
+        setupConstraints()
     }
     
     // TODO: hook up to actual server to load the data
     // This is dummy data for testing
     // Add variables to feedbackData to show the tableView + editing functionality
-    func setUpData() -> Int {
+    func setupData() {
+                
+        let jsonString = """
+        {
+            "title" : "Ithaca Transit Bug",
+            "message" : "This app sometimes glitches out on me and shows the wrong bus times",
+            "hasRead" : false
+        }
+        """
         
-        let _ = Feedback(title: "Ithaca Transit Bug", message: "This app sometimes glitches out on me and shows the wrong bus times", hasUnread: true)
-        let _ = Feedback(title: "chatOS Idea", message: "what if admin responed via macOS applications and not iOS applications??", hasUnread: false)
-        feedbackData = []
-        return feedbackData.count
+        let jsonData = jsonString.data(using: .utf8)!
+        let feedback = try! JSONDecoder().decode(Feedback.self, from: jsonData)
+        
+        feedbackData = [feedback]
         
     }
     
-    func setUpNavigationBar() {
+    func setupNavigationBar() {
         
-        navigationController?.navigationBar.barTintColor = Constants.navigationTintColor
-        
-        let attributedTitle = NSAttributedString(string: "Feedback", attributes: [NSAttributedString.Key.font: UIFont(name: Constants.robotoMedium, size: 21)!, NSAttributedString.Key.foregroundColor: Constants.titleColor])
+        navigationController?.navigationBar.barTintColor = UIColor.navigationTintColor
+        let attributes = [
+            NSAttributedString.Key.font: UIFont._21RobotoMedium!,
+            NSAttributedString.Key.foregroundColor: UIColor.titleColor
+        ]
+        let attributedTitle = NSAttributedString(string: "Feedback", attributes: attributes)
         title = attributedTitle.string
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "pen"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(handleNavigationBarRightTap))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(named: "pen"),
+            style: UIBarButtonItem.Style.plain,
+            target: self,
+            action: #selector(handleNavigationBarRightTap)
+        )
         
     }
     
-    func setUpFeedbackLabel() {
+    func setupFeedbackLabel() {
         
-        feedbackLabel = UILabel()
         feedbackLabel.lineBreakMode = .byWordWrapping
         feedbackLabel.numberOfLines = 0
 
-        // format the alignment and spacing between lines
+        // Format the alignment and spacing between lines
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
         paragraphStyle.lineSpacing = 10
         
-        // format the text with specific color, font, size
         let title = "No Feedback Yet\n"
         let subtitle = "See feedback conversations here"
         
-        let attributedText = NSMutableAttributedString(string: title, attributes: [NSAttributedString.Key.font: UIFont(name: Constants.robotoMedium, size: 17)!, .paragraphStyle: paragraphStyle, NSAttributedString.Key.foregroundColor: Constants.titleColor])
+        let titleAttributes: [NSAttributedString.Key : Any] = [
+            NSAttributedString.Key.font: UIFont._17RobotoMedium!,
+            .paragraphStyle: paragraphStyle,
+            NSAttributedString.Key.foregroundColor: UIColor.titleColor
+        ]
+        let attributedText = NSMutableAttributedString(string: title, attributes: titleAttributes)
         
-        attributedText.append(NSAttributedString(string: subtitle, attributes: [NSAttributedString.Key.font: UIFont(name: Constants.robotoRegular, size: 13)!, NSAttributedString.Key.foregroundColor: Constants.subtitleColor]))
+        let subtitleAttributes = [
+            NSAttributedString.Key.font: UIFont._13RobotoRegular!,
+            NSAttributedString.Key.foregroundColor: UIColor.subtitleColor
+        ]
+        attributedText.append(NSAttributedString(string: subtitle, attributes: subtitleAttributes))
 
         feedbackLabel.attributedText = attributedText
         feedbackLabel.sizeToFit()
@@ -88,63 +104,49 @@ class ViewController: UIViewController {
         
     }
     
-    func setUpConversationButton() {
+    func setupConversationButton() {
         
-        newConversationButton = UIButton()
         newConversationButton.setTitle("Start Conversation", for: .normal)
-        newConversationButton.backgroundColor = Constants.themeColor
-        newConversationButton.titleLabel?.font = UIFont(name: Constants.robotoMedium, size: 17)
+        newConversationButton.backgroundColor = UIColor.themeColor
+        newConversationButton.titleLabel?.font = UIFont._17RobotoMedium
         newConversationButton.layer.cornerRadius = 22
         view.addSubview(newConversationButton)
         
     }
     
-    func setUpFeedbackTableView() {
+    func setupFeedbackTableView() {
         
-        feedbackTableView = UITableView(frame: .zero)
-        feedbackTableView.translatesAutoresizingMaskIntoConstraints = false
         feedbackTableView.delegate = self
         feedbackTableView.dataSource = self
-        feedbackTableView.register(FeedbackTableViewCell.self, forCellReuseIdentifier: reuseID)
+        feedbackTableView.register(FeedbackTableViewCell.self, forCellReuseIdentifier: FeedbackTableViewCell.reuseID)
         view.addSubview(feedbackTableView)
                     
     }
     
-    func setUpConstraints() {
-                
-        if isFeedback {
-            
-            feedbackTableView.snp.makeConstraints{ (make) -> Void in
+    func setupConstraints() {
+        if !feedbackData.isEmpty {
+            feedbackTableView.snp.makeConstraints{ make -> Void in
                 make.leading.trailing.top.bottom.equalToSuperview()
             }
-            
         } else {
-            
             feedbackTableView.isHidden = true
-            
-            newConversationButton.snp.makeConstraints{ (make) -> Void in
+            newConversationButton.snp.makeConstraints{ make -> Void in
                 make.centerX.equalToSuperview()
                 make.bottom.equalToSuperview().inset(50)
-                make.width.equalTo(view.layer.bounds.width / 2)
+                make.width.equalTo(view.frame.width / 2)
                 make.height.equalTo(45)
             }
-            
             feedbackLabel.snp.makeConstraints{ (make) -> Void in
                 make.centerX.equalToSuperview()
-                make.bottom.equalToSuperview().inset(view.layer.bounds.height/2)
+                make.bottom.equalToSuperview().inset(view.frame.height / 2)
             }
-            
         }
-        
     }
     
     @objc func handleNavigationBarRightTap() {
         
-        if countEditTaps % 2 == 0 {
-            feedbackTableView.setEditing(true, animated: true)
-        } else {
-            feedbackTableView.setEditing(false, animated: true)
-        }
+        let isEvenNumTaps = countEditTaps % 2 == 0
+        feedbackTableView.setEditing(isEvenNumTaps, animated: true)
         countEditTaps += 1
 
     }
@@ -155,14 +157,14 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return cellHeight
+        return 75
     }
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = feedbackTableView.cellForRow(at: indexPath) as! FeedbackTableViewCell
-        let feedback = feedbackData[indexPath.row]
-        feedback.hasUnread.toggle() // TODO: remove this once hooked up to database
+        var feedback = feedbackData[indexPath.row]
+        feedback.hasRead.toggle() // TODO: remove this once hooked up to database
         cell.toggleRead(for: feedback) // TODO: remove this once hooked up to database
     }
     
@@ -171,10 +173,20 @@ extension ViewController: UITableViewDelegate {
             feedbackData.remove(at: indexPath.row)
             feedbackTableView.deleteRows(at: [indexPath], with: .fade)
         }
-        // if all conversations removed, go back to default page
-        if feedbackData.count == 0 {
-            isFeedback = false
-            setUpConstraints()
+        // If all conversations removed, go back to default page
+        if feedbackData.isEmpty {
+            view.snp.removeConstraints()
+            feedbackTableView.isHidden = true
+            newConversationButton.snp.makeConstraints{ make -> Void in
+                make.centerX.equalToSuperview()
+                make.bottom.equalToSuperview().inset(50)
+                make.width.equalTo(view.frame.width / 2)
+                make.height.equalTo(45)
+            }
+            feedbackLabel.snp.makeConstraints{ (make) -> Void in
+                make.centerX.equalToSuperview()
+                make.bottom.equalToSuperview().inset(view.frame.height / 2)
+            }
         }
     }
     
@@ -188,7 +200,7 @@ extension ViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseID, for: indexPath) as! FeedbackTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: FeedbackTableViewCell.reuseID, for: indexPath) as! FeedbackTableViewCell
         let feedback = feedbackData[indexPath.row]
         cell.configure(feedback: feedback)
         cell.selectionStyle = .none
