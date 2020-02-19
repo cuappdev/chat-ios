@@ -64,7 +64,7 @@ class FeedbackTableViewCell: UITableViewCell {
         subtitleLabel.snp.makeConstraints { make in
             make.leading.equalTo(padding)
             make.width.equalToSuperview().inset(padding * 2)
-            make.top.equalTo(titleLabel.snp.bottom).inset(-5)
+            make.top.equalTo(titleLabel.snp.bottom).offset(5)
         }
         unreadImageView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(padding)
@@ -78,10 +78,4 @@ class FeedbackTableViewCell: UITableViewCell {
         unreadImageView.isHidden = feedback.hasRead
     }
     
-    // TODO: remove this once hooked up to database
-    func toggleRead(for feedback: Feedback) {
-        unreadImageView.isHidden = feedback.hasRead
-    }
-    
 }
-

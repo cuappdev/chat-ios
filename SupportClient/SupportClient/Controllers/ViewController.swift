@@ -120,7 +120,6 @@ class ViewController: UIViewController {
                 make.leading.trailing.top.bottom.equalToSuperview()
             }
         } else {
-            feedbackTableView.isHidden = true
             newConversationButton.snp.makeConstraints{ make in
                 make.centerX.equalToSuperview()
                 make.bottom.equalToSuperview().inset(50)
@@ -150,10 +149,9 @@ extension ViewController: UITableViewDelegate {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = feedbackTableView.cellForRow(at: indexPath) as! FeedbackTableViewCell
-        var feedback = feedbackData[indexPath.row]
-        feedback.hasRead.toggle() // TODO: remove this once hooked up to database
-        cell.toggleRead(for: feedback) // TODO: remove this once hooked up to database
+        let _ = feedbackTableView.cellForRow(at: indexPath) as! FeedbackTableViewCell
+        var _ = feedbackData[indexPath.row]
+        // TODO: navigate to the messaging page
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -161,19 +159,24 @@ extension ViewController: UITableViewDelegate {
             feedbackData.remove(at: indexPath.row)
             feedbackTableView.deleteRows(at: [indexPath], with: .fade)
         }
-        // If all conversations removed, go back to default page
+        // If all conversations removed, remove UITableView and display default screen
         if feedbackData.isEmpty {
-            view.snp.removeConstraints()
-            feedbackTableView.isHidden = true
-            newConversationButton.snp.makeConstraints{ make in
+            feedbackTableView.snp.removeConstraints()
+            newConversationButton.snp.remakeConstraints{ make in
                 make.centerX.equalToSuperview()
                 make.bottom.equalToSuperview().inset(50)
                 make.width.equalTo(view.frame.width / 2)
                 make.height.equalTo(45)
             }
-            feedbackLabel.snp.makeConstraints{ make in
+            feedbackLabel.snp.remakeConstraints{ make in
                 make.centerX.equalToSuperview()
                 make.bottom.equalToSuperview().inset(view.frame.height / 2)
+            }
+            // Animate the appearance of the the default screen to make transition more aesthetic
+            newConversationButton.alpha = 0; feedbackLabel.alpha = 0;
+            UIView.animate(withDuration: 1.0) {
+                self.newConversationButton.alpha = 1
+                self.feedbackLabel.alpha = 1
             }
         }
     }
