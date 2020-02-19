@@ -33,53 +33,43 @@ class FeedbackTableViewCell: UITableViewCell {
     }
     
     func setUpUnreadImage() {
-        
         unreadImageView.image = UIImage(named: "unreadDot")
         unreadImageView.contentMode = .scaleAspectFit
         unreadImageView.isHidden = true
         contentView.addSubview(unreadImageView)
-        
     }
     
     func setUpTitle() {
-        
         titleLabel.font = UIFont._17RobotoMedium
         titleLabel.textColor = UIColor.titleColor
         titleLabel.numberOfLines = 1
         titleLabel.lineBreakMode = .byTruncatingTail
         contentView.addSubview(titleLabel)
-        
     }
     
     func setUpSubtitle() {
-        
         subtitleLabel.font = UIFont._13RobotoMedium
         subtitleLabel.textColor = UIColor.subtitleColor
         subtitleLabel.numberOfLines = 1
         subtitleLabel.lineBreakMode = .byTruncatingTail
         contentView.addSubview(subtitleLabel)
-        
     }
     
     func setUpConstraints() {
-        
-        titleLabel.snp.makeConstraints { (make) in
+        titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(padding)
             make.width.equalToSuperview().inset(padding * 2)
             make.top.equalTo(20)
         }
-        
-        subtitleLabel.snp.makeConstraints { (make) in
+        subtitleLabel.snp.makeConstraints { make in
             make.leading.equalTo(padding)
             make.width.equalToSuperview().inset(padding * 2)
             make.top.equalTo(titleLabel.snp.bottom).inset(-5)
         }
-        
-        unreadImageView.snp.makeConstraints { (make) in
+        unreadImageView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(padding)
             make.centerY.equalToSuperview()
         }
-        
     }
     
     func configure(feedback: Feedback) {

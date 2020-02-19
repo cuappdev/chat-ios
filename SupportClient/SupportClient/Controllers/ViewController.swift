@@ -16,8 +16,8 @@ class ViewController: UIViewController {
     private let newConversationButton = UIButton()
     private let searchController = UISearchController() // TODO: For later
         
-    var feedbackData = [Feedback]()
-    var filteredFeedbackData = [Feedback]() // TODO: For later
+    private var feedbackData = [Feedback]()
+    private var filteredFeedbackData = [Feedback]() // TODO: For later
     
     private(set) var countEditTaps: Int = 0
 
@@ -38,7 +38,6 @@ class ViewController: UIViewController {
     // This is dummy data for testing
     // Add variables to feedbackData to show the tableView + editing functionality
     func setupData() {
-                
         let jsonString = """
         {
             "title" : "Ithaca Transit Bug",
@@ -47,15 +46,13 @@ class ViewController: UIViewController {
         }
         """
         
-        let jsonData = jsonString.data(using: .utf8)!
+        guard let jsonData = jsonString.data(using: .utf8) else { return }
         let feedback = try! JSONDecoder().decode(Feedback.self, from: jsonData)
         
         feedbackData = [feedback]
-        
     }
     
     func setupNavigationBar() {
-        
         navigationController?.navigationBar.barTintColor = UIColor.navigationTintColor
         let attributes = [
             NSAttributedString.Key.font: UIFont._21RobotoMedium!,
@@ -69,11 +66,9 @@ class ViewController: UIViewController {
             target: self,
             action: #selector(handleNavigationBarRightTap)
         )
-        
     }
     
     func setupFeedbackLabel() {
-        
         feedbackLabel.lineBreakMode = .byWordWrapping
         feedbackLabel.numberOfLines = 0
 
@@ -101,42 +96,38 @@ class ViewController: UIViewController {
         feedbackLabel.attributedText = attributedText
         feedbackLabel.sizeToFit()
         view.addSubview(feedbackLabel)
-        
     }
     
     func setupConversationButton() {
-        
         newConversationButton.setTitle("Start Conversation", for: .normal)
         newConversationButton.backgroundColor = UIColor.themeColor
         newConversationButton.titleLabel?.font = UIFont._17RobotoMedium
         newConversationButton.layer.cornerRadius = 22
         view.addSubview(newConversationButton)
-        
     }
     
     func setupFeedbackTableView() {
-        
         feedbackTableView.delegate = self
         feedbackTableView.dataSource = self
+        feedbackTableView.tableFooterView = UIView()
         feedbackTableView.register(FeedbackTableViewCell.self, forCellReuseIdentifier: FeedbackTableViewCell.reuseID)
         view.addSubview(feedbackTableView)
-                    
     }
     
     func setupConstraints() {
         if !feedbackData.isEmpty {
-            feedbackTableView.snp.makeConstraints{ make -> Void in
+            feedbackTableView.snp.makeConstraints{ make  in
                 make.leading.trailing.top.bottom.equalToSuperview()
             }
         } else {
             feedbackTableView.isHidden = true
-            newConversationButton.snp.makeConstraints{ make -> Void in
+            newConversationButton.snp.makeConstraints{ make in
                 make.centerX.equalToSuperview()
                 make.bottom.equalToSuperview().inset(50)
                 make.width.equalTo(view.frame.width / 2)
                 make.height.equalTo(45)
             }
-            feedbackLabel.snp.makeConstraints{ (make) -> Void in
+            feedbackLabel.snp.makeConstraints{ make in
                 make.centerX.equalToSuperview()
                 make.bottom.equalToSuperview().inset(view.frame.height / 2)
             }
@@ -144,15 +135,12 @@ class ViewController: UIViewController {
     }
     
     @objc func handleNavigationBarRightTap() {
-        
         let isEvenNumTaps = countEditTaps % 2 == 0
         feedbackTableView.setEditing(isEvenNumTaps, animated: true)
         countEditTaps += 1
-
     }
     
 }
-
 
 extension ViewController: UITableViewDelegate {
     
@@ -177,13 +165,13 @@ extension ViewController: UITableViewDelegate {
         if feedbackData.isEmpty {
             view.snp.removeConstraints()
             feedbackTableView.isHidden = true
-            newConversationButton.snp.makeConstraints{ make -> Void in
+            newConversationButton.snp.makeConstraints{ make in
                 make.centerX.equalToSuperview()
                 make.bottom.equalToSuperview().inset(50)
                 make.width.equalTo(view.frame.width / 2)
                 make.height.equalTo(45)
             }
-            feedbackLabel.snp.makeConstraints{ (make) -> Void in
+            feedbackLabel.snp.makeConstraints{ make in
                 make.centerX.equalToSuperview()
                 make.bottom.equalToSuperview().inset(view.frame.height / 2)
             }
@@ -191,7 +179,6 @@ extension ViewController: UITableViewDelegate {
     }
     
 }
-
 
 extension ViewController: UITableViewDataSource {
     
