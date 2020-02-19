@@ -116,17 +116,17 @@ class ViewController: UIViewController {
     
     func setupConstraints() {
         if !feedbackData.isEmpty {
-            feedbackTableView.snp.makeConstraints{ make  in
+            feedbackTableView.snp.makeConstraints { make  in
                 make.leading.trailing.top.bottom.equalToSuperview()
             }
         } else {
-            newConversationButton.snp.makeConstraints{ make in
+            newConversationButton.snp.makeConstraints { make in
                 make.centerX.equalToSuperview()
                 make.bottom.equalToSuperview().inset(50)
                 make.width.equalTo(view.frame.width / 2)
                 make.height.equalTo(45)
             }
-            feedbackLabel.snp.makeConstraints{ make in
+            feedbackLabel.snp.makeConstraints { make in
                 make.centerX.equalToSuperview()
                 make.bottom.equalToSuperview().inset(view.frame.height / 2)
             }
@@ -162,18 +162,19 @@ extension ViewController: UITableViewDelegate {
         // If all conversations removed, remove UITableView and display default screen
         if feedbackData.isEmpty {
             feedbackTableView.snp.removeConstraints()
-            newConversationButton.snp.remakeConstraints{ make in
+            newConversationButton.snp.remakeConstraints { make in
                 make.centerX.equalToSuperview()
                 make.bottom.equalToSuperview().inset(50)
                 make.width.equalTo(view.frame.width / 2)
                 make.height.equalTo(45)
             }
-            feedbackLabel.snp.remakeConstraints{ make in
+            feedbackLabel.snp.remakeConstraints { make in
                 make.centerX.equalToSuperview()
                 make.bottom.equalToSuperview().inset(view.frame.height / 2)
             }
             // Animate the appearance of the the default screen to make transition more aesthetic
-            newConversationButton.alpha = 0; feedbackLabel.alpha = 0;
+            newConversationButton.alpha = 0
+            feedbackLabel.alpha = 0;
             UIView.animate(withDuration: 1.0) {
                 self.newConversationButton.alpha = 1
                 self.feedbackLabel.alpha = 1
