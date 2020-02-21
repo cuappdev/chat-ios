@@ -23,9 +23,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.backgroundColor
-        // Do any additional setup after loading the view.
-        
+        view.backgroundColor = UIColor.backgroundColor        
         setupData()
         setupNavigationBar()
         setupFeedbackLabel()
