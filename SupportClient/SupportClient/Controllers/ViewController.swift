@@ -22,7 +22,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.backgroundColor        
+        view.backgroundColor = UIColor.backgroundColor
         setupData()
         setupNavigationBar()
         setupFeedbackTableView()
@@ -42,9 +42,9 @@ class ViewController: UIViewController {
         """
         
         guard let jsonData = jsonString.data(using: .utf8) else { return }
-        let feedback = try! JSONDecoder().decode(Feedback.self, from: jsonData)
+        let _ = try! JSONDecoder().decode(Feedback.self, from: jsonData)
         
-        feedbackData = [feedback]
+        feedbackData = []
     }
     
     func setupNavigationBar() {
@@ -78,7 +78,7 @@ class ViewController: UIViewController {
             make.leading.trailing.top.bottom.equalToSuperview()
         }
     }
-    
+        
     @objc func handleNavigationBarRightTap() {
         let isEvenNumTaps = countEditTaps % 2 == 0
         feedbackTableView.setEditing(isEvenNumTaps, animated: true)
@@ -93,7 +93,6 @@ extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let _ = feedbackTableView.cellForRow(at: indexPath) as! FeedbackTableViewCell
@@ -133,7 +132,7 @@ extension ViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
         
-        let customView = UIView()
+        let customView = CustomUIView(width: view.layer.bounds.width, height: view.layer.bounds.height)
 
         // Create ParagraphStyle to format label text
         let paragraphStyle = NSMutableParagraphStyle()
@@ -166,6 +165,7 @@ extension ViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
         newConversationButton.backgroundColor = UIColor.themeColor
         newConversationButton.titleLabel?.font = UIFont._17RobotoMedium
         newConversationButton.layer.cornerRadius = 22
+        newConversationButton.addTarget(self, action: #selector(handleNewConversationButtonTap), for: .touchUpInside)
         
         // Add elements to UIView
         customView.addSubview(newConversationButton)
@@ -187,12 +187,18 @@ extension ViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
         // Adds animation
         newConversationButton.alpha = 0
         feedbackLabel.alpha = 0
-        UIView.transition(with: customView, duration: 1.25, animations: {
+        UIView.transition(with: customView, duration: 0.75, animations: {
             newConversationButton.alpha = 1
             feedbackLabel.alpha = 1
         }, completion: nil)
 
         return customView
+    }
+    
+    // TODO: change to intended functionality
+    @objc func handleNewConversationButtonTap() {
+        let feedbackViewController = UINavigationController(rootViewController: FeedbackViewController())
+        self.present(feedbackViewController, animated: true, completion: nil)
     }
     
     func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
