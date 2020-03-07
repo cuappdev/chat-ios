@@ -8,5 +8,6 @@ target 'SupportClient' do
   # Pods for SupportClient
   pod 'SnapKit'
   pod 'DZNEmptyDataSet'
+  pod 'BSImagePicker'
 
 end
