@@ -18,8 +18,6 @@ class FeedbackViewController: UIViewController {
     private var attachedErrorFiles = [Any]()
     private var collectionView: UICollectionView!
     
-    private let imagePicker = ImagePickerController()
-    
     private let messageLabel = UILabel()
     private let messageTextField = UITextField()
     private let typeLabel = UILabel()
@@ -58,8 +56,7 @@ class FeedbackViewController: UIViewController {
     }
     
     func setupImagePicker() {
-        imagePicker.settings.theme.selectionStyle = .checked
-        imagePicker.settings.fetch.assets.supportedMediaTypes = [.image, .video]
+        
     }
     
     func setupCollectionView() {
@@ -192,6 +189,9 @@ extension FeedbackViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate
     
     // TODO: change to intended functionality
     @objc func handleAddFileButtonTap() {
+        let imagePicker = ImagePickerController()
+        imagePicker.settings.theme.selectionStyle = .checked
+        imagePicker.settings.fetch.assets.supportedMediaTypes = [.image, .video]
         presentImagePicker(imagePicker, select: { (asset) in
             print("Selected: \(asset)")
         }, deselect: { (asset) in
