@@ -14,21 +14,17 @@ import Photos
 
 class FeedbackViewController: UIViewController {
 
-    // Invariant: attachedErrorFiles should only contain UIImage or AVPlayer
-    private var attachedErrorFiles = [Any]()
+    private var attachedErrorFiles = [PHAsset]()
     private var collectionView: UICollectionView!
     
     private let messageLabel = UILabel()
     private let messageTextField = UITextField()
     private let typeLabel = UILabel()
-        
-    private let collectionViewHeight = UIScreen.main.bounds.height / 2
-    
+            
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.backgroundColor
         setupNavigationBar()
-        setupImagePicker()
         setupCollectionView()
         setupConstraints()
     }
@@ -55,30 +51,30 @@ class FeedbackViewController: UIViewController {
         )
     }
     
-    func setupImagePicker() {
-        
-    }
-    
     func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.emptyDataSetSource = self
         collectionView.emptyDataSetDelegate = self
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.backgroundColor = UIColor.backgroundColor
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.register(ErrorFileCollectionViewCell.self, forCellWithReuseIdentifier: ErrorFileCollectionViewCell.reuseID)
         view.addSubview(collectionView)
     }
     
     func setupConstraints() {
-        collectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(collectionViewHeight / 4)
-            make.height.equalTo(collectionViewHeight)
-        }
+        NSLayoutConstraint.activate([
+            collectionView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height / ErrorFileCollectionViewCell.imageResizingRatio),
+            collectionView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
+        ])
     }
     
+    // TODO: animation does not work after presenting ImagePicker sometimes
     @objc func handleNavigationBarLeftTap() {
         self.dismiss(animated: true, completion: nil)
     }
@@ -98,7 +94,7 @@ extension FeedbackViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ErrorFileCollectionViewCell.reuseID, for: indexPath) as! ErrorFileCollectionViewCell
-        let errorFile = attachedErrorFiles[indexPath.item] as! UIImage
+        let errorFile = attachedErrorFiles[indexPath.item]
         cell.configure(for: errorFile)
         return cell
     }
@@ -108,15 +104,26 @@ extension FeedbackViewController: UICollectionViewDataSource {
 // MARK: - UICollectionView Delegate
 extension FeedbackViewController: UICollectionViewDelegate {
     
+    // TODO: Respond to user taps to open image editor for markup
+    
 }
 
 // MARK: - UICollectionView DelegateFlowLayout
 extension FeedbackViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let scaledScreenWidth = view.layer.bounds.width / 3
-        let scaledScreenHeight = view.layer.bounds.height / 3
+        let scaledScreenWidth = view.layer.bounds.width / ErrorFileCollectionViewCell.imageResizingRatio
+        let scaledScreenHeight = view.layer.bounds.height / ErrorFileCollectionViewCell.imageResizingRatio
         return CGSize(width: scaledScreenWidth, height: scaledScreenHeight)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        let collectionViewImagePadding = (UIScreen.main.bounds.width - UIScreen.main.bounds.width / ErrorFileCollectionViewCell.imageResizingRatio) / 2.0
+        return UIEdgeInsets(top: 0, left: collectionViewImagePadding, bottom: 0, right: collectionViewImagePadding)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 40
     }
 
 }
@@ -124,30 +131,22 @@ extension FeedbackViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - DZNEmptyDataSet
 extension FeedbackViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    private static let noFileLabel = UILabel()
-    private static let addFileButton = UIButton()
-    
+    // If no screenshots/videos are added by the user, they are prompted to add files
     func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
-        let customView = CustomUIView(width: view.layer.bounds.width, height: collectionViewHeight)
+        
+        let customView = CustomUIView(width: view.layer.bounds.width, height: view.layer.bounds.height / 3)
         customView.backgroundColor = UIColor.backgroundColor
-        setupEmptyDataSetLabel()
-        setupEmptyDataSetButton()
-        customView.addSubview(FeedbackViewController.noFileLabel)
-        customView.addSubview(FeedbackViewController.addFileButton)
-        setupEmptyDataSetConstraints()
-        return customView
-    }
-    
-    func setupEmptyDataSetLabel() {
+        
+        let noFileLabel = UILabel()
         // Create ParagraphStyle to format label text
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
         paragraphStyle.lineSpacing = 10
         // Tell the user there are no images/videos to display
-        FeedbackViewController.noFileLabel.lineBreakMode = .byWordWrapping
-        FeedbackViewController.noFileLabel.numberOfLines = 0
-        let title = "No Attached Files Yet\n"
-        let subtitle = "Add screenshots or screen recordings from your library"
+        noFileLabel.lineBreakMode = .byWordWrapping
+        noFileLabel.numberOfLines = 0
+        let title = "No Attached Files\n"
+        let subtitle = "Add screenshots or screen recordings from your photo library if they help to describe the bug"
         let titleAttributes: [NSAttributedString.Key : Any] = [
             NSAttributedString.Key.font: UIFont._17RobotoMedium!,
             .paragraphStyle: paragraphStyle,
@@ -159,48 +158,53 @@ extension FeedbackViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate
             NSAttributedString.Key.foregroundColor: UIColor.subtitleColor,
             ]
         attributedText.append(NSAttributedString(string: subtitle, attributes: subtitleAttributes))
-        FeedbackViewController.noFileLabel.attributedText = attributedText
-        FeedbackViewController.noFileLabel.sizeToFit()
-    }
-    
-    func setupEmptyDataSetButton() {
-        FeedbackViewController.addFileButton.setTitle("Add Image/Video", for: .normal)
-        FeedbackViewController.addFileButton.setTitleColor(.gray, for: .normal)
-        FeedbackViewController.addFileButton.titleLabel?.font = UIFont._17RobotoRegular
-        FeedbackViewController.addFileButton.layer.cornerRadius = 5
-        FeedbackViewController.addFileButton.layer.borderWidth = 1
-        FeedbackViewController.addFileButton.layer.borderColor = UIColor.gray.cgColor
-        FeedbackViewController.addFileButton.addTarget(self, action: #selector(handleAddFileButtonTap), for: .touchDragInside)
-    }
-    
-    func setupEmptyDataSetConstraints() {
-        FeedbackViewController.noFileLabel.snp.makeConstraints { make in
+        noFileLabel.attributedText = attributedText
+        noFileLabel.sizeToFit()
+        
+        let addFileButton = UIButton()
+        addFileButton.setTitle("Add Image/Video", for: .normal)
+        addFileButton.setTitleColor(.gray, for: .normal)
+        addFileButton.titleLabel?.font = UIFont._17RobotoRegular
+        addFileButton.layer.cornerRadius = 5
+        addFileButton.layer.borderWidth = 1
+        addFileButton.layer.borderColor = UIColor.gray.cgColor
+        addFileButton.addTarget(self, action: #selector(handleAddFileButtonTap), for: .touchDragInside)
+        
+        customView.addSubview(noFileLabel)
+        customView.addSubview(addFileButton)
+        
+        noFileLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.width.equalToSuperview().multipliedBy(0.60)
             make.centerY.equalToSuperview().offset(-60)
         }
-        FeedbackViewController.addFileButton.snp.makeConstraints { make in
+        addFileButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(FeedbackViewController.noFileLabel.snp.bottom).offset(50)
+            make.top.equalTo(noFileLabel.snp.bottom).offset(50)
             make.width.equalToSuperview().multipliedBy(0.6)
-            make.height.equalTo(45)
+            make.height.equalTo(40)
         }
+        
+        return customView
+        
     }
     
-    // TODO: change to intended functionality
     @objc func handleAddFileButtonTap() {
+        // ImagePicker reinitialized to handle previous modal view lifecycle error
         let imagePicker = ImagePickerController()
         imagePicker.settings.theme.selectionStyle = .checked
         imagePicker.settings.fetch.assets.supportedMediaTypes = [.image, .video]
-        presentImagePicker(imagePicker, select: { (asset) in
-            print("Selected: \(asset)")
-        }, deselect: { (asset) in
-            print("Deselected: \(asset)")
-        }, cancel: { (assets) in
-            print("Canceled with selections: \(assets)")
-        }, finish: { (assets) in
-            print("Finished with selections: \(assets)")
-        }, completion: nil
+        presentImagePicker(imagePicker,
+            select: nil,
+            deselect: nil,
+            cancel: nil,
+            finish: { assets in
+                for asset in assets {
+                    self.attachedErrorFiles.append(asset)
+                }
+                self.collectionView.reloadData()
+            },
+            completion: nil
         )
     }
     
