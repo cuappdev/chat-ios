@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SnapKit
 import DZNEmptyDataSet
 
 class ViewController: UIViewController {
@@ -22,7 +21,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.backgroundColor
+        view.backgroundColor = .backgroundColor
         setupData()
         setupNavigationBar()
         setupFeedbackTableView()
@@ -48,7 +47,7 @@ class ViewController: UIViewController {
     }
     
     func setupNavigationBar() {
-        navigationController?.navigationBar.barTintColor = UIColor.navigationTintColor
+        navigationController?.navigationBar.barTintColor = .navigationTintColor
         let attributes = [
             NSAttributedString.Key.font: UIFont._21RobotoMedium!,
             NSAttributedString.Key.foregroundColor: UIColor.titleColor
@@ -57,13 +56,14 @@ class ViewController: UIViewController {
         title = attributedTitle.string
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(named: "pen"),
-            style: UIBarButtonItem.Style.plain,
+            style: .plain,
             target: self,
             action: #selector(handleNavigationBarRightTap)
         )
     }
     
     func setupFeedbackTableView() {
+        feedbackTableView.translatesAutoresizingMaskIntoConstraints = false
         feedbackTableView.delegate = self
         feedbackTableView.dataSource = self
         feedbackTableView.tableFooterView = UIView()
@@ -74,9 +74,12 @@ class ViewController: UIViewController {
     }
     
     func setupConstraints() {
-        feedbackTableView.snp.makeConstraints { make  in
-            make.leading.trailing.top.bottom.equalToSuperview()
-        }
+        NSLayoutConstraint.activate([
+            feedbackTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            feedbackTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            feedbackTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            feedbackTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        ])
     }
         
     @objc func handleNavigationBarRightTap() {
@@ -132,7 +135,7 @@ extension ViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
         
-        let customView = CustomUIView(width: view.layer.bounds.width, height: view.layer.bounds.height)
+        let customView = CustomView(width: view.layer.bounds.width, height: view.layer.bounds.height)
 
         // Create ParagraphStyle to format label text
         let paragraphStyle = NSMutableParagraphStyle()
@@ -141,6 +144,7 @@ extension ViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
         
         // Tell user there is no feedback to display
         let feedbackLabel = UILabel()
+        feedbackLabel.translatesAutoresizingMaskIntoConstraints = false
         feedbackLabel.lineBreakMode = .byWordWrapping
         feedbackLabel.numberOfLines = 0
         let title = "No Feedback Yet\n"
@@ -161,6 +165,7 @@ extension ViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
         
         // Start new conversation button
         let newConversationButton = UIButton()
+        newConversationButton.translatesAutoresizingMaskIntoConstraints = false
         newConversationButton.setTitle("Start Conversation", for: .normal)
         newConversationButton.backgroundColor = UIColor.themeColor
         newConversationButton.titleLabel?.font = UIFont._17RobotoMedium
@@ -172,17 +177,17 @@ extension ViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
         customView.addSubview(feedbackLabel)
         
         // Set up constraints
-        feedbackLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(-60)
-        }
+        NSLayoutConstraint.activate([
+            feedbackLabel.centerXAnchor.constraint(equalTo: customView.centerXAnchor),
+            feedbackLabel.centerYAnchor.constraint(equalTo: customView.safeAreaLayoutGuide.centerYAnchor, constant: -60)
+        ])
         
-        newConversationButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(feedbackLabel.snp.bottom).offset(view.frame.height / 2.5)
-            make.width.equalToSuperview().multipliedBy(0.6)
-            make.height.equalTo(45)
-        }
+        NSLayoutConstraint.activate([
+            newConversationButton.centerXAnchor.constraint(equalTo: customView.centerXAnchor),
+            newConversationButton.topAnchor.constraint(equalTo: feedbackLabel.bottomAnchor, constant: view.frame.height / 2.5),
+            newConversationButton.widthAnchor.constraint(equalToConstant: 220),
+            newConversationButton.heightAnchor.constraint(equalToConstant: 45)
+        ])
         
         // Adds animation
         newConversationButton.alpha = 0

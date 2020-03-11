@@ -6,8 +6,8 @@ target 'SupportClient' do
   use_frameworks!
 
   # Pods for SupportClient
-  pod 'SnapKit'
-  pod 'DZNEmptyDataSet'
   pod 'BSImagePicker'
+  pod 'DZNEmptyDataSet'
+  pod 'SnapKit'
 
 end

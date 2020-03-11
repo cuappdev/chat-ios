@@ -40,16 +40,16 @@ class FeedbackTableViewCell: UITableViewCell {
     }
     
     func setUpTitle() {
-        titleLabel.font = UIFont._17RobotoMedium
-        titleLabel.textColor = UIColor.titleColor
+        titleLabel.font = ._17RobotoMedium
+        titleLabel.textColor = .titleColor
         titleLabel.numberOfLines = 1
         titleLabel.lineBreakMode = .byTruncatingTail
         contentView.addSubview(titleLabel)
     }
     
     func setUpSubtitle() {
-        subtitleLabel.font = UIFont._13RobotoMedium
-        subtitleLabel.textColor = UIColor.subtitleColor
+        subtitleLabel.font = ._13RobotoMedium
+        subtitleLabel.textColor = .subtitleColor
         subtitleLabel.numberOfLines = 1
         subtitleLabel.lineBreakMode = .byTruncatingTail
         contentView.addSubview(subtitleLabel)

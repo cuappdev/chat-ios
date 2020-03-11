@@ -9,10 +9,10 @@
 import UIKit
 
 // Resolves DZNEmptyDataSet issue #263
-class CustomUIView: UIView {
+class CustomView: UIView {
     
-    var width: CGFloat = 0.0
-    var height: CGFloat = 0.0
+    private var width: CGFloat = 0.0
+    private var height: CGFloat = 0.0
     
     convenience init(width: CGFloat, height: CGFloat) {
         self.init()

@@ -15,7 +15,7 @@ class ErrorFileCollectionViewCell: UICollectionViewCell {
     static let imageResizingRatio: CGFloat = 1.7
 
     private let imageManager = PHCachingImageManager()
-    private var errorFileImageView: UIImageView!
+    private let errorFileImageView = UIImageView()
     
     private let padding: CGFloat = 20.0
     
@@ -26,7 +26,6 @@ class ErrorFileCollectionViewCell: UICollectionViewCell {
     }
     
     func setupImageView() {
-        errorFileImageView = UIImageView()
         errorFileImageView.translatesAutoresizingMaskIntoConstraints = false
         errorFileImageView.contentMode = .scaleAspectFit
         errorFileImageView.layer.borderWidth = 1.0

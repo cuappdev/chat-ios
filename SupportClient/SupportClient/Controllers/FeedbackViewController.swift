@@ -6,11 +6,10 @@
 //  Copyright © 2020 Cornell Appdev. All rights reserved.
 //
 
-import UIKit
-import SnapKit
-import DZNEmptyDataSet
 import BSImagePicker
+import DZNEmptyDataSet
 import Photos
+import UIKit
 
 class FeedbackViewController: UIViewController {
 
@@ -23,14 +22,14 @@ class FeedbackViewController: UIViewController {
             
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.backgroundColor
+        view.backgroundColor = .backgroundColor
         setupNavigationBar()
         setupCollectionView()
         setupConstraints()
     }
     
     func setupNavigationBar() {
-        self.navigationController?.navigationBar.barTintColor = UIColor.navigationTintColor
+        navigationController?.navigationBar.barTintColor = .navigationTintColor
         let attributes = [
             NSAttributedString.Key.font: UIFont._21RobotoMedium!,
             NSAttributedString.Key.foregroundColor: UIColor.titleColor
@@ -39,13 +38,13 @@ class FeedbackViewController: UIViewController {
         title = attributedTitle.string
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: "Cancel",
-            style: UIBarButtonItem.Style.plain,
+            style: .plain,
             target: self,
             action: #selector(handleNavigationBarLeftTap)
         )
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: "Send",
-            style: UIBarButtonItem.Style.plain,
+            style: .plain,
             target: self,
             action: #selector(handleNavigationBarRightTap)
         )
@@ -60,7 +59,7 @@ class FeedbackViewController: UIViewController {
         collectionView.emptyDataSetDelegate = self
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = UIColor.backgroundColor
+        collectionView.backgroundColor = .backgroundColor
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.register(ErrorFileCollectionViewCell.self, forCellWithReuseIdentifier: ErrorFileCollectionViewCell.reuseID)
         view.addSubview(collectionView)
@@ -134,10 +133,11 @@ extension FeedbackViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate
     // If no screenshots/videos are added by the user, they are prompted to add files
     func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
         
-        let customView = CustomUIView(width: view.layer.bounds.width, height: view.layer.bounds.height / 3)
+        let customView = CustomView(width: view.layer.bounds.width, height: view.layer.bounds.height / 3)
         customView.backgroundColor = UIColor.backgroundColor
         
         let noFileLabel = UILabel()
+        noFileLabel.translatesAutoresizingMaskIntoConstraints = false
         // Create ParagraphStyle to format label text
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
@@ -156,15 +156,16 @@ extension FeedbackViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate
         let subtitleAttributes = [
             NSAttributedString.Key.font: UIFont._13RobotoRegular!,
             NSAttributedString.Key.foregroundColor: UIColor.subtitleColor,
-            ]
+        ]
         attributedText.append(NSAttributedString(string: subtitle, attributes: subtitleAttributes))
         noFileLabel.attributedText = attributedText
         noFileLabel.sizeToFit()
         
         let addFileButton = UIButton()
+        addFileButton.translatesAutoresizingMaskIntoConstraints = false
         addFileButton.setTitle("Add Image/Video", for: .normal)
         addFileButton.setTitleColor(.gray, for: .normal)
-        addFileButton.titleLabel?.font = UIFont._17RobotoRegular
+        addFileButton.titleLabel?.font = ._17RobotoRegular
         addFileButton.layer.cornerRadius = 5
         addFileButton.layer.borderWidth = 1
         addFileButton.layer.borderColor = UIColor.gray.cgColor
@@ -173,17 +174,18 @@ extension FeedbackViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate
         customView.addSubview(noFileLabel)
         customView.addSubview(addFileButton)
         
-        noFileLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(0.60)
-            make.centerY.equalToSuperview().offset(-60)
-        }
-        addFileButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(noFileLabel.snp.bottom).offset(50)
-            make.width.equalToSuperview().multipliedBy(0.6)
-            make.height.equalTo(40)
-        }
+        NSLayoutConstraint.activate([
+            noFileLabel.centerXAnchor.constraint(equalTo: customView.centerXAnchor),
+            noFileLabel.widthAnchor.constraint(equalToConstant: 250),
+            noFileLabel.centerYAnchor.constraint(equalTo: customView.centerYAnchor, constant: -60)
+        ])
+        
+        NSLayoutConstraint.activate([
+            addFileButton.centerXAnchor.constraint(equalTo: customView.centerXAnchor),
+            addFileButton.topAnchor.constraint(equalTo: noFileLabel.bottomAnchor, constant: 50),
+            addFileButton.widthAnchor.constraint(equalToConstant: 200),
+            addFileButton.heightAnchor.constraint(equalToConstant: 40)
+        ])
         
         return customView
         
@@ -199,9 +201,7 @@ extension FeedbackViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate
             deselect: nil,
             cancel: nil,
             finish: { assets in
-                for asset in assets {
-                    self.attachedErrorFiles.append(asset)
-                }
+                self.attachedErrorFiles = assets.map { $0 }
                 self.collectionView.reloadData()
             },
             completion: nil
