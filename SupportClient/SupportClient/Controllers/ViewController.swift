@@ -41,9 +41,9 @@ class ViewController: UIViewController {
         """
         
         guard let jsonData = jsonString.data(using: .utf8) else { return }
-        let _ = try! JSONDecoder().decode(Feedback.self, from: jsonData)
+        let feedback = try! JSONDecoder().decode(Feedback.self, from: jsonData)
         
-        feedbackData = []
+        feedbackData = [feedback]
     }
     
     func setupNavigationBar() {

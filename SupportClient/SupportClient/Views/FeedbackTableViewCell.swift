@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SnapKit
 
 class FeedbackTableViewCell: UITableViewCell {
     
@@ -17,11 +16,10 @@ class FeedbackTableViewCell: UITableViewCell {
     private let titleLabel = UILabel()
     private let unreadImageView = UIImageView()
     
-    private let padding: Int = 24
+    private let padding: CGFloat = 24
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         setUpUnreadImage()
         setUpTitle()
         setUpSubtitle()
@@ -33,6 +31,7 @@ class FeedbackTableViewCell: UITableViewCell {
     }
     
     func setUpUnreadImage() {
+        unreadImageView.translatesAutoresizingMaskIntoConstraints = false
         unreadImageView.image = UIImage(named: "unreadDot")
         unreadImageView.contentMode = .scaleAspectFit
         unreadImageView.isHidden = true
@@ -40,6 +39,7 @@ class FeedbackTableViewCell: UITableViewCell {
     }
     
     func setUpTitle() {
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = ._17RobotoMedium
         titleLabel.textColor = .titleColor
         titleLabel.numberOfLines = 1
@@ -48,6 +48,7 @@ class FeedbackTableViewCell: UITableViewCell {
     }
     
     func setUpSubtitle() {
+        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.font = ._13RobotoMedium
         subtitleLabel.textColor = .subtitleColor
         subtitleLabel.numberOfLines = 1
@@ -56,16 +57,23 @@ class FeedbackTableViewCell: UITableViewCell {
     }
     
     func setUpConstraints() {
-        titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(padding)
-            make.width.equalToSuperview().inset(padding * 2)
-            make.top.equalTo(20)
-        }
-        subtitleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(padding)
-            make.width.equalToSuperview().inset(padding * 2)
-            make.top.equalTo(titleLabel.snp.bottom).offset(5)
-        }
+        
+        NSLayoutConstraint.activate([
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -3 * padding),
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20)
+        ])
+        
+        NSLayoutConstraint.activate([
+            subtitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            subtitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -2 * padding),
+            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5)
+        ])
+        
+        NSLayoutConstraint.activate([
+            unreadImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            unreadImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding)
+        ])
         unreadImageView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(padding)
             make.centerY.equalToSuperview()
