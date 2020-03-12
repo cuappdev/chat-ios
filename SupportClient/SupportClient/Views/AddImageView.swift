@@ -8,22 +8,22 @@
 
 import UIKit
 
-class AddImageView: CustomView {
+class AddImageView: UIView {
 
     private let addFileButton = UIButton()
     private let noFileLabel = UILabel()
-    
     @objc var onPress: (() -> Void)?
-
-    var view: CustomView!
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override var intrinsicContentSize: CGSize {
+        return UIScreen.main.bounds.size
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
-    convenience init(onPress: @escaping () -> Void) {
-        self.init()
-        view = CustomView(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 3)
+    init(onPress: @escaping () -> Void) {
+        super.init(frame: .zero)
         self.onPress = onPress
         setupLabel()
         setupButton()
@@ -54,7 +54,7 @@ class AddImageView: CustomView {
         attributedText.append(NSAttributedString(string: subtitle, attributes: subtitleAttributes))
         noFileLabel.attributedText = attributedText
         noFileLabel.sizeToFit()
-        view.addSubview(noFileLabel)
+        addSubview(noFileLabel)
     }
     
     func setupButton() {
@@ -66,17 +66,17 @@ class AddImageView: CustomView {
         addFileButton.layer.borderWidth = 1
         addFileButton.layer.borderColor = UIColor.gray.cgColor
         addFileButton.addTarget(self, action: #selector(addFileBtnPressed), for: .touchDragInside)
-        view.addSubview(addFileButton)
+        addSubview(addFileButton)
     }
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            noFileLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            noFileLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             noFileLabel.widthAnchor.constraint(equalToConstant: 250),
-            noFileLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -60)
+            noFileLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -60)
         ])
         NSLayoutConstraint.activate([
-            addFileButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            addFileButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             addFileButton.topAnchor.constraint(equalTo: noFileLabel.bottomAnchor, constant: 50),
             addFileButton.widthAnchor.constraint(equalToConstant: 200),
             addFileButton.heightAnchor.constraint(equalToConstant: 40)
@@ -85,10 +85,6 @@ class AddImageView: CustomView {
 
     @objc func addFileBtnPressed() {
         onPress?()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
 }

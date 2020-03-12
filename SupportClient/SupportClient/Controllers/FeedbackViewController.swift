@@ -132,12 +132,12 @@ extension FeedbackViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate
     
     // If no screenshots/videos are added by the user, they are prompted to add files
     func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
-        let imagePicker = ImagePickerController()
-        imagePicker.settings.theme.selectionStyle = .checked
-        imagePicker.settings.fetch.assets.supportedMediaTypes = [.image, .video]
         return
             AddImageView(
                 onPress: {
+                    let imagePicker = ImagePickerController()
+                    imagePicker.settings.theme.selectionStyle = .checked
+                    imagePicker.settings.fetch.assets.supportedMediaTypes = [.image, .video]
                     self.presentImagePicker(imagePicker,
                         select: nil,
                         deselect: nil,
@@ -149,7 +149,7 @@ extension FeedbackViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate
                         completion: nil
                     )
                 }
-            ).view
+            )
     }
     
     func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {

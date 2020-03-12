@@ -138,7 +138,7 @@ extension ViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
             onPress: {
                 let feedbackViewController = UINavigationController(rootViewController: FeedbackViewController())
                 self.present(feedbackViewController, animated: true, completion: nil)
-        }
+            }
         )
     }
     

@@ -29,7 +29,6 @@
 		7ECA086023F8BB6800BBFD51 /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7ECA084923F8BAB500BBFD51 /* Roboto-MediumItalic.ttf */; };
 		7ECA086123F8BB6800BBFD51 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7ECA085623F8BAB500BBFD51 /* Roboto-Regular.ttf */; };
 		7ECA086223F8BB6800BBFD51 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7ECA085423F8BAB500BBFD51 /* Roboto-Thin.ttf */; };
-		7EDA42B124136127004EB07F /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDA42B024136127004EB07F /* UIView+Extensions.swift */; };
 		7EDA42B32413628B004EB07F /* ErrorFileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDA42B22413628B004EB07F /* ErrorFileCollectionViewCell.swift */; };
 		7EF44ECB24134A0D00393BE9 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF44ECA24134A0D00393BE9 /* FeedbackViewController.swift */; };
 		C073FF28A825945553AEE741 /* Pods_SupportClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3A7292B1B81A4755615DD3D /* Pods_SupportClient.framework */; };
@@ -61,7 +60,6 @@
 		7ECA085523F8BAB500BBFD51 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
 		7ECA085623F8BAB500BBFD51 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		7ECA085723F8BAB600BBFD51 /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
-		7EDA42B024136127004EB07F /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		7EDA42B22413628B004EB07F /* ErrorFileCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorFileCollectionViewCell.swift; sourceTree = "<group>"; };
 		7EF44ECA24134A0D00393BE9 /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		893DF4D33128CCFACC3E91C8 /* Pods-SupportClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SupportClient.release.xcconfig"; path = "Target Support Files/Pods-SupportClient/Pods-SupportClient.release.xcconfig"; sourceTree = "<group>"; };
@@ -129,7 +127,6 @@
 			children = (
 				7EB3DDBB23FA296600994B68 /* UIFont+Extensions.swift */,
 				7EB3DDBE23FA2C2000994B68 /* UIColor+Extensions.swift */,
-				7EDA42B024136127004EB07F /* UIView+Extensions.swift */,
 				7E03A6D02417273800CEDF6B /* UIImage+Extensions.swift */,
 			);
 			path = Extensions;
@@ -326,7 +323,6 @@
 				7EB5E7E623F8CDB10051F209 /* FeedbackTableViewCell.swift in Sources */,
 				7EB5E7E923F8D0AE0051F209 /* Feedback.swift in Sources */,
 				7E03A6D12417273800CEDF6B /* UIImage+Extensions.swift in Sources */,
-				7EDA42B124136127004EB07F /* UIView+Extensions.swift in Sources */,
 				7EF44ECB24134A0D00393BE9 /* FeedbackViewController.swift in Sources */,
 				7EB3DDBC23FA296600994B68 /* UIFont+Extensions.swift in Sources */,
 				7E41341A2419E8DA007B3B5B /* AddImageView.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  EmptyTableViewCustomView.swift
+//  NoMessageView.swift
 //  SupportClient
 //
 //  Created by Cameron Russell on 3/11/20.
