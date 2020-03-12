@@ -12,7 +12,7 @@ class AddImageView: UIView {
 
     private let addFileButton = UIButton()
     private let noFileLabel = UILabel()
-    @objc var onPress: (() -> Void)?
+    private var onPress: (() -> Void)?
     
     override var intrinsicContentSize: CGSize {
         return UIScreen.main.bounds.size
