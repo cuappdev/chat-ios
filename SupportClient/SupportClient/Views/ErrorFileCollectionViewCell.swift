@@ -45,11 +45,13 @@ class ErrorFileCollectionViewCell: UICollectionViewCell {
     // TODO: Figure out why short pause when loading images after dismissing ImagePicker
     func configure(for imageFile: PHAsset) {
         // Converts a PHAsset to a UIImage and configures the cell's image
+        let options = PHImageRequestOptions()
+        options.isSynchronous = true
         imageManager.requestImage(
             for: imageFile,
             targetSize: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height),
             contentMode: .aspectFit,
-            options: nil,
+            options: options,
             resultHandler: { image, _ in
                 let imageWithPadding = image?.addPadding(x: self.padding, y: 2.0 * self.padding)
                 self.errorFileImageView.image = imageWithPadding

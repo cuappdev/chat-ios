@@ -74,10 +74,7 @@ class FeedbackTableViewCell: UITableViewCell {
             unreadImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             unreadImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding)
         ])
-        unreadImageView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(padding)
-            make.centerY.equalToSuperview()
-        }
+
     }
     
     func configure(feedback: Feedback) {
