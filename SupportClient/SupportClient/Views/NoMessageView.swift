@@ -8,27 +8,22 @@
 
 import UIKit
 
-class NoMessageView: CustomView {
+class NoMessageView: UIView {
             
     private let feedbackLabel = UILabel()
     private let newConversationButton = UIButton()
-    @objc private var onPress: (() -> Void)?
-    
-    var view: CustomView!
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    private var onPress: (() -> Void)?
+
+    override var intrinsicContentSize: CGSize {
+        return UIScreen.main.bounds.size
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    convenience init(onPress: @escaping () -> Void) {
-        self.init()
-        let width = UIScreen.main.bounds.width
-        let height = UIScreen.main.bounds.height
-        view = CustomView(width: width, height: height)
+    init(onPress: @escaping () -> Void) {
+        super.init(frame: .zero)
         self.onPress = onPress
         setupFeedbackLabel()
         setupNewConversationButton()
@@ -60,7 +55,7 @@ class NoMessageView: CustomView {
         attributedText.append(NSAttributedString(string: subtitle, attributes: subtitleAttributes))
         feedbackLabel.attributedText = attributedText
         feedbackLabel.sizeToFit()
-        view.addSubview(feedbackLabel)
+        addSubview(feedbackLabel)
     }
     
     func setupNewConversationButton() {
@@ -69,17 +64,17 @@ class NoMessageView: CustomView {
         newConversationButton.backgroundColor = UIColor.themeColor
         newConversationButton.titleLabel?.font = UIFont._17RobotoMedium
         newConversationButton.layer.cornerRadius = 22
-        newConversationButton.addTarget(self, action: #selector(getter: onPress), for: .touchUpInside)
-        view.addSubview(newConversationButton)
+        newConversationButton.addTarget(self, action: #selector(newConversationBtnPressed), for: .touchUpInside)
+        addSubview(newConversationButton)
     }
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            feedbackLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            feedbackLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: -60)
+            feedbackLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            feedbackLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -60)
         ])
         NSLayoutConstraint.activate([
-            newConversationButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            newConversationButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             newConversationButton.topAnchor.constraint(equalTo: feedbackLabel.bottomAnchor, constant: UIScreen.main.bounds.height / 2.5),
             newConversationButton.widthAnchor.constraint(equalToConstant: 220),
             newConversationButton.heightAnchor.constraint(equalToConstant: 45)
@@ -89,10 +84,14 @@ class NoMessageView: CustomView {
     func setupAnimation() {
         newConversationButton.alpha = 0
         feedbackLabel.alpha = 0
-        UIView.transition(with: view, duration: 0.75, animations: {
+        UIView.transition(with: self, duration: 0.75, animations: {
             self.newConversationButton.alpha = 1
             self.feedbackLabel.alpha = 1
         }, completion: nil)
+    }
+
+    @objc func newConversationBtnPressed() {
+        onPress?()
     }
     
 }

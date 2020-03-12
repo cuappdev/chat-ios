@@ -13,7 +13,7 @@ class AddImageView: CustomView {
     private let addFileButton = UIButton()
     private let noFileLabel = UILabel()
     
-    @objc var onPress: (() -> Void)!
+    @objc var onPress: (() -> Void)?
 
     var view: CustomView!
     
@@ -65,7 +65,7 @@ class AddImageView: CustomView {
         addFileButton.layer.cornerRadius = 5
         addFileButton.layer.borderWidth = 1
         addFileButton.layer.borderColor = UIColor.gray.cgColor
-        addFileButton.addTarget(self, action: #selector(getter: onPress), for: .touchDragInside)
+        addFileButton.addTarget(self, action: #selector(addFileBtnPressed), for: .touchDragInside)
         view.addSubview(addFileButton)
     }
     
@@ -81,6 +81,10 @@ class AddImageView: CustomView {
             addFileButton.widthAnchor.constraint(equalToConstant: 200),
             addFileButton.heightAnchor.constraint(equalToConstant: 40)
         ])
+    }
+
+    @objc func addFileBtnPressed() {
+        onPress?()
     }
     
     required init?(coder: NSCoder) {

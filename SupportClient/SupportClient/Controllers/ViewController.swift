@@ -134,13 +134,12 @@ extension ViewController: UITableViewDataSource {
 extension ViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
-        return
-            NoMessageView(
-                onPress: {
-                    let feedbackViewController = UINavigationController(rootViewController: FeedbackViewController())
-                    self.present(feedbackViewController, animated: true, completion: nil)
-                }
-            ).view
+        return NoMessageView(
+            onPress: {
+                let feedbackViewController = UINavigationController(rootViewController: FeedbackViewController())
+                self.present(feedbackViewController, animated: true, completion: nil)
+        }
+        )
     }
     
     func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
