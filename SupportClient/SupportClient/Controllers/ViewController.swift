@@ -41,7 +41,7 @@ class ViewController: UIViewController {
         """
         
         guard let jsonData = jsonString.data(using: .utf8) else { return }
-        let feedback = try! JSONDecoder().decode(Feedback.self, from: jsonData)
+        let _ = try! JSONDecoder().decode(Feedback.self, from: jsonData)
         
         feedbackData = []
     }
@@ -134,76 +134,13 @@ extension ViewController: UITableViewDataSource {
 extension ViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
-        
-        let customView = CustomView(width: view.layer.bounds.width, height: view.layer.bounds.height)
-
-        // Create ParagraphStyle to format label text
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
-        paragraphStyle.lineSpacing = 10
-        
-        // Tell user there is no feedback to display
-        let feedbackLabel = UILabel()
-        feedbackLabel.translatesAutoresizingMaskIntoConstraints = false
-        feedbackLabel.lineBreakMode = .byWordWrapping
-        feedbackLabel.numberOfLines = 0
-        let title = "No Feedback Yet\n"
-        let subtitle = "See feedback conversations here"
-        let titleAttributes: [NSAttributedString.Key : Any] = [
-            NSAttributedString.Key.font: UIFont._17RobotoMedium!,
-            .paragraphStyle: paragraphStyle,
-            NSAttributedString.Key.foregroundColor: UIColor.titleColor
-        ]
-        let attributedText = NSMutableAttributedString(string: title, attributes: titleAttributes)
-        let subtitleAttributes = [
-            NSAttributedString.Key.font: UIFont._13RobotoRegular!,
-            NSAttributedString.Key.foregroundColor: UIColor.subtitleColor
-        ]
-        attributedText.append(NSAttributedString(string: subtitle, attributes: subtitleAttributes))
-        feedbackLabel.attributedText = attributedText
-        feedbackLabel.sizeToFit()
-        
-        // Start new conversation button
-        let newConversationButton = UIButton()
-        newConversationButton.translatesAutoresizingMaskIntoConstraints = false
-        newConversationButton.setTitle("Start Conversation", for: .normal)
-        newConversationButton.backgroundColor = UIColor.themeColor
-        newConversationButton.titleLabel?.font = UIFont._17RobotoMedium
-        newConversationButton.layer.cornerRadius = 22
-        newConversationButton.addTarget(self, action: #selector(handleNewConversationButtonTap), for: .touchUpInside)
-        
-        // Add elements to UIView
-        customView.addSubview(newConversationButton)
-        customView.addSubview(feedbackLabel)
-        
-        // Set up constraints
-        NSLayoutConstraint.activate([
-            feedbackLabel.centerXAnchor.constraint(equalTo: customView.centerXAnchor),
-            feedbackLabel.centerYAnchor.constraint(equalTo: customView.safeAreaLayoutGuide.centerYAnchor, constant: -60)
-        ])
-        
-        NSLayoutConstraint.activate([
-            newConversationButton.centerXAnchor.constraint(equalTo: customView.centerXAnchor),
-            newConversationButton.topAnchor.constraint(equalTo: feedbackLabel.bottomAnchor, constant: view.frame.height / 2.5),
-            newConversationButton.widthAnchor.constraint(equalToConstant: 220),
-            newConversationButton.heightAnchor.constraint(equalToConstant: 45)
-        ])
-        
-        // Adds animation
-        newConversationButton.alpha = 0
-        feedbackLabel.alpha = 0
-        UIView.transition(with: customView, duration: 0.75, animations: {
-            newConversationButton.alpha = 1
-            feedbackLabel.alpha = 1
-        }, completion: nil)
-
-        return customView
-    }
-    
-    // TODO: change to intended functionality
-    @objc func handleNewConversationButtonTap() {
-        let feedbackViewController = UINavigationController(rootViewController: FeedbackViewController())
-        self.present(feedbackViewController, animated: true, completion: nil)
+        return
+            NoMessageView(
+                onPress: {
+                    let feedbackViewController = UINavigationController(rootViewController: FeedbackViewController())
+                    self.present(feedbackViewController, animated: true, completion: nil)
+                }
+            ).view
     }
     
     func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {

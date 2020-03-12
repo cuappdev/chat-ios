@@ -19,7 +19,7 @@ class FeedbackViewController: UIViewController {
     private let messageLabel = UILabel()
     private let messageTextField = UITextField()
     private let typeLabel = UILabel()
-            
+                
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .backgroundColor
@@ -132,80 +132,24 @@ extension FeedbackViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate
     
     // If no screenshots/videos are added by the user, they are prompted to add files
     func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
-        
-        let customView = CustomView(width: view.layer.bounds.width, height: view.layer.bounds.height / 3)
-        customView.backgroundColor = UIColor.backgroundColor
-        
-        let noFileLabel = UILabel()
-        noFileLabel.translatesAutoresizingMaskIntoConstraints = false
-        // Create ParagraphStyle to format label text
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
-        paragraphStyle.lineSpacing = 10
-        // Tell the user there are no images/videos to display
-        noFileLabel.lineBreakMode = .byWordWrapping
-        noFileLabel.numberOfLines = 0
-        let title = "No Attached Files\n"
-        let subtitle = "Add screenshots or screen recordings from your photo library if they help to describe the bug"
-        let titleAttributes: [NSAttributedString.Key : Any] = [
-            NSAttributedString.Key.font: UIFont._17RobotoMedium!,
-            .paragraphStyle: paragraphStyle,
-            NSAttributedString.Key.foregroundColor: UIColor.titleColor
-        ]
-        let attributedText = NSMutableAttributedString(string: title, attributes: titleAttributes)
-        let subtitleAttributes = [
-            NSAttributedString.Key.font: UIFont._13RobotoRegular!,
-            NSAttributedString.Key.foregroundColor: UIColor.subtitleColor,
-        ]
-        attributedText.append(NSAttributedString(string: subtitle, attributes: subtitleAttributes))
-        noFileLabel.attributedText = attributedText
-        noFileLabel.sizeToFit()
-        
-        let addFileButton = UIButton()
-        addFileButton.translatesAutoresizingMaskIntoConstraints = false
-        addFileButton.setTitle("Add Image/Video", for: .normal)
-        addFileButton.setTitleColor(.gray, for: .normal)
-        addFileButton.titleLabel?.font = ._17RobotoRegular
-        addFileButton.layer.cornerRadius = 5
-        addFileButton.layer.borderWidth = 1
-        addFileButton.layer.borderColor = UIColor.gray.cgColor
-        addFileButton.addTarget(self, action: #selector(handleAddFileButtonTap), for: .touchDragInside)
-        
-        customView.addSubview(noFileLabel)
-        customView.addSubview(addFileButton)
-        
-        NSLayoutConstraint.activate([
-            noFileLabel.centerXAnchor.constraint(equalTo: customView.centerXAnchor),
-            noFileLabel.widthAnchor.constraint(equalToConstant: 250),
-            noFileLabel.centerYAnchor.constraint(equalTo: customView.centerYAnchor, constant: -60)
-        ])
-        
-        NSLayoutConstraint.activate([
-            addFileButton.centerXAnchor.constraint(equalTo: customView.centerXAnchor),
-            addFileButton.topAnchor.constraint(equalTo: noFileLabel.bottomAnchor, constant: 50),
-            addFileButton.widthAnchor.constraint(equalToConstant: 200),
-            addFileButton.heightAnchor.constraint(equalToConstant: 40)
-        ])
-        
-        return customView
-        
-    }
-    
-    @objc func handleAddFileButtonTap() {
-        // ImagePicker reinitialized to handle previous modal view lifecycle error
         let imagePicker = ImagePickerController()
         imagePicker.settings.theme.selectionStyle = .checked
         imagePicker.settings.fetch.assets.supportedMediaTypes = [.image, .video]
-        presentImagePicker(imagePicker,
-            select: nil,
-            deselect: nil,
-            cancel: nil,
-            finish: { assets in
-                self.attachedErrorFiles = assets.map { $0 }
-                self.collectionView.reloadData()
-            },
-            completion: nil
-        )
+        return
+            AddImageView(
+                onPress: {
+                    self.presentImagePicker(imagePicker,
+                        select: nil,
+                        deselect: nil,
+                        cancel: nil,
+                        finish: { assets in
+                            self.attachedErrorFiles = assets.map { $0 }
+                            self.collectionView.reloadData()
+                        },
+                        completion: nil
+                    )
+                }
+            ).view
     }
     
     func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
