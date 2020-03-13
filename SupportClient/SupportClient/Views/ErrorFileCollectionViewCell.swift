@@ -6,8 +6,8 @@
 //  Copyright © 2020 Cornell Appdev. All rights reserved.
 //
 
-import UIKit
 import Photos
+import UIKit
 
 class ErrorFileCollectionViewCell: UICollectionViewCell {
     

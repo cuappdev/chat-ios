@@ -57,24 +57,20 @@ class FeedbackTableViewCell: UITableViewCell {
     }
     
     func setUpConstraints() {
-        
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -3 * padding),
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20)
         ])
-        
         NSLayoutConstraint.activate([
             subtitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
             subtitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -2 * padding),
             subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5)
         ])
-        
         NSLayoutConstraint.activate([
             unreadImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             unreadImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding)
         ])
-
     }
     
     func configure(feedback: Feedback) {

@@ -8,15 +8,11 @@
 
 import UIKit
 
-class NoMessageView: UIView {
+class NoMessageView: CustomView {
             
     private let feedbackLabel = UILabel()
     private let newConversationButton = UIButton()
     private var onPress: (() -> Void)?
-
-    override var intrinsicContentSize: CGSize {
-        return UIScreen.main.bounds.size
-    }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
