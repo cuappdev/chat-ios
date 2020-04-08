@@ -1,20 +1,20 @@
 PODS:
+  - BSImagePicker (3.1.1)
   - DZNEmptyDataSet (1.8.1)
-  - SnapKit (5.0.1)
 
 DEPENDENCIES:
+  - BSImagePicker
   - DZNEmptyDataSet
-  - SnapKit
 
 SPEC REPOS:
   trunk:
+    - BSImagePicker
     - DZNEmptyDataSet
-    - SnapKit
 
 SPEC CHECKSUMS:
+  BSImagePicker: 86f28e0f63b78d35fec7c6f0174b7af9e6f1431e
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
-PODFILE CHECKSUM: 9032409224d4138a5e2d81d25cb76a57926cacf4
+PODFILE CHECKSUM: 7b3a6bab3a9f6b49341f60156310be75e7433eed
 
 COCOAPODS: 1.8.4
