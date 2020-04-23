@@ -46,7 +46,6 @@ class FileCollectionViewCell: UICollectionViewCell, UIImagePickerControllerDeleg
         removeFileButton.backgroundColor = .red
         removeFileButton.contentHorizontalAlignment = .center
         removeFileButton.contentVerticalAlignment = .center
-        removeFileButton.roundedButton([.topRight, .bottomLeft], radius: 8)
         contentView.addSubview(removeFileButton)
     }
     
