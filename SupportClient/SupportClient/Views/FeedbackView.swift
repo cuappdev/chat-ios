@@ -13,7 +13,6 @@ import UIKit
 
 enum Status {
     case complete
-    case empty
     case incomplete
 }
 
@@ -28,7 +27,13 @@ class FeedbackView: UIView {
     private let typeDropdown = DropDown(frame: CGRect(x: 110, y: 140, width: 200, height: 30))
     private let typeLabel = UILabel()
     
-    public var status = Status.empty
+    public var status = Status.incomplete {
+        willSet {
+            if let sendButton = currentViewController()?.navigationItem.rightBarButtonItem {
+                sendButton.isEnabled = true
+            }
+        }
+    }
     
     private let padding: CGFloat = 15
     private let imageHeight: CGFloat = 150
@@ -109,18 +114,21 @@ class FeedbackView: UIView {
         typeDropdown.translatesAutoresizingMaskIntoConstraints = false
         typeDropdown.optionArray = ["Report Bug", "Request Feature", "Help Request", "Other"]
         typeDropdown.placeholder = "Choose a Feedback Type"
+        typeDropdown.font = UIFont.systemFont(ofSize: 14)
         typeDropdown.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: typeDropdown.frame.height))
         typeDropdown.leftViewMode = .always
         typeDropdown.selectedRowColor = .gray
         typeDropdown.isSearchEnable = false
-        typeDropdown.rowHeight = 40
         typeDropdown.checkMarkEnabled = false
-        typeDropdown.font = UIFont.systemFont(ofSize: 14)
+        typeDropdown.rowHeight = 40
         typeDropdown.layer.cornerRadius = 5
         typeDropdown.borderWidth = 0.5
         typeDropdown.listHeight = 200
         typeDropdown.arrowSize = 10
         addSubview(typeDropdown)
+        typeDropdown.didSelect { (selectedText , index ,id) in
+            self.checkStatus()
+        }
     }
     
     func setupGestureRecognizer() {
@@ -168,6 +176,14 @@ class FeedbackView: UIView {
         ])
     }
     
+    func checkStatus() {
+        if let _ = typeDropdown.selectedIndex {
+            if messageTextView.text != "Let us know what happened." || attachedFiles.count > 0 {
+                status = .complete
+            }
+        }
+    }
+    
     // MARK: - OBJC Functions
     @objc func dismissKeyboard (_ sender: UITapGestureRecognizer) {
         self.endEditing(true)
@@ -184,6 +200,7 @@ class FeedbackView: UIView {
             finish: { assets in
                 self.attachedFiles = Array(Set(self.attachedFiles + assets.map { $0 }))
                 self.attachmentsCollectionView.reloadData()
+                self.checkStatus()
             },
             completion: nil
         )
@@ -206,7 +223,7 @@ extension FeedbackView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FileCollectionViewCell.reuseID, for: indexPath) as! FileCollectionViewCell
         let file = attachedFiles[indexPath.item]
-        cell.configure(for: file)
+        cell.configure(for: file, with: self)
         return cell
     }
 
@@ -214,8 +231,8 @@ extension FeedbackView: UICollectionViewDataSource {
 
 // MARK: - UICollectionView Delegate
 extension FeedbackView: UICollectionViewDelegate {
-    
-    // TODO: Respond to user taps to open image editor for markup
+        
+    // TODO
     
 }
 
@@ -254,7 +271,18 @@ extension FeedbackView: UITextViewDelegate {
                 textView.textColor = .lightGray
                 return
             }
+            checkStatus()
         }
+    }
+    
+}
+
+extension FeedbackView: RemoveFileDelegate {
+    
+    func removeFile(_ file: PHAsset) {
+        print("Where I want to be")
+        attachedFiles.remove(at: attachedFiles.firstIndex(of: file)!)
+        attachmentsCollectionView.reloadData()
     }
     
 }

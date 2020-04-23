@@ -9,14 +9,21 @@
 import Photos
 import UIKit
 
+protocol RemoveFileDelegate: class {
+    func removeFile(_ file: PHAsset)
+}
+
 class FileCollectionViewCell: UICollectionViewCell, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
     static let reuseID = "ErrorFileCollectionViewCell"
+    
+    weak var delegate: RemoveFileDelegate?
 
     private let imageManager = PHCachingImageManager()
     private let fileImageView = UIImageView()
     private let removeFileButton = MaskedButton()
     
+    private var rawPHAsset = PHAsset()
     private let padding: CGFloat = 20
     
     override init(frame: CGRect) {
@@ -46,6 +53,7 @@ class FileCollectionViewCell: UICollectionViewCell, UIImagePickerControllerDeleg
         removeFileButton.backgroundColor = .red
         removeFileButton.contentHorizontalAlignment = .center
         removeFileButton.contentVerticalAlignment = .center
+        removeFileButton.addTarget(self, action: #selector(removeFile(_:)), for: .touchUpInside)
         contentView.addSubview(removeFileButton)
     }
     
@@ -63,7 +71,9 @@ class FileCollectionViewCell: UICollectionViewCell, UIImagePickerControllerDeleg
     }
     
     // TODO: Figure out why short pause when loading images after dismissing ImagePicker
-    func configure(for imageFile: PHAsset) {
+    func configure(for imageFile: PHAsset, with delegate: RemoveFileDelegate) {
+        rawPHAsset = imageFile
+        self.delegate = delegate
         // Converts a PHAsset to a UIImage and configures the cell's image
         let options = PHImageRequestOptions()
         options.isSynchronous = true
@@ -86,6 +96,10 @@ class FileCollectionViewCell: UICollectionViewCell, UIImagePickerControllerDeleg
         let imagePicker = UIImagePickerController()
         imagePicker.allowsEditing = true
         imagePicker.delegate = self
+    }
+    
+    @objc func removeFile(_ sender: UIButton) {
+        delegate?.removeFile(rawPHAsset)
     }
     
     required init?(coder: NSCoder) {
