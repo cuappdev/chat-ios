@@ -236,7 +236,7 @@ extension FeedbackView: UICollectionViewDataSource {
 // MARK: - UICollectionView Delegate
 extension FeedbackView: UICollectionViewDelegate {
         
-    // TODO
+    // TODO: Open up image editor with image tapped on
     
 }
 
@@ -244,7 +244,6 @@ extension FeedbackView: UICollectionViewDelegate {
 extension FeedbackView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        // TODO: determine size of cell
         let file = attachedFiles[indexPath.item]
         let width: CGFloat = CGFloat(Int(imageHeight) * file.pixelWidth / file.pixelHeight)
         return CGSize(width: width, height: imageHeight)
@@ -260,6 +259,7 @@ extension FeedbackView: UICollectionViewDelegateFlowLayout {
 extension FeedbackView: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
+        // Once user begins editing, change color to text for pseudo-placeholder effect
         if textView == messageTextView {
             if textView.textColor == UIColor.lightGray {
                 textView.text = nil
@@ -269,6 +269,7 @@ extension FeedbackView: UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
+        // If user did not add message, replace with default text
         if textView == messageTextView {
             if textView.text.isEmpty {
                 textView.text = "Let us know what happened."
@@ -280,6 +281,8 @@ extension FeedbackView: UITextViewDelegate {
     
 }
 
+
+// MARK: - RemoveFile Delegate
 extension FeedbackView: RemoveFileDelegate {
     
     func removeFile(_ file: PHAsset) {

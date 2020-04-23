@@ -91,6 +91,7 @@ class FileCollectionViewCell: UICollectionViewCell, UIImagePickerControllerDeleg
         )
     }
     
+    // TODO: if image is tapped, allow user to edit image
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
         let imagePicker = UIImagePickerController()
         imagePicker.allowsEditing = true
