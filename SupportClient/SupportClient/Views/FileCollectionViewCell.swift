@@ -31,13 +31,17 @@ class ErrorFileCollectionViewCell: UICollectionViewCell {
         errorFileImageView.layer.borderWidth = 1.0
         errorFileImageView.layer.borderColor = UIColor.black.cgColor
         errorFileImageView.layer.cornerRadius = 10.0
+        // show editing screen when tapped
+        errorFileImageView.isUserInteractionEnabled = true
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+        errorFileImageView.isUserInteractionEnabled = true
+        errorFileImageView.addGestureRecognizer(tapGestureRecognizer)
         contentView.addSubview(errorFileImageView)
     }
     
     func setupContraints() {
         NSLayoutConstraint.activate([
             errorFileImageView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / ErrorFileCollectionViewCell.imageResizingRatio + padding / 2.0),
-            errorFileImageView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height / ErrorFileCollectionViewCell.imageResizingRatio),
             errorFileImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         ])
     }
@@ -55,12 +59,36 @@ class ErrorFileCollectionViewCell: UICollectionViewCell {
             resultHandler: { image, _ in
                 let imageWithPadding = image?.addPadding(x: self.padding, y: 2.0 * self.padding)
                 self.errorFileImageView.image = imageWithPadding
+                NSLayoutConstraint.activate([
+                    self.errorFileImageView.heightAnchor.constraint(equalToConstant: (image?.size.height)! / ErrorFileCollectionViewCell.imageResizingRatio + self.padding / 2.0)
+                ])
             }
         )
+    }
+    
+    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
+        let tappedImage = tapGestureRecognizer.view as! UIImageView
+        print(tappedImage.frame)
+        let imagePicker = UIImagePickerController()
+        imagePicker.allowsEditing = true
+        imagePicker.delegate = self
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+}
+
+extension ErrorFileCollectionViewCell: UIImagePickerControllerDelegate {
+    
+    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: NSDictionary!){
+        errorFileImageView.image = image
+    }
+    
+    
+}
+
+extension ErrorFileCollectionViewCell: UINavigationControllerDelegate {
     
 }
