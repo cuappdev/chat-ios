@@ -80,7 +80,7 @@ class FileCollectionViewCell: UICollectionViewCell, UIImagePickerControllerDeleg
             options: options,
             resultHandler: { image, _ in
                 self.fileImageView.image = image
-                let width = 150 * (image?.size.width)! / (image?.size.height)!
+                let width = 150 * (image?.size.width ?? 1) / (image?.size.height ?? 1)
                 self.fileImageView.removeConstraints(self.fileImageView.constraints)
                 NSLayoutConstraint.activate([
                     self.fileImageView.widthAnchor.constraint(equalToConstant: width),

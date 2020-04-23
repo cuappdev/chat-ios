@@ -11,9 +11,15 @@ import DZNEmptyDataSet
 import Photos
 import UIKit
 
+protocol FeedbackViewDelegate: class {
+    func selectFiles()
+    func checkStatus(with status: Status)
+}
+
 class FeedbackViewController: UIViewController {
     
     private let outerScrollView = UIScrollView()
+    private var feedbackView: FeedbackView!
                 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,8 +53,9 @@ class FeedbackViewController: UIViewController {
     }
     
     func setupScrollView() {
+        feedbackView =  FeedbackView(frame: UIScreen.main.bounds, with: self)
         outerScrollView.translatesAutoresizingMaskIntoConstraints = false
-        outerScrollView.addSubview(FeedbackView(frame: view.bounds))
+        outerScrollView.addSubview(feedbackView)
         outerScrollView.showsVerticalScrollIndicator = false
         view.addSubview(outerScrollView)
     }
@@ -71,4 +78,32 @@ class FeedbackViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
 
+}
+
+// MARK: - FeedbackView Delegate
+extension FeedbackViewController: FeedbackViewDelegate {
+    
+    func selectFiles() {
+        var selectedFiles = [PHAsset]()
+        let imagePicker = ImagePickerController()
+        imagePicker.settings.theme.selectionStyle = .checked
+        imagePicker.settings.fetch.assets.supportedMediaTypes = [.image, .video]
+        self.presentImagePicker(imagePicker,
+            select: nil,
+            deselect: nil,
+            cancel: nil,
+            finish: { assets in
+                selectedFiles = assets.map { $0 }
+                self.feedbackView.configureFiles(for: selectedFiles)
+            },
+            completion: nil
+        )
+    }
+    
+    func checkStatus(with status: Status) {
+        if let sendButton = self.navigationItem.rightBarButtonItem {
+            sendButton.isEnabled = status == .complete ? true : false
+        }
+    }
+    
 }

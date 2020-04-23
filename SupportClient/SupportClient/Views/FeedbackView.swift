@@ -18,6 +18,8 @@ enum Status {
 
 class FeedbackView: UIView {
     
+    weak var delegate: FeedbackViewDelegate?
+    
     private let addFileButton = UIButton()
     private var attachedFiles = [PHAsset]()
     private var attachmentsCollectionView: UICollectionView!
@@ -29,9 +31,7 @@ class FeedbackView: UIView {
     
     public var status = Status.incomplete {
         didSet {
-            if let sendButton = currentViewController()?.navigationItem.rightBarButtonItem {
-                sendButton.isEnabled = status == .complete ? true : false
-            }
+            delegate?.checkStatus(with: status)
         }
     }
     
@@ -51,12 +51,17 @@ class FeedbackView: UIView {
         setupConstraints()
     }
     
+    convenience init(frame: CGRect, with delegate: FeedbackViewDelegate) {
+        self.init(frame: frame)
+        self.delegate = delegate
+    }
+    
     func setupAddFileButton() {
         addFileButton.translatesAutoresizingMaskIntoConstraints = false
         addFileButton.layer.cornerRadius = 8
         addFileButton.layer.borderWidth = 1.0
         addFileButton.setImage(UIImage(named: "plus"), for: .normal)
-        addFileButton.addTarget(self, action: #selector(addFile(_:)), for: .touchUpInside)
+        addFileButton.addTarget(self, action: #selector(addFiles(_:)), for: .touchUpInside)
         addSubview(addFileButton)
     }
     
@@ -177,7 +182,7 @@ class FeedbackView: UIView {
     }
     
     func checkStatus() {
-        if let _ = typeDropdown.selectedIndex {
+        if typeDropdown.selectedIndex != nil {
             if messageTextView.textColor != UIColor.lightGray || attachedFiles.count > 0 {
                 status = .complete
             } else {
@@ -186,26 +191,18 @@ class FeedbackView: UIView {
         }
     }
     
-    // MARK: - OBJC Functions
+    func configureFiles(for selectedFiles: [PHAsset]) {
+        attachedFiles = Array(Set(self.attachedFiles + selectedFiles.map { $0 }))
+        attachmentsCollectionView.reloadData()
+        checkStatus()
+    }
+    
     @objc func dismissKeyboard (_ sender: UITapGestureRecognizer) {
         self.endEditing(true)
     }
     
-    @objc func addFile(_ sender: UIButton) {
-        let imagePicker = ImagePickerController()
-        imagePicker.settings.theme.selectionStyle = .checked
-        imagePicker.settings.fetch.assets.supportedMediaTypes = [.image, .video]
-        currentViewController()!.presentImagePicker(imagePicker,
-            select: nil,
-            deselect: nil,
-            cancel: nil,
-            finish: { assets in
-                self.attachedFiles = Array(Set(self.attachedFiles + assets.map { $0 }))
-                self.attachmentsCollectionView.reloadData()
-                self.checkStatus()
-            },
-            completion: nil
-        )
+    @objc func addFiles(_ sender: UIButton) {
+        delegate?.selectFiles()
     }
     
     required init?(coder: NSCoder) {
@@ -228,8 +225,6 @@ extension FeedbackView: UICollectionViewDataSource {
         cell.configure(for: file, with: self)
         return cell
     }
-    
-    
     
 }
 
@@ -260,23 +255,19 @@ extension FeedbackView: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         // Once user begins editing, change color to text for pseudo-placeholder effect
-        if textView == messageTextView {
-            if textView.textColor == UIColor.lightGray {
-                textView.text = nil
-                textView.textColor = .black
-            }
+        if textView == messageTextView, textView.textColor == .lightGray {
+            textView.text = nil
+            textView.textColor = .black
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         // If user did not add message, replace with default text
-        if textView == messageTextView {
-            if textView.text.isEmpty {
-                textView.text = "Let us know what happened."
-                textView.textColor = .lightGray
-            }
-            checkStatus()
+        if textView == messageTextView, textView.text.isEmpty {
+            textView.text = "Let us know what happened."
+            textView.textColor = .lightGray
         }
+        checkStatus()
     }
     
 }
