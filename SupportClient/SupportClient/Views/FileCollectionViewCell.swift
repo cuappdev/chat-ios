@@ -42,7 +42,6 @@ class FileCollectionViewCell: UICollectionViewCell, UIImagePickerControllerDeleg
         fileImageView.layer.masksToBounds = true
         fileImageView.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
-        fileImageView.isUserInteractionEnabled = true
         fileImageView.addGestureRecognizer(tapGestureRecognizer)
         contentView.addSubview(fileImageView)
     }
@@ -51,8 +50,6 @@ class FileCollectionViewCell: UICollectionViewCell, UIImagePickerControllerDeleg
         removeFileButton.translatesAutoresizingMaskIntoConstraints = false
         removeFileButton.setTitle("✕", for: .normal)
         removeFileButton.backgroundColor = .red
-        removeFileButton.contentHorizontalAlignment = .center
-        removeFileButton.contentVerticalAlignment = .center
         removeFileButton.addTarget(self, action: #selector(removeFile(_:)), for: .touchUpInside)
         contentView.addSubview(removeFileButton)
     }
