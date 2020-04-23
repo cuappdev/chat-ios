@@ -12,8 +12,6 @@
 		228DC1DD23F8A06500DE95E6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228DC1DC23F8A06500DE95E6 /* ViewController.swift */; };
 		228DC1E223F8A06600DE95E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 228DC1E123F8A06600DE95E6 /* Assets.xcassets */; };
 		228DC1E523F8A06600DE95E6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 228DC1E323F8A06600DE95E6 /* LaunchScreen.storyboard */; };
-		7E0B1706241B30FE00A28246 /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0B1705241B30FE00A28246 /* CustomView.swift */; };
-		7E41341A2419E8DA007B3B5B /* AddImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4134192419E8DA007B3B5B /* AddImageView.swift */; };
 		7E775DE42450FFED00BFAC31 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E775DE32450FFED00BFAC31 /* FeedbackView.swift */; };
 		7E775DE624514DCD00BFAC31 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E775DE524514DCD00BFAC31 /* UIView+Extensions.swift */; };
 		7E775DE8245158A900BFAC31 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E775DE7245158A900BFAC31 /* UIButton+Extension.swift */; };
@@ -46,8 +44,6 @@
 		228DC1E423F8A06600DE95E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		228DC1E623F8A06600DE95E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4E295BBE13ECDC2B7EB9A550 /* Pods-SupportClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SupportClient.debug.xcconfig"; path = "Target Support Files/Pods-SupportClient/Pods-SupportClient.debug.xcconfig"; sourceTree = "<group>"; };
-		7E0B1705241B30FE00A28246 /* CustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
-		7E4134192419E8DA007B3B5B /* AddImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddImageView.swift; sourceTree = "<group>"; };
 		7E775DE32450FFED00BFAC31 /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
 		7E775DE524514DCD00BFAC31 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		7E775DE7245158A900BFAC31 /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
@@ -144,9 +140,7 @@
 			children = (
 				7EB5E7E523F8CDB10051F209 /* FeedbackTableViewCell.swift */,
 				7EDA42B22413628B004EB07F /* FileCollectionViewCell.swift */,
-				7E0B1705241B30FE00A28246 /* CustomView.swift */,
 				7EA364522419C6ED00BCDE72 /* NoMessageView.swift */,
-				7E4134192419E8DA007B3B5B /* AddImageView.swift */,
 				7E775DE32450FFED00BFAC31 /* FeedbackView.swift */,
 			);
 			path = Views;
@@ -332,11 +326,9 @@
 				7EDA42B32413628B004EB07F /* FileCollectionViewCell.swift in Sources */,
 				7EB5E7E623F8CDB10051F209 /* FeedbackTableViewCell.swift in Sources */,
 				7EB5E7E923F8D0AE0051F209 /* Feedback.swift in Sources */,
-				7E0B1706241B30FE00A28246 /* CustomView.swift in Sources */,
 				7EF44ECB24134A0D00393BE9 /* FeedbackViewController.swift in Sources */,
 				7E775DE8245158A900BFAC31 /* UIButton+Extension.swift in Sources */,
 				7EB3DDBC23FA296600994B68 /* UIFont+Extensions.swift in Sources */,
-				7E41341A2419E8DA007B3B5B /* AddImageView.swift in Sources */,
 				228DC1D923F8A06500DE95E6 /* AppDelegate.swift in Sources */,
 				228DC1DB23F8A06500DE95E6 /* SceneDelegate.swift in Sources */,
 				7E775DE42450FFED00BFAC31 /* FeedbackView.swift in Sources */,
