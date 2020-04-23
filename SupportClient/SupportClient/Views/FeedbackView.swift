@@ -28,9 +28,9 @@ class FeedbackView: UIView {
     private let typeLabel = UILabel()
     
     public var status = Status.incomplete {
-        willSet {
+        didSet {
             if let sendButton = currentViewController()?.navigationItem.rightBarButtonItem {
-                sendButton.isEnabled = true
+                sendButton.isEnabled = status == .complete ? true : false
             }
         }
     }
@@ -178,8 +178,10 @@ class FeedbackView: UIView {
     
     func checkStatus() {
         if let _ = typeDropdown.selectedIndex {
-            if messageTextView.text != "Let us know what happened." || attachedFiles.count > 0 {
+            if messageTextView.textColor != UIColor.lightGray || attachedFiles.count > 0 {
                 status = .complete
+            } else {
+                status = .incomplete
             }
         }
     }
@@ -219,14 +221,16 @@ extension FeedbackView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return attachedFiles.count
     }
-    
+        
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FileCollectionViewCell.reuseID, for: indexPath) as! FileCollectionViewCell
         let file = attachedFiles[indexPath.item]
         cell.configure(for: file, with: self)
         return cell
     }
-
+    
+    
+    
 }
 
 // MARK: - UICollectionView Delegate
@@ -249,7 +253,7 @@ extension FeedbackView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return padding
     }
-
+        
 }
 
 // MARK: - UITextView Delegate
@@ -269,7 +273,6 @@ extension FeedbackView: UITextViewDelegate {
             if textView.text.isEmpty {
                 textView.text = "Let us know what happened."
                 textView.textColor = .lightGray
-                return
             }
             checkStatus()
         }
@@ -280,9 +283,10 @@ extension FeedbackView: UITextViewDelegate {
 extension FeedbackView: RemoveFileDelegate {
     
     func removeFile(_ file: PHAsset) {
-        print("Where I want to be")
         attachedFiles.remove(at: attachedFiles.firstIndex(of: file)!)
         attachmentsCollectionView.reloadData()
+        attachmentsCollectionView.collectionViewLayout.invalidateLayout()
+        checkStatus()
     }
     
 }

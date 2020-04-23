@@ -59,10 +59,6 @@ class FileCollectionViewCell: UICollectionViewCell, UIImagePickerControllerDeleg
     
     func setupContraints() {
         NSLayoutConstraint.activate([
-            fileImageView.heightAnchor.constraint(equalToConstant: 150),
-            fileImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-        ])
-        NSLayoutConstraint.activate([
             removeFileButton.widthAnchor.constraint(equalToConstant: 20),
             removeFileButton.heightAnchor.constraint(equalToConstant: 20),
             removeFileButton.trailingAnchor.constraint(equalTo: fileImageView.trailingAnchor),
@@ -85,8 +81,11 @@ class FileCollectionViewCell: UICollectionViewCell, UIImagePickerControllerDeleg
             resultHandler: { image, _ in
                 self.fileImageView.image = image
                 let width = 150 * (image?.size.width)! / (image?.size.height)!
+                self.fileImageView.removeConstraints(self.fileImageView.constraints)
                 NSLayoutConstraint.activate([
-                    self.fileImageView.widthAnchor.constraint(equalToConstant: width)
+                    self.fileImageView.widthAnchor.constraint(equalToConstant: width),
+                    self.fileImageView.heightAnchor.constraint(equalToConstant: 150),
+                    self.fileImageView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor)
                 ])
             }
         )
