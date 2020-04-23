@@ -192,7 +192,7 @@ class FeedbackView: UIView {
     }
     
     func configureFiles(for selectedFiles: [PHAsset]) {
-        attachedFiles = Array(Set(self.attachedFiles + selectedFiles.map { $0 }))
+        attachedFiles = Array(Set(attachedFiles + selectedFiles))
         attachmentsCollectionView.reloadData()
         checkStatus()
     }
