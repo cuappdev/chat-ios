@@ -6,4 +6,21 @@
 //  Copyright © 2020 Cornell Appdev. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+/**
+ Returns the view controller instance presenting current UIView
+ */
+extension UIView {
+    
+    func currentViewController() -> UIViewController? {
+        if let nextResponder = self.next as? UIViewController {
+            return nextResponder
+        } else if let nextResponder = self.next as? UIView {
+            return nextResponder.currentViewController()
+        } else {
+            return nil
+        }
+    }
+    
+}

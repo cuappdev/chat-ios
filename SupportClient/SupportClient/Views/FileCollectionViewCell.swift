@@ -9,40 +9,57 @@
 import Photos
 import UIKit
 
-class ErrorFileCollectionViewCell: UICollectionViewCell {
+class FileCollectionViewCell: UICollectionViewCell, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
     static let reuseID = "ErrorFileCollectionViewCell"
-    static let imageResizingRatio: CGFloat = 1.7
 
     private let imageManager = PHCachingImageManager()
-    private let errorFileImageView = UIImageView()
+    private let fileImageView = UIImageView()
+    private let removeFileButton = MaskedButton()
     
-    private let padding: CGFloat = 20.0
+    private let padding: CGFloat = 20
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupImageView()
+        setupRemoveFileButton()
         setupContraints()
     }
     
     func setupImageView() {
-        errorFileImageView.translatesAutoresizingMaskIntoConstraints = false
-        errorFileImageView.contentMode = .scaleAspectFit
-        errorFileImageView.layer.borderWidth = 1.0
-        errorFileImageView.layer.borderColor = UIColor.black.cgColor
-        errorFileImageView.layer.cornerRadius = 10.0
-        // show editing screen when tapped
-        errorFileImageView.isUserInteractionEnabled = true
+        fileImageView.translatesAutoresizingMaskIntoConstraints = false
+        fileImageView.contentMode = .scaleAspectFit
+        fileImageView.layer.borderWidth = 1.0
+        fileImageView.layer.borderColor = UIColor.black.cgColor
+        fileImageView.layer.cornerRadius = 8
+        fileImageView.layer.masksToBounds = true
+        fileImageView.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
-        errorFileImageView.isUserInteractionEnabled = true
-        errorFileImageView.addGestureRecognizer(tapGestureRecognizer)
-        contentView.addSubview(errorFileImageView)
+        fileImageView.isUserInteractionEnabled = true
+        fileImageView.addGestureRecognizer(tapGestureRecognizer)
+        contentView.addSubview(fileImageView)
+    }
+    
+    func setupRemoveFileButton() {
+        removeFileButton.translatesAutoresizingMaskIntoConstraints = false
+        removeFileButton.setTitle("✕", for: .normal)
+        removeFileButton.backgroundColor = .red
+        removeFileButton.contentHorizontalAlignment = .center
+        removeFileButton.contentVerticalAlignment = .center
+        removeFileButton.roundedButton([.topRight, .bottomLeft], radius: 8)
+        contentView.addSubview(removeFileButton)
     }
     
     func setupContraints() {
         NSLayoutConstraint.activate([
-            errorFileImageView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / ErrorFileCollectionViewCell.imageResizingRatio + padding / 2.0),
-            errorFileImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            fileImageView.heightAnchor.constraint(equalToConstant: 150),
+            fileImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+        ])
+        NSLayoutConstraint.activate([
+            removeFileButton.widthAnchor.constraint(equalToConstant: 20),
+            removeFileButton.heightAnchor.constraint(equalToConstant: 20),
+            removeFileButton.trailingAnchor.constraint(equalTo: fileImageView.trailingAnchor),
+            removeFileButton.topAnchor.constraint(equalTo: fileImageView.topAnchor)
         ])
     }
     
@@ -57,18 +74,16 @@ class ErrorFileCollectionViewCell: UICollectionViewCell {
             contentMode: .aspectFit,
             options: options,
             resultHandler: { image, _ in
-                let imageWithPadding = image?.addPadding(x: self.padding, y: 2.0 * self.padding)
-                self.errorFileImageView.image = imageWithPadding
+                self.fileImageView.image = image
+                let width = 150 * (image?.size.width)! / (image?.size.height)!
                 NSLayoutConstraint.activate([
-                    self.errorFileImageView.heightAnchor.constraint(equalToConstant: (image?.size.height)! / ErrorFileCollectionViewCell.imageResizingRatio + self.padding / 2.0)
+                    self.fileImageView.widthAnchor.constraint(equalToConstant: width)
                 ])
             }
         )
     }
     
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
-        let tappedImage = tapGestureRecognizer.view as! UIImageView
-        print(tappedImage.frame)
         let imagePicker = UIImagePickerController()
         imagePicker.allowsEditing = true
         imagePicker.delegate = self
@@ -80,15 +95,4 @@ class ErrorFileCollectionViewCell: UICollectionViewCell {
     
 }
 
-extension ErrorFileCollectionViewCell: UIImagePickerControllerDelegate {
-    
-    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: NSDictionary!){
-        errorFileImageView.image = image
-    }
-    
-    
-}
 
-extension ErrorFileCollectionViewCell: UINavigationControllerDelegate {
-    
-}
