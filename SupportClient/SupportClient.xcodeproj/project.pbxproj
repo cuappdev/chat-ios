@@ -12,11 +12,17 @@
 		228DC1DD23F8A06500DE95E6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228DC1DC23F8A06500DE95E6 /* ViewController.swift */; };
 		228DC1E223F8A06600DE95E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 228DC1E123F8A06600DE95E6 /* Assets.xcassets */; };
 		228DC1E523F8A06600DE95E6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 228DC1E323F8A06600DE95E6 /* LaunchScreen.storyboard */; };
+<<<<<<< HEAD
 		7E0B1706241B30FE00A28246 /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0B1705241B30FE00A28246 /* CustomView.swift */; };
 		7E41341A2419E8DA007B3B5B /* AddImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4134192419E8DA007B3B5B /* AddImageView.swift */; };
 		7E775DE42450FFED00BFAC31 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E775DE32450FFED00BFAC31 /* FeedbackView.swift */; };
 		7E775DE624514DCD00BFAC31 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E775DE524514DCD00BFAC31 /* UIView+Extensions.swift */; };
 		7E775DE8245158A900BFAC31 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E775DE7245158A900BFAC31 /* UIButton+Extension.swift */; };
+=======
+		7E03A6D12417273800CEDF6B /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E03A6D02417273800CEDF6B /* UIImage+Extensions.swift */; };
+		7E0B1706241B30FE00A28246 /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0B1705241B30FE00A28246 /* CustomView.swift */; };
+		7E41341A2419E8DA007B3B5B /* AddImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4134192419E8DA007B3B5B /* AddImageView.swift */; };
+>>>>>>> b7a2f3d55738e81d06de53566acff931fde8e9b4
 		7EA364532419C6ED00BCDE72 /* NoMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA364522419C6ED00BCDE72 /* NoMessageView.swift */; };
 		7EB3DDBC23FA296600994B68 /* UIFont+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB3DDBB23FA296600994B68 /* UIFont+Extensions.swift */; };
 		7EB3DDBF23FA2C2000994B68 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB3DDBE23FA2C2000994B68 /* UIColor+Extensions.swift */; };
@@ -32,7 +38,11 @@
 		7ECA086023F8BB6800BBFD51 /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7ECA084923F8BAB500BBFD51 /* Roboto-MediumItalic.ttf */; };
 		7ECA086123F8BB6800BBFD51 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7ECA085623F8BAB500BBFD51 /* Roboto-Regular.ttf */; };
 		7ECA086223F8BB6800BBFD51 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7ECA085423F8BAB500BBFD51 /* Roboto-Thin.ttf */; };
+<<<<<<< HEAD
 		7EDA42B32413628B004EB07F /* FileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDA42B22413628B004EB07F /* FileCollectionViewCell.swift */; };
+=======
+		7EDA42B32413628B004EB07F /* ErrorFileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDA42B22413628B004EB07F /* ErrorFileCollectionViewCell.swift */; };
+>>>>>>> b7a2f3d55738e81d06de53566acff931fde8e9b4
 		7EF44ECB24134A0D00393BE9 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF44ECA24134A0D00393BE9 /* FeedbackViewController.swift */; };
 		C073FF28A825945553AEE741 /* Pods_SupportClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3A7292B1B81A4755615DD3D /* Pods_SupportClient.framework */; };
 /* End PBXBuildFile section */
@@ -46,11 +56,17 @@
 		228DC1E423F8A06600DE95E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		228DC1E623F8A06600DE95E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4E295BBE13ECDC2B7EB9A550 /* Pods-SupportClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SupportClient.debug.xcconfig"; path = "Target Support Files/Pods-SupportClient/Pods-SupportClient.debug.xcconfig"; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		7E0B1705241B30FE00A28246 /* CustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
 		7E4134192419E8DA007B3B5B /* AddImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddImageView.swift; sourceTree = "<group>"; };
 		7E775DE32450FFED00BFAC31 /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
 		7E775DE524514DCD00BFAC31 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		7E775DE7245158A900BFAC31 /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
+=======
+		7E03A6D02417273800CEDF6B /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
+		7E0B1705241B30FE00A28246 /* CustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
+		7E4134192419E8DA007B3B5B /* AddImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddImageView.swift; sourceTree = "<group>"; };
+>>>>>>> b7a2f3d55738e81d06de53566acff931fde8e9b4
 		7EA364522419C6ED00BCDE72 /* NoMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMessageView.swift; sourceTree = "<group>"; };
 		7EB3DDBB23FA296600994B68 /* UIFont+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
 		7EB3DDBE23FA2C2000994B68 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
@@ -66,7 +82,11 @@
 		7ECA085523F8BAB500BBFD51 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
 		7ECA085623F8BAB500BBFD51 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		7ECA085723F8BAB600BBFD51 /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		7EDA42B22413628B004EB07F /* FileCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCollectionViewCell.swift; sourceTree = "<group>"; };
+=======
+		7EDA42B22413628B004EB07F /* ErrorFileCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorFileCollectionViewCell.swift; sourceTree = "<group>"; };
+>>>>>>> b7a2f3d55738e81d06de53566acff931fde8e9b4
 		7EF44ECA24134A0D00393BE9 /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		893DF4D33128CCFACC3E91C8 /* Pods-SupportClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SupportClient.release.xcconfig"; path = "Target Support Files/Pods-SupportClient/Pods-SupportClient.release.xcconfig"; sourceTree = "<group>"; };
 		E3A7292B1B81A4755615DD3D /* Pods_SupportClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SupportClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -133,8 +153,12 @@
 			children = (
 				7EB3DDBB23FA296600994B68 /* UIFont+Extensions.swift */,
 				7EB3DDBE23FA2C2000994B68 /* UIColor+Extensions.swift */,
+<<<<<<< HEAD
 				7E775DE524514DCD00BFAC31 /* UIView+Extensions.swift */,
 				7E775DE7245158A900BFAC31 /* UIButton+Extension.swift */,
+=======
+				7E03A6D02417273800CEDF6B /* UIImage+Extensions.swift */,
+>>>>>>> b7a2f3d55738e81d06de53566acff931fde8e9b4
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -143,11 +167,18 @@
 			isa = PBXGroup;
 			children = (
 				7EB5E7E523F8CDB10051F209 /* FeedbackTableViewCell.swift */,
+<<<<<<< HEAD
 				7EDA42B22413628B004EB07F /* FileCollectionViewCell.swift */,
 				7E0B1705241B30FE00A28246 /* CustomView.swift */,
 				7EA364522419C6ED00BCDE72 /* NoMessageView.swift */,
 				7E4134192419E8DA007B3B5B /* AddImageView.swift */,
 				7E775DE32450FFED00BFAC31 /* FeedbackView.swift */,
+=======
+				7EDA42B22413628B004EB07F /* ErrorFileCollectionViewCell.swift */,
+				7E0B1705241B30FE00A28246 /* CustomView.swift */,
+				7EA364522419C6ED00BCDE72 /* NoMessageView.swift */,
+				7E4134192419E8DA007B3B5B /* AddImageView.swift */,
+>>>>>>> b7a2f3d55738e81d06de53566acff931fde8e9b4
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -329,12 +360,21 @@
 				7E775DE624514DCD00BFAC31 /* UIView+Extensions.swift in Sources */,
 				228DC1DD23F8A06500DE95E6 /* ViewController.swift in Sources */,
 				7EA364532419C6ED00BCDE72 /* NoMessageView.swift in Sources */,
+<<<<<<< HEAD
 				7EDA42B32413628B004EB07F /* FileCollectionViewCell.swift in Sources */,
 				7EB5E7E623F8CDB10051F209 /* FeedbackTableViewCell.swift in Sources */,
 				7EB5E7E923F8D0AE0051F209 /* Feedback.swift in Sources */,
 				7E0B1706241B30FE00A28246 /* CustomView.swift in Sources */,
 				7EF44ECB24134A0D00393BE9 /* FeedbackViewController.swift in Sources */,
 				7E775DE8245158A900BFAC31 /* UIButton+Extension.swift in Sources */,
+=======
+				7EDA42B32413628B004EB07F /* ErrorFileCollectionViewCell.swift in Sources */,
+				7EB5E7E623F8CDB10051F209 /* FeedbackTableViewCell.swift in Sources */,
+				7EB5E7E923F8D0AE0051F209 /* Feedback.swift in Sources */,
+				7E03A6D12417273800CEDF6B /* UIImage+Extensions.swift in Sources */,
+				7E0B1706241B30FE00A28246 /* CustomView.swift in Sources */,
+				7EF44ECB24134A0D00393BE9 /* FeedbackViewController.swift in Sources */,
+>>>>>>> b7a2f3d55738e81d06de53566acff931fde8e9b4
 				7EB3DDBC23FA296600994B68 /* UIFont+Extensions.swift in Sources */,
 				7E41341A2419E8DA007B3B5B /* AddImageView.swift in Sources */,
 				228DC1D923F8A06500DE95E6 /* AppDelegate.swift in Sources */,

@@ -1,16 +1,24 @@
 PODS:
   - BSImagePicker (3.1.1)
   - DZNEmptyDataSet (1.8.1)
+<<<<<<< HEAD
   - iOSDropDown (0.3.4)
 
 DEPENDENCIES:
   - BSImagePicker
   - DZNEmptyDataSet (from `https://github.com/cuappdev/DZNEmptyDataSet.git`)
   - iOSDropDown
+=======
+
+DEPENDENCIES:
+  - BSImagePicker
+  - DZNEmptyDataSet
+>>>>>>> b7a2f3d55738e81d06de53566acff931fde8e9b4
 
 SPEC REPOS:
   trunk:
     - BSImagePicker
+<<<<<<< HEAD
     - iOSDropDown
 
 EXTERNAL SOURCES:
@@ -28,5 +36,14 @@ SPEC CHECKSUMS:
   iOSDropDown: c10a761f9a00c3f1cc9d3bce43ae504628e2f692
 
 PODFILE CHECKSUM: 8c2af15eb7e6dfa601ed1d8c5e6bebf8a684a68a
+=======
+    - DZNEmptyDataSet
+
+SPEC CHECKSUMS:
+  BSImagePicker: 86f28e0f63b78d35fec7c6f0174b7af9e6f1431e
+  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
+
+PODFILE CHECKSUM: 7b3a6bab3a9f6b49341f60156310be75e7433eed
+>>>>>>> b7a2f3d55738e81d06de53566acff931fde8e9b4
 
 COCOAPODS: 1.8.4

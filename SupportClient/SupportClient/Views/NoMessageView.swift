@@ -8,9 +8,12 @@
 
 import UIKit
 
+<<<<<<< HEAD
 /**
  UIView for when user has no current two-way communication channels open
  */
+=======
+>>>>>>> b7a2f3d55738e81d06de53566acff931fde8e9b4
 class NoMessageView: CustomView {
             
     private let feedbackLabel = UILabel()
