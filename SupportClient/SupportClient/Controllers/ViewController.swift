@@ -133,7 +133,7 @@ extension ViewController: UITableViewDataSource {
 // MARK: - DZNEmptyDataSet
 extension ViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
+    func customView(forEmptyDataSet scrollView: UIScrollView) -> UIView? {
         return NoMessageView(
             onPress: {
                 let feedbackViewController = UINavigationController(rootViewController: FeedbackViewController())
