@@ -102,7 +102,7 @@ extension FeedbackViewController: FeedbackViewDelegate {
     
     func checkStatus(with status: Status) {
         if let sendButton = self.navigationItem.rightBarButtonItem {
-            sendButton.isEnabled = status == .complete ? true : false
+            sendButton.isEnabled = status == .complete
         }
     }
     

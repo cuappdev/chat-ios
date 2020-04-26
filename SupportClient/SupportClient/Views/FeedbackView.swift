@@ -183,7 +183,7 @@ class FeedbackView: UIView {
     
     func checkStatus() {
         if typeDropdown.selectedIndex != nil {
-            if messageTextView.textColor != UIColor.lightGray || attachedFiles.count > 0 {
+            if messageTextView.textColor != .lightGray || attachedFiles.count > 0 {
                 status = .complete
             } else {
                 status = .incomplete
