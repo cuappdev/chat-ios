@@ -8,11 +8,18 @@
 
 import UIKit
 
-class NoMessageView: CustomView {
+/**
+ UIView for when user has no current two-way communication channels open
+ */
+class NoMessageView: UIView {
             
     private let feedbackLabel = UILabel()
     private let newConversationButton = UIButton()
     private var onPress: (() -> Void)?
+    
+    override var intrinsicContentSize: CGSize {
+        return UIScreen.main.bounds.size
+    }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
