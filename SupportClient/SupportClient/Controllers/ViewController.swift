@@ -26,6 +26,7 @@ class ViewController: UIViewController {
         setupNavigationBar()
         setupFeedbackTableView()
         setupConstraints()
+        setupFeedbackListener()
     }
     
     // TODO: hook up to actual server to load the data
@@ -80,6 +81,51 @@ class ViewController: UIViewController {
             feedbackTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             feedbackTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
+    }
+    
+    func setupFeedbackListener() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.animateBanner), name:NSNotification.Name(rawValue: "AnimateBanner"), object: nil)
+    }
+    
+    @objc func animateBanner() {
+        let bannerView = ConfirmationBannerView()
+        showBanner(bannerView)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
+            self.hideBanner(bannerView)
+        })
+    }
+    
+    func showBanner(_ bannerView: UIView) {
+        view.addSubview(bannerView)
+        NSLayoutConstraint.activate([
+            bannerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            bannerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            bannerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5)
+        ])
+        bannerView.center.y = -10
+        UIView.animate(
+            withDuration: 2.0,
+            delay: 0.0,
+            usingSpringWithDamping: 0.7,
+            initialSpringVelocity: 0.2,
+            options: .beginFromCurrentState,
+            animations: {
+                bannerView.center.y = 100
+                bannerView.layoutIfNeeded()
+            }
+        )
+    }
+    
+    func hideBanner(_ bannerView: UIView) {
+        UIView.animate(
+            withDuration: 0.9,
+            animations: {
+                bannerView.center.y = 0
+                bannerView.layoutIfNeeded()
+            }, completion: { finished in
+                bannerView.removeFromSuperview()
+            }
+        )
     }
         
     @objc func handleNavigationBarRightTap() {

@@ -75,7 +75,9 @@ class FeedbackViewController: UIViewController {
     }
     
     @objc func handleNavigationBarRightTap() {
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true, completion: {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AnimateBanner"), object: nil)
+        })
     }
 
 }
