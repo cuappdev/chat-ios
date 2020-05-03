@@ -57,7 +57,7 @@ class BannerView: UIView {
             animations: {
                 self.center.y = 100
             },
-            completion: { finsihed in
+            completion: { finished in
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                     self.hide()
                 }
