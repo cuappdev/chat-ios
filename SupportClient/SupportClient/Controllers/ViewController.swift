@@ -88,44 +88,14 @@ class ViewController: UIViewController {
     }
     
     @objc func animateBanner() {
-        let bannerView = ConfirmationBannerView()
-        showBanner(bannerView)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
-            self.hideBanner(bannerView)
-        })
-    }
-    
-    func showBanner(_ bannerView: UIView) {
-        view.addSubview(bannerView)
+        let banner = BannerView()
+        view.addSubview(banner)
         NSLayoutConstraint.activate([
-            bannerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            bannerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            bannerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5)
+            banner.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            banner.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            banner.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5)
         ])
-        bannerView.center.y = -10
-        UIView.animate(
-            withDuration: 2.0,
-            delay: 0.0,
-            usingSpringWithDamping: 0.7,
-            initialSpringVelocity: 0.2,
-            options: .beginFromCurrentState,
-            animations: {
-                bannerView.center.y = 100
-                bannerView.layoutIfNeeded()
-            }
-        )
-    }
-    
-    func hideBanner(_ bannerView: UIView) {
-        UIView.animate(
-            withDuration: 0.9,
-            animations: {
-                bannerView.center.y = 0
-                bannerView.layoutIfNeeded()
-            }, completion: { finished in
-                bannerView.removeFromSuperview()
-            }
-        )
+        banner.show()
     }
         
     @objc func handleNavigationBarRightTap() {

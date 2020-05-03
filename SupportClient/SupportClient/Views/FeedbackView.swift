@@ -10,11 +10,19 @@ import BSImagePicker
 import Photos
 import UIKit
 
+/**
+ An  enum signaling whether the feedback form contains enough information to be
+ considered "complete" and reasy to send to the admin
+ */
 enum Status {
     case complete
     case incomplete
 }
 
+/**
+ A custom Feedback view that displays all the necessary components of a standard
+ feedback form
+ */
 class FeedbackView: UIView {
     
     weak var delegate: FeedbackViewDelegate?
@@ -160,7 +168,7 @@ class FeedbackView: UIView {
     
     func setupTypeTextField() {
         typeTextField.translatesAutoresizingMaskIntoConstraints = false
-        typeTextField.placeholder = "Choose type" // TODO: format
+        typeTextField.placeholder = "Choose type"
         typeTextField.font = UIFont.systemFont(ofSize: 14)
         typeTextField.inputView = typePickerView
         addSubview(typeTextField)
