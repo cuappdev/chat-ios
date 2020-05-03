@@ -7,7 +7,6 @@
 //
 
 import BSImagePicker
-import iOSDropDown
 import Photos
 import UIKit
 
@@ -26,8 +25,10 @@ class FeedbackView: UIView {
     private let attachmentsLabel = UILabel()
     private let messageLabel = UILabel()
     private let messageTextView = UITextView()
-    private let typeDropdown = DropDown(frame: CGRect(x: 110, y: 140, width: 200, height: 30))
+    private var typeData = [String]()
     private let typeLabel = UILabel()
+    private let typePickerView = UIPickerView()
+    private let typeTextField = UITextField()
     
     public var status = Status.incomplete {
         didSet {
@@ -40,13 +41,15 @@ class FeedbackView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupData()
         setupAddFileButton()
         setupAttachmentsLabel()
         setupAttachmentsCollectionView()
         setupMessageLabel()
         setupMessageTextView()
         setupTypeLabel()
-        setupTypeDropdown()
+        setupTypePickerView()
+        setupTypeTextField()
         setupGestureRecognizer()
         setupConstraints()
     }
@@ -54,6 +57,10 @@ class FeedbackView: UIView {
     convenience init(frame: CGRect, with delegate: FeedbackViewDelegate) {
         self.init(frame: frame)
         self.delegate = delegate
+    }
+    
+    func setupData() {
+        typeData = ["Hello", "World"]  // TODO: Connect with actual data
     }
     
     func setupAddFileButton() {
@@ -81,7 +88,7 @@ class FeedbackView: UIView {
         attachmentsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         attachmentsCollectionView.delegate = self
         attachmentsCollectionView.dataSource = self
-        attachmentsCollectionView.backgroundColor = .backgroundColor
+        attachmentsCollectionView.backgroundColor = ._backgroundColor
         attachmentsCollectionView.showsHorizontalScrollIndicator = false
         attachmentsCollectionView.register(FileCollectionViewCell.self, forCellWithReuseIdentifier: FileCollectionViewCell.reuseID)
         addSubview(attachmentsCollectionView)
@@ -115,25 +122,48 @@ class FeedbackView: UIView {
         addSubview(typeLabel)
     }
     
-    func setupTypeDropdown() {
-        typeDropdown.translatesAutoresizingMaskIntoConstraints = false
-        typeDropdown.optionArray = ["Report Bug", "Request Feature", "Help Request", "Other"]
-        typeDropdown.placeholder = "Choose a Feedback Type"
-        typeDropdown.font = UIFont.systemFont(ofSize: 14)
-        typeDropdown.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: typeDropdown.frame.height))
-        typeDropdown.leftViewMode = .always
-        typeDropdown.selectedRowColor = .gray
-        typeDropdown.isSearchEnable = false
-        typeDropdown.checkMarkEnabled = false
-        typeDropdown.rowHeight = 40
-        typeDropdown.layer.cornerRadius = 5
-        typeDropdown.borderWidth = 0.5
-        typeDropdown.listHeight = 200
-        typeDropdown.arrowSize = 10
-        addSubview(typeDropdown)
-        typeDropdown.didSelect { (selectedText , index ,id) in
-            self.checkStatus()
-        }
+    func setupTypePickerView() {
+        typePickerView.translatesAutoresizingMaskIntoConstraints = false
+        typePickerView.dataSource = self
+        typePickerView.delegate = self
+        typePickerView.backgroundColor = ._navigationTintColor
+        // Set up toolbar for PickerView
+        let toolbar = UIToolbar()
+        toolbar.barTintColor = ._navigationTintColor
+        toolbar.isTranslucent = false
+        toolbar.layer.cornerRadius = 20
+        toolbar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        toolbar.layer.masksToBounds = true
+        toolbar.sizeToFit()
+        toolbar.isUserInteractionEnabled = true
+        let doneButton = UIBarButtonItem(
+            title: "Done",
+            style: .plain,
+            target: self,
+            action: #selector(didTapDone)
+        )
+        let space = UIBarButtonItem(
+            barButtonSystemItem: .flexibleSpace,
+            target: nil,
+            action: nil
+        )
+        let cancelButton = UIBarButtonItem(
+            title: "Cancel",
+            style: .plain,
+            target: self,
+            action: #selector(didTapCancel)
+        )
+        toolbar.setItems([cancelButton, space, doneButton], animated: false)
+        typeTextField.inputAccessoryView = toolbar
+        typePickerView.reloadAllComponents()
+    }
+    
+    func setupTypeTextField() {
+        typeTextField.translatesAutoresizingMaskIntoConstraints = false
+        typeTextField.placeholder = "Choose type" // TODO: format
+        typeTextField.font = UIFont.systemFont(ofSize: 14)
+        typeTextField.inputView = typePickerView
+        addSubview(typeTextField)
     }
     
     func setupGestureRecognizer() {
@@ -148,10 +178,10 @@ class FeedbackView: UIView {
             typeLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: padding)
         ])
         NSLayoutConstraint.activate([
-            typeDropdown.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            typeDropdown.leadingAnchor.constraint(equalTo: typeLabel.trailingAnchor, constant: 2 * padding),
-            typeDropdown.centerYAnchor.constraint(equalTo: typeLabel.centerYAnchor),
-            typeDropdown.heightAnchor.constraint(equalToConstant: 32)
+            typeTextField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -padding),
+            typeTextField.leadingAnchor.constraint(equalTo: typeLabel.trailingAnchor, constant: 2 * padding),
+            typeTextField.centerYAnchor.constraint(equalTo: typeLabel.centerYAnchor, constant: 2),
+            typeTextField.heightAnchor.constraint(equalToConstant: 32)
         ])
         NSLayoutConstraint.activate([
             messageLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
@@ -182,7 +212,7 @@ class FeedbackView: UIView {
     }
     
     func checkStatus() {
-        if typeDropdown.selectedIndex != nil {
+        if typePickerView.selectedRow(inComponent: 0) != -1 {
             if messageTextView.textColor != .lightGray || attachedFiles.count > 0 {
                 status = .complete
             } else {
@@ -203,6 +233,19 @@ class FeedbackView: UIView {
     
     @objc func addFiles(_ sender: UIButton) {
         delegate?.selectFiles()
+    }
+    
+    @objc func didTapDone() {
+        let row = typePickerView.selectedRow(inComponent: 0)
+        typePickerView.selectRow(row, inComponent: 0, animated: false)
+        typeTextField.text = typeData[row]
+        typeTextField.resignFirstResponder()
+    }
+    
+    @objc func didTapCancel() {
+        typeTextField.resignFirstResponder()
+        typeTextField.text = nil
+        typeTextField.placeholder = "Choose type"
     }
     
     required init?(coder: NSCoder) {
@@ -272,6 +315,40 @@ extension FeedbackView: UITextViewDelegate {
     
 }
 
+// MARK: - UIPickerView Datasource
+extension FeedbackView: UIPickerViewDataSource {
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        typePickerView.subviews.forEach { $0.isHidden = $0.frame.height < 1.0 }
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return typeData.count
+    }
+    
+}
+
+// MARK: - UIPickerView Delegate
+extension FeedbackView: UIPickerViewDelegate {
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        typeTextField.text = typeData[row]
+        checkStatus()
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        var label = UILabel()
+        if let v = view as? UILabel {
+            label = v
+        }
+        label.font = UIFont.systemFont(ofSize: 18)
+        label.text = typeData[row]
+        label.textAlignment = .center
+        return label
+    }
+    
+}
 
 // MARK: - RemoveFile Delegate
 extension FeedbackView: RemoveFileDelegate {
