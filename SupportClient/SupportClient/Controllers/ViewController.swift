@@ -48,10 +48,10 @@ class ViewController: UIViewController {
     }
     
     func setupNavigationBar() {
-        navigationController?.navigationBar.barTintColor = ._navigationTintColor
+        navigationController?.navigationBar.barTintColor = ._lightGray
         let attributes = [
             NSAttributedString.Key.font: UIFont._21RobotoMedium!,
-            NSAttributedString.Key.foregroundColor: UIColor._titleColor
+            NSAttributedString.Key.foregroundColor: UIColor._darkGray
         ]
         let attributedTitle = NSAttributedString(string: "Feedback", attributes: attributes)
         title = attributedTitle.string

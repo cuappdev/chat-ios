@@ -23,19 +23,19 @@ class FeedbackViewController: UIViewController {
                 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = ._backgroundColor
+        view.backgroundColor = ._lightGray
         setupNavigationBar()
         setupScrollView()
         setupConstraints()
     }
     
     func setupNavigationBar() {
-        navigationController?.navigationBar.barTintColor = ._navigationTintColor
+        navigationController?.navigationBar.barTintColor = ._lightGray
         let attributes = [
             NSAttributedString.Key.font: UIFont._21RobotoMedium!,
-            NSAttributedString.Key.foregroundColor: UIColor._titleColor
+            NSAttributedString.Key.foregroundColor: UIColor._darkGray
         ]
-        let attributedTitle = NSAttributedString(string: "New Feedback", attributes: attributes)
+        let attributedTitle = NSAttributedString(string: "Submit Feedback", attributes: attributes)
         title = attributedTitle.string
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: "Cancel",

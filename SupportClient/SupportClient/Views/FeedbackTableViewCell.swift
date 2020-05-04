@@ -41,7 +41,7 @@ class FeedbackTableViewCell: UITableViewCell {
     func setUpTitle() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = ._17RobotoMedium
-        titleLabel.textColor = ._titleColor
+        titleLabel.textColor = ._darkGray
         titleLabel.numberOfLines = 1
         titleLabel.lineBreakMode = .byTruncatingTail
         contentView.addSubview(titleLabel)
@@ -50,7 +50,7 @@ class FeedbackTableViewCell: UITableViewCell {
     func setUpSubtitle() {
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.font = ._13RobotoMedium
-        subtitleLabel.textColor = ._subtitleColor
+        subtitleLabel.textColor = ._textGray
         subtitleLabel.numberOfLines = 1
         subtitleLabel.lineBreakMode = .byTruncatingTail
         contentView.addSubview(subtitleLabel)

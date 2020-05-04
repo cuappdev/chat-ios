@@ -48,12 +48,12 @@ class NoMessageView: UIView {
         let titleAttributes: [NSAttributedString.Key : Any] = [
             NSAttributedString.Key.font: UIFont._17RobotoMedium!,
             .paragraphStyle: paragraphStyle,
-            NSAttributedString.Key.foregroundColor: UIColor._titleColor
+            NSAttributedString.Key.foregroundColor: UIColor._darkGray
         ]
         let attributedText = NSMutableAttributedString(string: title, attributes: titleAttributes)
         let subtitleAttributes = [
             NSAttributedString.Key.font: UIFont._13RobotoRegular!,
-            NSAttributedString.Key.foregroundColor: UIColor._subtitleColor
+            NSAttributedString.Key.foregroundColor: UIColor._textGray
         ]
         attributedText.append(NSAttributedString(string: subtitle, attributes: subtitleAttributes))
         feedbackLabel.attributedText = attributedText

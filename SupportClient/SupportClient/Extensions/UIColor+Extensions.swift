@@ -12,10 +12,12 @@ extension UIColor {
     
     @nonobjc static let _backgroundColor = UIColor.white
     @nonobjc static let _themeColor = UIColor(red: 85/255, green: 212/255, blue: 212/255, alpha: 1)
-    @nonobjc static let _navigationTintColor = UIColor(white: 237/255, alpha: 1)
-    @nonobjc static let _titleColor = UIColor(white: 64/255, alpha: 1)
-    @nonobjc static let _subtitleColor = UIColor(white: 159/255, alpha: 1)
     @nonobjc static let _green = UIColor(red: 120/255, green: 255/255, blue: 120/255, alpha: 1)
+    
+    @nonobjc static let _lightGray = UIColor(white: 239/255, alpha: 1)
+    @nonobjc static let _mediumGray = UIColor(white: 216/255, alpha: 1)
+    @nonobjc static let _darkGray = UIColor(white: 88/255, alpha: 1)
+    @nonobjc static let _textGray = UIColor(white: 142/255, alpha: 1)
     
 }
 
