@@ -33,6 +33,7 @@ class FeedbackView: UIView {
     private let attachmentsLabel = UILabel()
     private let messageLabel = UILabel()
     private let messageTextView = UITextView()
+    private let overviewLabel = UILabel()
     private var typeData = [String]()
     private let typeLabel = UILabel()
     private let typePickerView = UIPickerView()
@@ -55,6 +56,7 @@ class FeedbackView: UIView {
         setupAttachmentsCollectionView()
         setupMessageLabel()
         setupMessageTextView()
+        setupOverviewLabel()
         setupTypeLabel()
         setupTypePickerView()
         setupTypeTextField()
@@ -74,8 +76,10 @@ class FeedbackView: UIView {
     func setupAddFileButton() {
         addFileButton.translatesAutoresizingMaskIntoConstraints = false
         addFileButton.layer.cornerRadius = 8
-        addFileButton.layer.borderWidth = 1.0
-        addFileButton.setImage(UIImage(named: "plus"), for: .normal)
+        addFileButton.layer.borderWidth = 0.75
+        addFileButton.layer.borderColor = UIColor._darkGray.cgColor
+        let image = UIImage(named: "plus")?.withTintColor(._darkGray)
+        addFileButton.setImage(image, for: .normal)
         addFileButton.addTarget(self, action: #selector(addFiles(_:)), for: .touchUpInside)
         addSubview(addFileButton)
     }
@@ -85,6 +89,8 @@ class FeedbackView: UIView {
         attachmentsLabel.text = "Attachments:"
         attachmentsLabel.font = UIFont.systemFont(ofSize: 18)
         attachmentsLabel.textColor = .black
+        let border = drawTopBorder(width: frame.size.width - 2 * padding)
+        attachmentsLabel.layer.addSublayer(border)
         addSubview(attachmentsLabel)
     }
     
@@ -93,10 +99,10 @@ class FeedbackView: UIView {
         layout.scrollDirection = .horizontal
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
         attachmentsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        attachmentsCollectionView.backgroundColor = ._lightGray
         attachmentsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         attachmentsCollectionView.delegate = self
         attachmentsCollectionView.dataSource = self
-        attachmentsCollectionView.backgroundColor = ._backgroundColor
         attachmentsCollectionView.showsHorizontalScrollIndicator = false
         attachmentsCollectionView.register(FileCollectionViewCell.self, forCellWithReuseIdentifier: FileCollectionViewCell.reuseID)
         addSubview(attachmentsCollectionView)
@@ -104,14 +110,26 @@ class FeedbackView: UIView {
     
     func setupMessageLabel() {
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
-        messageLabel.text = "Message:"
-        messageLabel.font = UIFont.systemFont(ofSize: 18)
-        messageLabel.textColor = .black
+        let attributedText = NSMutableAttributedString(
+            string: "Message*",
+            attributes: [
+                NSAttributedString.Key.font:UIFont.systemFont(ofSize: 18)
+            ]
+        )
+        attributedText.addAttribute(
+            NSAttributedString.Key.foregroundColor,
+            value: UIColor.red,
+            range: NSRange(location: 7, length: 1)
+        )
+        messageLabel.attributedText = attributedText
+        let border = drawTopBorder(width: frame.size.width - 2 * padding)
+        messageLabel.layer.addSublayer(border)
         addSubview(messageLabel)
     }
     
     func setupMessageTextView() {
         messageTextView.translatesAutoresizingMaskIntoConstraints = false
+        messageTextView.backgroundColor = ._lightGray
         messageTextView.text = "Let us know what happened."
         messageTextView.textColor = .lightGray
         messageTextView.delegate = self
@@ -122,11 +140,32 @@ class FeedbackView: UIView {
         addSubview(messageTextView)
     }
     
+    func setupOverviewLabel() {
+        overviewLabel.translatesAutoresizingMaskIntoConstraints = false
+        overviewLabel.numberOfLines = 0
+        overviewLabel.lineBreakMode = .byWordWrapping
+        overviewLabel.text = "We read all of your feedback and will respond in the inbox if necessary."
+        overviewLabel.font = UIFont.systemFont(ofSize: 14)
+        overviewLabel.textColor = ._textGray
+        addSubview(overviewLabel)
+    }
+    
     func setupTypeLabel() {
         typeLabel.translatesAutoresizingMaskIntoConstraints = false
-        typeLabel.text = "Type:"
-        typeLabel.font = UIFont.systemFont(ofSize: 18)
-        typeLabel.textColor = .black
+        let attributedText = NSMutableAttributedString(
+            string: "Type*",
+            attributes: [
+                NSAttributedString.Key.font:UIFont.systemFont(ofSize: 18)
+            ]
+        )
+        attributedText.addAttribute(
+            NSAttributedString.Key.foregroundColor,
+            value: UIColor.red,
+            range: NSRange(location: 4, length: 1)
+        )
+        typeLabel.attributedText = attributedText
+        let border = drawTopBorder(width: frame.size.width - 2 * padding)
+        typeLabel.layer.addSublayer(border)
         addSubview(typeLabel)
     }
     
@@ -134,16 +173,17 @@ class FeedbackView: UIView {
         typePickerView.translatesAutoresizingMaskIntoConstraints = false
         typePickerView.dataSource = self
         typePickerView.delegate = self
-        typePickerView.backgroundColor = ._navigationTintColor
+        typePickerView.backgroundColor = .white
         // Set up toolbar for PickerView
         let toolbar = UIToolbar()
-        toolbar.barTintColor = ._navigationTintColor
+        toolbar.barTintColor = .white
         toolbar.isTranslucent = false
         toolbar.layer.cornerRadius = 20
         toolbar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         toolbar.layer.masksToBounds = true
         toolbar.sizeToFit()
         toolbar.isUserInteractionEnabled = true
+        toolbar.tintColor = .black
         let doneButton = UIBarButtonItem(
             title: "Done",
             style: .plain,
@@ -162,6 +202,9 @@ class FeedbackView: UIView {
             action: #selector(didTapCancel)
         )
         toolbar.setItems([cancelButton, space, doneButton], animated: false)
+        // Set up horizontal line to distinguish between UIPickerView and ToolBar
+        let border = drawTopBorder(width: frame.size.width, spacing: false)
+        typePickerView.layer.addSublayer(border)
         typeTextField.inputAccessoryView = toolbar
         typePickerView.reloadAllComponents()
     }
@@ -182,12 +225,18 @@ class FeedbackView: UIView {
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
+            overviewLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 2 * padding),
+            overviewLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -2 * padding),
+            overviewLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: padding)
+        ])
+        NSLayoutConstraint.activate([
             typeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-            typeLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: padding)
+            typeLabel.widthAnchor.constraint(equalToConstant: 50),
+            typeLabel.topAnchor.constraint(equalTo: overviewLabel.bottomAnchor, constant: 2 * padding)
         ])
         NSLayoutConstraint.activate([
             typeTextField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            typeTextField.leadingAnchor.constraint(equalTo: typeLabel.trailingAnchor, constant: 2 * padding),
+            typeTextField.leadingAnchor.constraint(equalTo: typeLabel.trailingAnchor, constant: padding),
             typeTextField.centerYAnchor.constraint(equalTo: typeLabel.centerYAnchor, constant: 2),
             typeTextField.heightAnchor.constraint(equalToConstant: 32)
         ])
@@ -196,8 +245,8 @@ class FeedbackView: UIView {
             messageLabel.topAnchor.constraint(equalTo: typeLabel.bottomAnchor, constant: 2 * padding)
         ])
         NSLayoutConstraint.activate([
-            messageTextView.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: padding),
-            messageTextView.heightAnchor.constraint(equalToConstant: 100),
+            messageTextView.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: padding / 2),
+            messageTextView.heightAnchor.constraint(equalToConstant: 120),
             messageTextView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
             messageTextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding)
         ])
@@ -208,7 +257,7 @@ class FeedbackView: UIView {
         NSLayoutConstraint.activate([
             addFileButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
             addFileButton.topAnchor.constraint(equalTo: attachmentsLabel.bottomAnchor, constant: padding),
-            addFileButton.widthAnchor.constraint(equalToConstant: 100),
+            addFileButton.widthAnchor.constraint(equalToConstant: 90),
             addFileButton.heightAnchor.constraint(equalToConstant: imageHeight)
         ])
         NSLayoutConstraint.activate([
@@ -235,6 +284,14 @@ class FeedbackView: UIView {
         checkStatus()
     }
     
+    func drawTopBorder(width: CGFloat, spacing: Bool = true, height: CGFloat = 1.5) -> CALayer {
+        let border = CALayer()
+        let yPos = spacing ? -padding : 0
+        border.frame = CGRect(x: -5, y: yPos, width: width + 2 * 5, height: 1.5)
+        border.backgroundColor = UIColor._mediumGray.cgColor
+        return border
+    }
+    
     @objc func dismissKeyboard (_ sender: UITapGestureRecognizer) {
         self.endEditing(true)
     }
@@ -245,7 +302,7 @@ class FeedbackView: UIView {
     
     @objc func didTapDone() {
         let row = typePickerView.selectedRow(inComponent: 0)
-        typePickerView.selectRow(row, inComponent: 0, animated: false)
+        typePickerView.selectRow(row, inComponent: 0, animated: true)
         typeTextField.text = typeData[row]
         typeTextField.resignFirstResponder()
     }
@@ -341,18 +398,26 @@ extension FeedbackView: UIPickerViewDataSource {
 extension FeedbackView: UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        // Reload components to remove the checkmark from previous selection
+        pickerView.reloadAllComponents()
+        // Add checkmark to the selected row
+        guard let label = pickerView.view(forRow: row, forComponent: component) as? UILabel else { return }
+        let checkMarkImage = UIImage(named: "checkmark")
+        let checkMarkView = UIImageView(frame: CGRect(x: label.frame.width - 40, y: label.frame.height / 2 - 5.5, width: 15, height: 11))
+        checkMarkView.image = checkMarkImage
+        label.addSubview(checkMarkView)
+        // Update the typeTextField and recheck whether the message is ready to send
         typeTextField.text = typeData[row]
         checkStatus()
     }
-    
+        
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         var label = UILabel()
         if let v = view as? UILabel {
             label = v
         }
         label.font = UIFont.systemFont(ofSize: 18)
-        label.text = typeData[row]
-        label.textAlignment = .center
+        label.text = "    \(typeData[row])"
         return label
     }
     
