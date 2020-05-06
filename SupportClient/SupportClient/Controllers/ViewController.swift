@@ -29,6 +29,10 @@ class ViewController: UIViewController {
         setupFeedbackListener()
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     // TODO: hook up to actual server to load the data
     // This is dummy data for testing
     // Add variables to feedbackData to show the tableView + editing functionality
