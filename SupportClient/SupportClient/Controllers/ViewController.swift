@@ -21,11 +21,16 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .backgroundColor
+        view.backgroundColor = ._backgroundColor
         setupData()
         setupNavigationBar()
         setupFeedbackTableView()
         setupConstraints()
+        setupFeedbackListener()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     // TODO: hook up to actual server to load the data
@@ -47,10 +52,10 @@ class ViewController: UIViewController {
     }
     
     func setupNavigationBar() {
-        navigationController?.navigationBar.barTintColor = .navigationTintColor
+        navigationController?.navigationBar.barTintColor = ._lightGray
         let attributes = [
             NSAttributedString.Key.font: UIFont._21RobotoMedium!,
-            NSAttributedString.Key.foregroundColor: UIColor.titleColor
+            NSAttributedString.Key.foregroundColor: UIColor._darkGray
         ]
         let attributedTitle = NSAttributedString(string: "Feedback", attributes: attributes)
         title = attributedTitle.string
@@ -80,6 +85,21 @@ class ViewController: UIViewController {
             feedbackTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             feedbackTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
+    }
+    
+    func setupFeedbackListener() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.animateBanner), name:NSNotification.Name(rawValue: "AnimateBanner"), object: nil)
+    }
+    
+    @objc func animateBanner() {
+        let banner = BannerView()
+        view.addSubview(banner)
+        NSLayoutConstraint.activate([
+            banner.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            banner.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            banner.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5)
+        ])
+        banner.show()
     }
         
     @objc func handleNavigationBarRightTap() {

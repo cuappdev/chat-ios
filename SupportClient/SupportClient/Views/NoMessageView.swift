@@ -48,12 +48,12 @@ class NoMessageView: UIView {
         let titleAttributes: [NSAttributedString.Key : Any] = [
             NSAttributedString.Key.font: UIFont._17RobotoMedium!,
             .paragraphStyle: paragraphStyle,
-            NSAttributedString.Key.foregroundColor: UIColor.titleColor
+            NSAttributedString.Key.foregroundColor: UIColor._darkGray
         ]
         let attributedText = NSMutableAttributedString(string: title, attributes: titleAttributes)
         let subtitleAttributes = [
             NSAttributedString.Key.font: UIFont._13RobotoRegular!,
-            NSAttributedString.Key.foregroundColor: UIColor.subtitleColor
+            NSAttributedString.Key.foregroundColor: UIColor._textGray
         ]
         attributedText.append(NSAttributedString(string: subtitle, attributes: subtitleAttributes))
         feedbackLabel.attributedText = attributedText
@@ -64,7 +64,7 @@ class NoMessageView: UIView {
     func setupNewConversationButton() {
         newConversationButton.translatesAutoresizingMaskIntoConstraints = false
         newConversationButton.setTitle("Start Conversation", for: .normal)
-        newConversationButton.backgroundColor = UIColor.themeColor
+        newConversationButton.backgroundColor = UIColor._themeColor
         newConversationButton.titleLabel?.font = UIFont._17RobotoMedium
         newConversationButton.layer.cornerRadius = 22
         newConversationButton.addTarget(self, action: #selector(newConversationBtnPressed), for: .touchUpInside)

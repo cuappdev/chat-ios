@@ -30,6 +30,7 @@
 		7ECA086123F8BB6800BBFD51 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7ECA085623F8BAB500BBFD51 /* Roboto-Regular.ttf */; };
 		7ECA086223F8BB6800BBFD51 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7ECA085423F8BAB500BBFD51 /* Roboto-Thin.ttf */; };
 		7EDA42B32413628B004EB07F /* FileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDA42B22413628B004EB07F /* FileCollectionViewCell.swift */; };
+		7EEF774624554F3D00C8D10A /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEF774524554F3D00C8D10A /* BannerView.swift */; };
 		7EF44ECB24134A0D00393BE9 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF44ECA24134A0D00393BE9 /* FeedbackViewController.swift */; };
 		C073FF28A825945553AEE741 /* Pods_SupportClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3A7292B1B81A4755615DD3D /* Pods_SupportClient.framework */; };
 /* End PBXBuildFile section */
@@ -61,6 +62,7 @@
 		7ECA085623F8BAB500BBFD51 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		7ECA085723F8BAB600BBFD51 /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
 		7EDA42B22413628B004EB07F /* FileCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCollectionViewCell.swift; sourceTree = "<group>"; };
+		7EEF774524554F3D00C8D10A /* BannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
 		7EF44ECA24134A0D00393BE9 /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		893DF4D33128CCFACC3E91C8 /* Pods-SupportClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SupportClient.release.xcconfig"; path = "Target Support Files/Pods-SupportClient/Pods-SupportClient.release.xcconfig"; sourceTree = "<group>"; };
 		E3A7292B1B81A4755615DD3D /* Pods_SupportClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SupportClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,6 +141,7 @@
 				7EA364522419C6ED00BCDE72 /* NoMessageView.swift */,
 				7E775DE32450FFED00BFAC31 /* FeedbackView.swift */,
 				7EC955122452234000C3E79B /* MaskedButton.swift */,
+				7EEF774524554F3D00C8D10A /* BannerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -327,6 +330,7 @@
 				228DC1D923F8A06500DE95E6 /* AppDelegate.swift in Sources */,
 				228DC1DB23F8A06500DE95E6 /* SceneDelegate.swift in Sources */,
 				7E775DE42450FFED00BFAC31 /* FeedbackView.swift in Sources */,
+				7EEF774624554F3D00C8D10A /* BannerView.swift in Sources */,
 				7EC955132452234000C3E79B /* MaskedButton.swift in Sources */,
 				7EB3DDBF23FA2C2000994B68 /* UIColor+Extensions.swift in Sources */,
 			);

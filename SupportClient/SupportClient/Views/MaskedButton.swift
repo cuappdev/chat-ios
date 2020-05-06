@@ -8,8 +8,9 @@
 
 import UIKit
 
-// Solves problem outlined here:  https://stackoverflow.com/questions/29471946/view-shows-up-in-debug-view-hierarchy-but-not-on-device-sim/46088788
-// Allows certain corners of button to be rounded
+/**
+Creates a button with specific rounded corners. It also solves the problem outlined below: https://stackoverflow.com/questions/29471946/view-shows-up-in-debug-view-hierarchy-but-not-on-device-sim/46088788
+ */
 class MaskedButton: UIButton {
 
     override func draw(_ rect: CGRect) {
