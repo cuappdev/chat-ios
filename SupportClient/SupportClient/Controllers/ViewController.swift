@@ -200,7 +200,7 @@ extension ViewController: UICollectionViewDataSource {
         if collectionView == headerCollectionView {
             return headersData.count
         } else {
-            return feedbackData.count
+            return searchController.isActive ? filteredFeedbackData.count : feedbackData.count
         }
     }
     
@@ -256,10 +256,21 @@ extension ViewController: UISearchControllerDelegate {
     
 }
 
+// MArk: - UISearchResultsUpdating
 extension ViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
-        return
+        if let searchText = searchController.searchBar.text?.lowercased(), !searchText.isEmpty {
+            filteredFeedbackData = feedbackData.filter { feedback in
+                // TODO: make sure feedback enum (Bug/Customer Service) matches selected header
+                return feedback.message.lowercased().contains(searchText) || feedback.title.lowercased().contains(searchText)
+            }
+        }
+        feedbackCollectionView.reloadData()
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        feedbackCollectionView.reloadData()
     }
     
 }
