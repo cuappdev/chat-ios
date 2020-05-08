@@ -7,17 +7,12 @@
 //
 
 
-enum FeedbackType: String {
-    case twoway = "twoway"
-    case oneway = "oneway"
-}
 
 struct Feedback: Codable {
     
-    var type: String
     var has_read: Bool
     var message: String
     var title: String
-
+    var twoway: Bool
     
 }

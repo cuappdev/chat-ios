@@ -19,6 +19,10 @@ class ViewController: UIViewController {
     private var filteredFeedbackData = [Feedback]()
     
     private(set) var countEditTaps: Int = 0
+    
+    private var isTwoway: Bool {
+        return headersData[headerCollectionView.indexPathsForSelectedItems?[0].item ?? 0] == "Customer Service"
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +50,7 @@ class ViewController: UIViewController {
             "title" : "Ithaca Transit Bug",
             "message" : "This app sometimes glitches out on me and shows the wrong bus times",
             "has_read" : false,
-            "type" : "twoway"
+            "twoway" : true
         }
         """
         
@@ -168,6 +172,7 @@ class ViewController: UIViewController {
         )
     }
     
+    //MARK: - OBJC Functions
     @objc func animateBanner() {
         let banner = BannerView()
         view.addSubview(banner)
@@ -214,6 +219,7 @@ extension ViewController: UICollectionViewDataSource {
         
 }
 
+// MARK: - UICollectionView Delegate
 extension ViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -222,6 +228,7 @@ extension ViewController: UICollectionViewDelegate {
     
 }
 
+// MARK: - UICollectionView DelegateFlowLayout
 extension ViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -234,6 +241,7 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
     
 }
 
+// MARK: - UISearchController Delegate
 extension ViewController: UISearchControllerDelegate {
     
     func willDismissSearchController(_ searchController: UISearchController) {
@@ -253,14 +261,13 @@ extension ViewController: UISearchControllerDelegate {
     
 }
 
-// MArk: - UISearchResultsUpdating
+// MARK: - UISearchResultsUpdating
 extension ViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text?.lowercased(), !searchText.isEmpty {
-            let selectionType = headersData[headerCollectionView.indexPathsForSelectedItems?[0].item ?? 0].lowercased()
             filteredFeedbackData = feedbackData.filter { feedback in
-                return (feedback.type == selectionType) && (feedback.message.lowercased().contains(searchText) || feedback.title.lowercased().contains(searchText))
+                return (feedback.twoway == isTwoway) && (feedback.message.lowercased().contains(searchText) || feedback.title.lowercased().contains(searchText))
             }
         }
         feedbackCollectionView.reloadData()
