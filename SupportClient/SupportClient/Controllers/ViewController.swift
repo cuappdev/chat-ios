@@ -16,11 +16,7 @@ class ViewController: UIViewController {
         
     private let headersData = ["Customer Service", "Bugs & Requests"]
     private var feedbackData = [Feedback]()
-    private var filteredFeedbackData = [Feedback]() // TODO: For later
-    
-    private var isSearchBarEmpty: Bool {
-      return searchController.searchBar.text?.isEmpty ?? true
-    }
+    private var filteredFeedbackData = [Feedback]()
     
     private(set) var countEditTaps: Int = 0
 
@@ -49,7 +45,8 @@ class ViewController: UIViewController {
         {
             "title" : "Ithaca Transit Bug",
             "message" : "This app sometimes glitches out on me and shows the wrong bus times",
-            "hasRead" : false
+            "has_read" : false,
+            "type" : "twoway"
         }
         """
         
@@ -261,9 +258,9 @@ extension ViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text?.lowercased(), !searchText.isEmpty {
+            let selectionType = headersData[headerCollectionView.indexPathsForSelectedItems?[0].item ?? 0].lowercased()
             filteredFeedbackData = feedbackData.filter { feedback in
-                // TODO: make sure feedback enum (Bug/Customer Service) matches selected header
-                return feedback.message.lowercased().contains(searchText) || feedback.title.lowercased().contains(searchText)
+                return (feedback.type == selectionType) && (feedback.message.lowercased().contains(searchText) || feedback.title.lowercased().contains(searchText))
             }
         }
         feedbackCollectionView.reloadData()

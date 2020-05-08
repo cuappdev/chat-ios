@@ -6,11 +6,18 @@
 //  Copyright © 2020 Cornell Appdev. All rights reserved.
 //
 
-// TODO: replace this class once we hook up to database
+
+enum FeedbackType: String {
+    case twoway = "twoway"
+    case oneway = "oneway"
+}
+
 struct Feedback: Codable {
     
-    var title: String
+    var type: String
+    var has_read: Bool
     var message: String
-    var hasRead: Bool
+    var title: String
+
     
 }
