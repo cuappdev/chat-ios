@@ -12,6 +12,8 @@ import DZNEmptyDataSet
 class ViewController: UIViewController {
     
     private let feedbackTableView = UITableView(frame: .zero)
+    private let layout = UICollectionViewFlowLayout()
+    private var collectionView: UICollectionView!
     private let searchController = UISearchController() // TODO: For later
         
     private var feedbackData = [Feedback]()
@@ -40,15 +42,18 @@ class ViewController: UIViewController {
         let jsonString = """
         {
             "title" : "Ithaca Transit Bug",
-            "message" : "This app sometimes glitches out on me and shows the wrong bus times",
-            "hasRead" : false
+            "message" : "This app sometimes glitches out on me and shows the wrong bus times and the bus is always late and it's really annoying and it's freezing outside",
+            "hasRead" : false,
+            "time" : "Yesterday",
+            "tags" : ["UX/UI"],
+            "type" : "Bug Report"
         }
         """
         
         guard let jsonData = jsonString.data(using: .utf8) else { return }
-        let _ = try! JSONDecoder().decode(Feedback.self, from: jsonData)
-        
-        feedbackData = []
+        let dummyFeedback = try! JSONDecoder().decode(Feedback.self, from: jsonData)
+        let dummyFeedback2 = Feedback(hasRead: true, message: "This is a cool idea!", tags: [], time: "12:34 PM", title: "Idea for Uplift", type: "Feature Request")
+        feedbackData = [dummyFeedback, dummyFeedback2]
     }
     
     func setupNavigationBar() {
@@ -75,15 +80,28 @@ class ViewController: UIViewController {
         feedbackTableView.emptyDataSetSource = self
         feedbackTableView.emptyDataSetDelegate = self
         feedbackTableView.register(FeedbackTableViewCell.self, forCellReuseIdentifier: FeedbackTableViewCell.reuseID)
-        view.addSubview(feedbackTableView)
+//        view.addSubview(feedbackTableView)
+
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(FeedbackCollectionViewCell.self, forCellWithReuseIdentifier: FeedbackCollectionViewCell.reuseIdentifier)
+        view.addSubview(collectionView)
     }
     
     func setupConstraints() {
+//        NSLayoutConstraint.activate([
+//            feedbackTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+//            feedbackTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+//            feedbackTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+//            feedbackTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+//        ])
         NSLayoutConstraint.activate([
-            feedbackTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            feedbackTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            feedbackTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            feedbackTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
     
@@ -170,4 +188,20 @@ extension ViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
         return true
     }
     
+}
+
+extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 1
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FeedbackCollectionViewCell.reuseIdentifier, for: indexPath) as! FeedbackCollectionViewCell
+        cell.configure(section: .customerService, items: feedbackData)
+        return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.bounds.width, height: view.bounds.height)
+    }
 }

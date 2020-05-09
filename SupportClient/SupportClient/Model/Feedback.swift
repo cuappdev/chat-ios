@@ -7,10 +7,14 @@
 //
 
 // TODO: replace this class once we hook up to database
+
 struct Feedback: Codable {
     
-    var title: String
-    var message: String
     var hasRead: Bool
+    var message: String
+    var tags: [String]
+    var time: String
+    var title: String
+    var type: String
     
 }
