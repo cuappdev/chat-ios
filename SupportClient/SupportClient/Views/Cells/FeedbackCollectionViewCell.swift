@@ -60,7 +60,7 @@ class FeedbackCollectionViewCell: UICollectionViewCell {
     func configure(section: FeedbackSection, items: [Feedback]) {
         self.feedbackSection = section
         self.items = items
-        self.emptyStateView.isHidden = self.items.count > 0
+        self.emptyStateView.isHidden = !items.isEmpty
     }
 
     required init?(coder: NSCoder) {
@@ -88,12 +88,14 @@ extension FeedbackCollectionViewCell: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: CustomerServiceTableViewCell.reuseIdentifier, for: indexPath) as! CustomerServiceTableViewCell
             cell.configure(for: items[indexPath.row])
             cell.selectionStyle = .none
+
             return cell
             
         case .bugsAndRequests:
             let cell = tableView.dequeueReusableCell(withIdentifier: BugsRequestsTableViewCell.reuseIdentifier, for: indexPath) as! BugsRequestsTableViewCell
             cell.configure(for: items[indexPath.row])
             cell.selectionStyle = .none
+
             return cell
         }
     }

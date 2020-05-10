@@ -26,14 +26,12 @@ class BugsRequestsTableViewCell: UITableViewCell {
     func setupViews() {
         tagsLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         tagsLabel.textColor = ._textGray
-//        tagsLabel.sizeToFit()
         tagsLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(tagsLabel)
 
         timeLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         timeLabel.textColor = ._textGray
         timeLabel.textAlignment = .right
-//        timeLabel.sizeToFit()
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(timeLabel)
 
@@ -67,8 +65,8 @@ class BugsRequestsTableViewCell: UITableViewCell {
     }
 
     func configure(for item: Feedback) {
-        tagsLabel.text = item.type + "    " + item.tags.joined(separator: "    ")
-        timeLabel.text = item.time
+        tagsLabel.text = item.tags.isEmpty ? item.type : item.type + "    " + item.tags.joined(separator: "    ")
+        timeLabel.text = item.time.convertToTimestamp()
         messageLabel.text = item.message
     }
     
