@@ -9,27 +9,28 @@
 import UIKit
 
 enum FeedbackSection {
-    case customerService
     case bugsAndRequests
+    case customerService
 }
 
 class FeedbackCollectionViewCell: UICollectionViewCell {
 
     static let reuseIdentifier = "feedbackCollectionViewCell"
 
-    private var feedbackSection: FeedbackSection = .customerService
     private let emptyStateView = NoResultsEmptyStateView()
+    private var feedbackSection: FeedbackSection = .customerService
     private var items: [Feedback] = []
     private let tableView = UITableView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        setupViews()
+        setupTableView()
+        setupEmptyState()
         setupConstraints()
     }
 
-    func setupViews() {
+    func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
@@ -37,7 +38,9 @@ class FeedbackCollectionViewCell: UICollectionViewCell {
         tableView.register(CustomerServiceTableViewCell.self, forCellReuseIdentifier: CustomerServiceTableViewCell.reuseIdentifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(tableView)
+    }
 
+    func setupEmptyState() {
         emptyStateView.isHidden = true
         emptyStateView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(emptyStateView)
@@ -71,7 +74,7 @@ class FeedbackCollectionViewCell: UICollectionViewCell {
 extension FeedbackCollectionViewCell: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 103.6
+        return 104
     }
 
 }

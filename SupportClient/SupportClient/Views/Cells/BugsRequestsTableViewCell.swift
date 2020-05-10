@@ -19,22 +19,28 @@ class BugsRequestsTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        setupViews()
+        setupTagsLabel()
+        setupTimesLabel()
+        setupMessageLabel()
         setupConstraints()
     }
 
-    func setupViews() {
+    func setupTagsLabel() {
         tagsLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         tagsLabel.textColor = ._textGray
         tagsLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(tagsLabel)
+    }
 
+    func setupTimesLabel() {
         timeLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         timeLabel.textColor = ._textGray
         timeLabel.textAlignment = .right
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(timeLabel)
+    }
 
+    func setupMessageLabel() {
         messageLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         messageLabel.textColor = ._textBlack
         messageLabel.numberOfLines = 2
@@ -65,7 +71,9 @@ class BugsRequestsTableViewCell: UITableViewCell {
     }
 
     func configure(for item: Feedback) {
-        tagsLabel.text = item.tags.isEmpty ? item.type : item.type + "    " + item.tags.joined(separator: "    ")
+        tagsLabel.text = item.tags.isEmpty
+            ? item.type
+            : item.type + "    " + item.tags.joined(separator: "    ")
         timeLabel.text = item.time.convertToTimestamp()
         messageLabel.text = item.message
     }

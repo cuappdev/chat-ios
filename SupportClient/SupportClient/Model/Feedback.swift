@@ -14,10 +14,10 @@ struct Feedback: Codable {
 
     var adminName: String
     var hasRead: Bool
-    var message: String
+    let message: String
     var tags: [String]
     var time: Date
-    var title: String
-    var type: String
+    let title: String
+    let type: String
     
 }

@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     
     private let feedbackTableView = UITableView(frame: .zero)
     private let searchController = UISearchController() // TODO: For later
+    private var collectionView: UICollectionView!
         
     private var feedbackData = [Feedback]()
     private var filteredFeedbackData = [Feedback]() // TODO: For later
@@ -22,9 +23,16 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ._backgroundColor
+        let layout = UICollectionViewFlowLayout()
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(FeedbackCollectionViewCell.self, forCellWithReuseIdentifier: FeedbackCollectionViewCell.reuseIdentifier)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(collectionView)
         setupData()
         setupNavigationBar()
-        setupFeedbackTableView()
+//        setupFeedbackTableView()
         setupConstraints()
         setupFeedbackListener()
     }
@@ -46,7 +54,7 @@ class ViewController: UIViewController {
         """
         
         guard let jsonData = jsonString.data(using: .utf8) else { return }
-        let _ = try! JSONDecoder().decode(Feedback.self, from: jsonData)
+//        let _ = try! JSONDecoder().decode(Feedback.self, from: jsonData)
         
         feedbackData = []
     }
@@ -80,10 +88,10 @@ class ViewController: UIViewController {
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            feedbackTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            feedbackTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            feedbackTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            feedbackTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
     
@@ -170,4 +178,21 @@ extension ViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
         return true
     }
     
+}
+
+extension ViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 1
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FeedbackCollectionViewCell.reuseIdentifier, for: indexPath) as! FeedbackCollectionViewCell
+        let feedback = Feedback(adminName: "Yana", hasRead: false, message: "Hello", tags: ["test"], time: Date(), title: "Title", type: "Customer Service")
+        cell.configure(section: .bugsAndRequests, items: [feedback, feedback, feedback])
+        return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.width, height: view.frame.height)
+    }
 }
