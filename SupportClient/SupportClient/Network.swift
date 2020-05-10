@@ -10,7 +10,9 @@ import Firebase
 import FirebaseFirestore
 import Foundation
 
-struct Network {
+class Network {
+    
+    static let shared = Network()
     
     private let commonPath = "Patch/data"
     static private let db = Firestore.firestore()
@@ -50,13 +52,15 @@ struct Network {
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
-                let feedback = querySnapshot!.documents.compactMap { document -> Feedback? in
+                let feedback = querySnapshot?.documents.compactMap { document -> Feedback? in
                     if let data = try? JSONSerialization.data(withJSONObject: document.data(), options: []), let feedback = try? jsonDecoder.decode(OneWayFeedback.self, from: data) {
                         return feedback
                     }
                     return nil
                 }
-                completion(feedback)
+                if let feedback = feedback {
+                    completion(feedback)
+                }
             }
         }
     }
@@ -66,8 +70,8 @@ struct Network {
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
-                let data = querySnapshot!.documents.compactMap { $0.documentID == "data" ? $0.data()["tags"] : nil }
-                if let tags = data[0] as? [String] {
+                let data = querySnapshot?.documents.compactMap { $0.documentID == "data" ? $0.data()["tags"] : nil }
+                if let data = data, let tags = data[0] as? [String] {
                     completion(tags)
                 }
             }

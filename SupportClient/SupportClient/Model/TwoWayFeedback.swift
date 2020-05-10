@@ -10,8 +10,8 @@ import Foundation
 
 class TwoWayFeedback: Feedback {
     
-    var hasRead: Bool
-    var adminRep: AdminRep?
+    let hasRead: Bool
+    let adminRep: AdminRep?
     
     enum CodingKeys: String, CodingKey {
         case hasRead

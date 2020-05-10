@@ -10,7 +10,7 @@ import Foundation
 
 struct AdminRep: Codable {
     
-    var imageUrl: String
-    var name: String
+    let imageUrl: String
+    let name: String
 
 }

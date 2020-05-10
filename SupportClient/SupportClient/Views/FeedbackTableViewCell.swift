@@ -74,9 +74,7 @@ class FeedbackTableViewCell: UITableViewCell {
     }
     
     func configure(feedback: Feedback) {
-//        titleLabel.text = feedback.message
         subtitleLabel.text = feedback.message
-//        unreadImageView.isHidden = feedback.hasRead
     }
     
 }
