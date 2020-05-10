@@ -1,28 +1,16 @@
 PODS:
   - BSImagePicker (3.1.1)
-  - DZNEmptyDataSet (1.8.1)
 
 DEPENDENCIES:
   - BSImagePicker
-  - DZNEmptyDataSet (from `https://github.com/cuappdev/DZNEmptyDataSet.git`)
 
 SPEC REPOS:
   trunk:
     - BSImagePicker
 
-EXTERNAL SOURCES:
-  DZNEmptyDataSet:
-    :git: https://github.com/cuappdev/DZNEmptyDataSet.git
-
-CHECKOUT OPTIONS:
-  DZNEmptyDataSet:
-    :commit: a4a007e7ade7d9711f067f4d6510085fa1d92629
-    :git: https://github.com/cuappdev/DZNEmptyDataSet.git
-
 SPEC CHECKSUMS:
   BSImagePicker: 86f28e0f63b78d35fec7c6f0174b7af9e6f1431e
-  DZNEmptyDataSet: b94434220f87d9dda46660eb4f07a424778e93b4
 
-PODFILE CHECKSUM: 2cc3d7dd6cc1402f4f937b64fc83c5cf3a855c3a
+PODFILE CHECKSUM: afcb00255cb7cc3d9cbcb2d2f5ef8c3bec8a3548
 
 COCOAPODS: 1.9.1

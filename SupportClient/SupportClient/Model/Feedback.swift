@@ -6,11 +6,13 @@
 //  Copyright © 2020 Cornell Appdev. All rights reserved.
 //
 
-// TODO: replace this class once we hook up to database
+
+
 struct Feedback: Codable {
     
-    var title: String
-    var message: String
     var hasRead: Bool
+    var message: String
+    var title: String
+    var isTwoWay: Bool
     
 }
