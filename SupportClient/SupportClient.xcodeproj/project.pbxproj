@@ -15,6 +15,7 @@
 		7E2B5E48246639DE00C9E1E7 /* FeedbackCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2B5E47246639DE00C9E1E7 /* FeedbackCollectionViewCell.swift */; };
 		7E2B5E4A24663F8E00C9E1E7 /* BugsRequestsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2B5E4924663F8E00C9E1E7 /* BugsRequestsTableViewCell.swift */; };
 		7E2B5E4C24664C8A00C9E1E7 /* CustomerServiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2B5E4B24664C8A00C9E1E7 /* CustomerServiceTableViewCell.swift */; };
+		7E520542246741AB00E9EB9D /* NoResultsEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E520541246741AB00E9EB9D /* NoResultsEmptyStateView.swift */; };
 		7E775DE42450FFED00BFAC31 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E775DE32450FFED00BFAC31 /* FeedbackView.swift */; };
 		7EA364532419C6ED00BCDE72 /* NoMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA364522419C6ED00BCDE72 /* NoMessageView.swift */; };
 		7EB3DDBC23FA296600994B68 /* UIFont+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB3DDBB23FA296600994B68 /* UIFont+Extensions.swift */; };
@@ -50,6 +51,7 @@
 		7E2B5E47246639DE00C9E1E7 /* FeedbackCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackCollectionViewCell.swift; sourceTree = "<group>"; };
 		7E2B5E4924663F8E00C9E1E7 /* BugsRequestsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugsRequestsTableViewCell.swift; sourceTree = "<group>"; };
 		7E2B5E4B24664C8A00C9E1E7 /* CustomerServiceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerServiceTableViewCell.swift; sourceTree = "<group>"; };
+		7E520541246741AB00E9EB9D /* NoResultsEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoResultsEmptyStateView.swift; sourceTree = "<group>"; };
 		7E775DE32450FFED00BFAC31 /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
 		7EA364522419C6ED00BCDE72 /* NoMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMessageView.swift; sourceTree = "<group>"; };
 		7EB3DDBB23FA296600994B68 /* UIFont+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
@@ -130,6 +132,26 @@
 			path = SupportClient;
 			sourceTree = "<group>";
 		};
+		7E52053F2467417F00E9EB9D /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				7EB5E7E523F8CDB10051F209 /* FeedbackTableViewCell.swift */,
+				7EDA42B22413628B004EB07F /* FileCollectionViewCell.swift */,
+				7E2B5E47246639DE00C9E1E7 /* FeedbackCollectionViewCell.swift */,
+				7E2B5E4924663F8E00C9E1E7 /* BugsRequestsTableViewCell.swift */,
+				7E2B5E4B24664C8A00C9E1E7 /* CustomerServiceTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		7E5205402467418C00E9EB9D /* EmptyStates */ = {
+			isa = PBXGroup;
+			children = (
+				7E520541246741AB00E9EB9D /* NoResultsEmptyStateView.swift */,
+			);
+			path = EmptyStates;
+			sourceTree = "<group>";
+		};
 		7EB3DDBD23FA2A2700994B68 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -142,15 +164,12 @@
 		7EB5E7E423F8CD9A0051F209 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				7EB5E7E523F8CDB10051F209 /* FeedbackTableViewCell.swift */,
-				7EDA42B22413628B004EB07F /* FileCollectionViewCell.swift */,
+				7E5205402467418C00E9EB9D /* EmptyStates */,
+				7E52053F2467417F00E9EB9D /* Cells */,
 				7EA364522419C6ED00BCDE72 /* NoMessageView.swift */,
 				7E775DE32450FFED00BFAC31 /* FeedbackView.swift */,
 				7EC955122452234000C3E79B /* MaskedButton.swift */,
 				7EEF774524554F3D00C8D10A /* BannerView.swift */,
-				7E2B5E47246639DE00C9E1E7 /* FeedbackCollectionViewCell.swift */,
-				7E2B5E4924663F8E00C9E1E7 /* BugsRequestsTableViewCell.swift */,
-				7E2B5E4B24664C8A00C9E1E7 /* CustomerServiceTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -338,6 +357,7 @@
 				7E2B5E4A24663F8E00C9E1E7 /* BugsRequestsTableViewCell.swift in Sources */,
 				7EB3DDBC23FA296600994B68 /* UIFont+Extensions.swift in Sources */,
 				228DC1D923F8A06500DE95E6 /* AppDelegate.swift in Sources */,
+				7E520542246741AB00E9EB9D /* NoResultsEmptyStateView.swift in Sources */,
 				228DC1DB23F8A06500DE95E6 /* SceneDelegate.swift in Sources */,
 				7E775DE42450FFED00BFAC31 /* FeedbackView.swift in Sources */,
 				7EEF774624554F3D00C8D10A /* BannerView.swift in Sources */,

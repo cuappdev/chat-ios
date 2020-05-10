@@ -18,6 +18,7 @@ class FeedbackCollectionViewCell: UICollectionViewCell {
     static let reuseIdentifier = "feedbackCollectionViewCell"
 
     private var feedbackSection: FeedbackSection = .customerService
+    private let emptyStateView = NoResultsEmptyStateView()
     private var items: [Feedback] = []
     private let tableView = UITableView()
 
@@ -31,10 +32,15 @@ class FeedbackCollectionViewCell: UICollectionViewCell {
     func setupViews() {
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableFooterView = UIView()
         tableView.register(BugsRequestsTableViewCell.self, forCellReuseIdentifier: BugsRequestsTableViewCell.reuseIdentifier)
         tableView.register(CustomerServiceTableViewCell.self, forCellReuseIdentifier: CustomerServiceTableViewCell.reuseIdentifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(tableView)
+
+        emptyStateView.isHidden = true
+        emptyStateView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(emptyStateView)
     }
 
     func setupConstraints() {
@@ -44,11 +50,17 @@ class FeedbackCollectionViewCell: UICollectionViewCell {
             tableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
+
+        NSLayoutConstraint.activate([
+            emptyStateView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            emptyStateView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 118)
+        ])
     }
 
     func configure(section: FeedbackSection, items: [Feedback]) {
         self.feedbackSection = section
         self.items = items
+        self.emptyStateView.isHidden = self.items.count > 0
     }
 
     required init?(coder: NSCoder) {
