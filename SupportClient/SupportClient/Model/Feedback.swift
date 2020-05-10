@@ -10,7 +10,7 @@
 
 struct Feedback: Codable {
     
-    var has_read: Bool
+    var hasRead: Bool
     var message: String
     var title: String
     var isTwoWay: Bool

@@ -50,7 +50,7 @@ class ViewController: UIViewController {
         {
             "title" : "Ithaca Transit Bug",
             "message" : "This app sometimes glitches out on me and shows the wrong bus times",
-            "has_read" : false,
+            "hasRead" : false,
             "isTwoWay" : true
         }
         """
