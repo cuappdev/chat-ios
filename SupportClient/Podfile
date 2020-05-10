@@ -8,5 +8,8 @@ target 'SupportClient' do
   # Pods for SupportClient
   pod 'BSImagePicker'
   pod 'DZNEmptyDataSet', :git=> 'https://github.com/cuappdev/DZNEmptyDataSet.git'
+  pod 'Firebase/Firestore'
+  pod 'FirebaseFirestoreSwift'
+  pod 'Firebase/Storage'
 
 end

@@ -39,14 +39,17 @@ class ViewController: UIViewController {
     func setupData() {
         let jsonString = """
         {
-            "title" : "Ithaca Transit Bug",
+            "createdAt" : 1589112659,
             "message" : "This app sometimes glitches out on me and shows the wrong bus times",
+            "imageUrls": [],
+            "tag": "Testing",
+            "type": "Bug Report",
             "hasRead" : false
         }
         """
         
         guard let jsonData = jsonString.data(using: .utf8) else { return }
-        let _ = try! JSONDecoder().decode(Feedback.self, from: jsonData)
+        let _ = try! JSONDecoder().decode(TwoWayFeedback.self, from: jsonData)
         
         feedbackData = []
     }
