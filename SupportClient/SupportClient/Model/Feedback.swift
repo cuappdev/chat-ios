@@ -14,6 +14,7 @@ struct Feedback: Codable {
 
     var adminName: String
     var hasRead: Bool
+    let isTwoWay: Bool
     let message: String
     var tags: [String]
     var time: Date

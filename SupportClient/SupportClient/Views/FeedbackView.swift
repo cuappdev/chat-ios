@@ -6,7 +6,6 @@
 //  Copyright © 2020 Cornell Appdev. All rights reserved.
 //
 
-import BSImagePicker
 import Photos
 import UIKit
 

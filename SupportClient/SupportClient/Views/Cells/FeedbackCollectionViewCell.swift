@@ -63,6 +63,7 @@ class FeedbackCollectionViewCell: UICollectionViewCell {
     func configure(section: FeedbackSection, items: [Feedback]) {
         self.feedbackSection = section
         self.items = items
+        self.tableView.reloadData()
         self.emptyStateView.isHidden = !items.isEmpty
     }
 
@@ -75,6 +76,10 @@ extension FeedbackCollectionViewCell: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 104
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // TODO: open chat / details
     }
 
 }
