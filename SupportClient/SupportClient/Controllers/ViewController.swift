@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     
     private(set) var countEditTaps: Int = 0
     
+    // True is the current header is set to Customer Service, false otherwise
     private var isTwoway: Bool {
         return headersData[headerCollectionView.indexPathsForSelectedItems?[0].item ?? 0] == "Customer Service"
     }
@@ -50,7 +51,7 @@ class ViewController: UIViewController {
             "title" : "Ithaca Transit Bug",
             "message" : "This app sometimes glitches out on me and shows the wrong bus times",
             "has_read" : false,
-            "twoway" : true
+            "isTwoWay" : true
         }
         """
         
@@ -82,8 +83,9 @@ class ViewController: UIViewController {
             target: self,
             action: #selector(handleAddFeedbackItemRightTap)
         )
-        let searchImage = UIImage(named: "search")?.withTintColor(.black).withAlignmentRectInsets(
-            UIEdgeInsets(top: 0, left: 15, bottom: 0, right: -15))
+        let searchImage = UIImage(named: "search")?
+            .withTintColor(.black)
+            .withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 15, bottom: 0, right: -15))
         let searchFeedbackButton = UIBarButtonItem(
             image: searchImage,
             style: .plain,
@@ -91,6 +93,8 @@ class ViewController: UIViewController {
             action: #selector(handleSearchItemRightTap)
         )
         navigationItem.rightBarButtonItems = [addFeedbackButton, searchFeedbackButton]
+        UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self])
+            .setTitleTextAttributes([.foregroundColor : UIColor._darkGray], for: .normal)
     }
     
     func setupHeaderCollectionView() {
@@ -103,7 +107,6 @@ class ViewController: UIViewController {
         headerCollectionView.dataSource = self
         headerCollectionView.delegate = self
         headerCollectionView.register(HeaderCollectionViewCell.self, forCellWithReuseIdentifier: HeaderCollectionViewCell.reuseID)
-        // collectionView(headerCollectionView, didSelectItemAt: IndexPath(item: 0, section: 0))
         view.addSubview(headerCollectionView)
     }
     
@@ -117,7 +120,7 @@ class ViewController: UIViewController {
         feedbackCollectionView.backgroundColor = .white
         feedbackCollectionView.dataSource = self
         feedbackCollectionView.delegate = self
-        // feedbackCollectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: reuseID)
+        // TODO: register UICollectionViewCells
         view.addSubview(feedbackCollectionView)
     }
     
@@ -126,6 +129,7 @@ class ViewController: UIViewController {
         searchController.searchResultsUpdater = self
         searchController.searchBar.autocapitalizationType = .none
         searchController.hidesNavigationBarDuringPresentation = true
+        searchController.obscuresBackgroundDuringPresentation = false
     }
     
     func setupConstraints() {
@@ -135,6 +139,12 @@ class ViewController: UIViewController {
             headerCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
             headerCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
             headerCollectionView.heightAnchor.constraint(equalToConstant: 40)
+        ])
+        NSLayoutConstraint.activate([
+            feedbackCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            feedbackCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            feedbackCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            feedbackCollectionView.topAnchor.constraint(equalTo: headerCollectionView.bottomAnchor, constant: 5)
         ])
     }
     
@@ -213,7 +223,7 @@ extension ViewController: UICollectionViewDataSource {
             cell.configure(with: header)
             return cell
         } else {
-            return UICollectionViewCell()
+            return UICollectionViewCell() // TODO: configure cells for feedbackCollectionView
         }
     }
         
@@ -223,7 +233,9 @@ extension ViewController: UICollectionViewDataSource {
 extension ViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if collectionView == feedbackCollectionView { }
+        if collectionView == feedbackCollectionView {
+            // TODO: if two way communication, open up chat
+        }
     }
     
 }
@@ -235,7 +247,7 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
         if collectionView == headerCollectionView {
             return CGSize(width: (view.frame.width - 60) / 2, height: 40)
         } else {
-            return CGSize()
+            return CGSize() // TODO: add proper size later
         }
     }
     
@@ -267,7 +279,9 @@ extension ViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text?.lowercased(), !searchText.isEmpty {
             filteredFeedbackData = feedbackData.filter { feedback in
-                return (feedback.twoway == isTwoway) && (feedback.message.lowercased().contains(searchText) || feedback.title.lowercased().contains(searchText))
+                return (feedback.isTwoWay == isTwoway) &&
+                    (feedback.message.lowercased().contains(searchText)
+                        || feedback.title.lowercased().contains(searchText))
             }
         }
         feedbackCollectionView.reloadData()

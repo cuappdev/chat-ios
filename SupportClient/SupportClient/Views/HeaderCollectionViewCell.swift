@@ -19,11 +19,7 @@ class HeaderCollectionViewCell: UICollectionViewCell {
         didSet {
             headerLabel.textColor = isSelected ? .black : ._darkGray
             headerLabel.font = isSelected ? .boldSystemFont(ofSize: 14) : .systemFont(ofSize: 14)
-            if isSelected {
-                underlineView.isHidden = false
-            } else {
-                underlineView.isHidden = true
-            }
+            underlineView.isHidden = !isSelected
         }
     }
     

@@ -13,6 +13,6 @@ struct Feedback: Codable {
     var has_read: Bool
     var message: String
     var title: String
-    var twoway: Bool
+    var isTwoWay: Bool
     
 }
