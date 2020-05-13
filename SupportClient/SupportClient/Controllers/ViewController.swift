@@ -7,26 +7,35 @@
 //
 
 import UIKit
-import DZNEmptyDataSet
 
 class ViewController: UIViewController {
-    
-    private let feedbackTableView = UITableView(frame: .zero)
-    private let searchController = UISearchController() // TODO: For later
+
+    private var headerCollectionView: UICollectionView!
+    private var feedbackCollectionView: UICollectionView!
+    private let searchController = UISearchController(searchResultsController: nil) // TODO: For later
         
+    private let headersData = ["Customer Service", "Bugs & Requests"]
     private var feedbackData = [Feedback]()
-    private var filteredFeedbackData = [Feedback]() // TODO: For later
+    private var filteredFeedbackData = [Feedback]()
     
     private(set) var countEditTaps: Int = 0
+    
+    // True is the current header is set to Customer Service, false otherwise
+    private var isTwoway: Bool {
+        return headersData[headerCollectionView.indexPathsForSelectedItems?[0].item ?? 0] == "Customer Service"
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ._backgroundColor
         setupData()
         setupNavigationBar()
-        setupFeedbackTableView()
+        setupHeaderCollectionView()
+        setupFeedbackCollectionView()
+        setupSearchController()
         setupConstraints()
         setupFeedbackListener()
+        setDefaultHeaderCell()
     }
     
     deinit {
@@ -39,61 +48,153 @@ class ViewController: UIViewController {
     func setupData() {
         let jsonString = """
         {
-            "createdAt" : 1589112659,
+            "adminName" : "Admin Name",
+            "hasRead" : false,
+            "isTwoWay" : true,
             "message" : "This app sometimes glitches out on me and shows the wrong bus times",
-            "imageUrls": [],
-            "tag": "Testing",
-            "type": "Bug Report",
-            "hasRead" : false
+            "tags" : [],
+            "time" : 1589112659,
+            "title" : "Ithaca Transit Bug",
+            "type" : "Customer Service"
         }
         """
         
         guard let jsonData = jsonString.data(using: .utf8) else { return }
-        let _ = try! JSONDecoder().decode(TwoWayFeedback.self, from: jsonData)
+        let dummyFeedback = try! JSONDecoder().decode(Feedback.self, from: jsonData)
         
-        feedbackData = []
+        feedbackData = [dummyFeedback, dummyFeedback]
     }
     
     func setupNavigationBar() {
-        navigationController?.navigationBar.barTintColor = ._lightGray
+        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.prefersLargeTitles = true
         let attributes = [
-            NSAttributedString.Key.font: UIFont._21RobotoMedium!,
-            NSAttributedString.Key.foregroundColor: UIColor._darkGray
+            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 32),
+            NSAttributedString.Key.foregroundColor: UIColor.black
         ]
         let attributedTitle = NSAttributedString(string: "Feedback", attributes: attributes)
         title = attributedTitle.string
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(named: "pen"),
+        // Set navigation bar items
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            image: UIImage(named: "back"),
+            style: .plain,
+            target: nil,
+            action: nil
+        )
+        let addFeedbackButton = UIBarButtonItem(
+            image: UIImage(named: "plus")?.withTintColor(.black),
             style: .plain,
             target: self,
-            action: #selector(handleNavigationBarRightTap)
+            action: #selector(handleAddFeedbackItemRightTap)
         )
+        let searchImage = UIImage(named: "search")?
+            .withTintColor(.black)
+            .withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 15, bottom: 0, right: -15))
+        let searchFeedbackButton = UIBarButtonItem(
+            image: searchImage,
+            style: .plain,
+            target: self,
+            action: #selector(handleSearchItemRightTap)
+        )
+        navigationItem.rightBarButtonItems = [addFeedbackButton, searchFeedbackButton]
+        UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self])
+            .setTitleTextAttributes([.foregroundColor : UIColor._darkGray], for: .normal)
     }
     
-    func setupFeedbackTableView() {
-        feedbackTableView.translatesAutoresizingMaskIntoConstraints = false
-        feedbackTableView.delegate = self
-        feedbackTableView.dataSource = self
-        feedbackTableView.tableFooterView = UIView()
-        feedbackTableView.emptyDataSetSource = self
-        feedbackTableView.emptyDataSetDelegate = self
-        feedbackTableView.register(FeedbackTableViewCell.self, forCellReuseIdentifier: FeedbackTableViewCell.reuseID)
-        view.addSubview(feedbackTableView)
+    func setupHeaderCollectionView() {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        headerCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        headerCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        headerCollectionView.backgroundColor = .white
+        headerCollectionView.isScrollEnabled = false
+        headerCollectionView.dataSource = self
+        headerCollectionView.delegate = self
+        headerCollectionView.register(HeaderCollectionViewCell.self, forCellWithReuseIdentifier: HeaderCollectionViewCell.reuseID)
+        view.addSubview(headerCollectionView)
+    }
+    
+    func setupFeedbackCollectionView() {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 10
+        layout.minimumInteritemSpacing = 10
+        feedbackCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        feedbackCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        feedbackCollectionView.backgroundColor = .white
+        feedbackCollectionView.dataSource = self
+        feedbackCollectionView.delegate = self
+        feedbackCollectionView.register(FeedbackCollectionViewCell.self, forCellWithReuseIdentifier: FeedbackCollectionViewCell.reuseIdentifier)
+        view.addSubview(feedbackCollectionView)
+    }
+    
+    func setupSearchController() {
+        searchController.delegate = self
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.hidesNavigationBarDuringPresentation = true
+        searchController.obscuresBackgroundDuringPresentation = false
     }
     
     func setupConstraints() {
+        removeViews()
         NSLayoutConstraint.activate([
-            feedbackTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            feedbackTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            feedbackTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            feedbackTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            headerCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30),
+            headerCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
+            headerCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
+            headerCollectionView.heightAnchor.constraint(equalToConstant: 40)
+        ])
+
+        NSLayoutConstraint.activate([
+            feedbackCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            feedbackCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            feedbackCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            feedbackCollectionView.topAnchor.constraint(equalTo: headerCollectionView.bottomAnchor, constant: 5)
         ])
     }
+    
+
+    func setupSearchingConstraints() {
+        removeViews()
+        NSLayoutConstraint.activate([
+            headerCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30),
+            headerCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
+            headerCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70),
+            headerCollectionView.heightAnchor.constraint(equalToConstant: 40)
+        ])
+
+        NSLayoutConstraint.activate([
+            feedbackCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            feedbackCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            feedbackCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            feedbackCollectionView.topAnchor.constraint(equalTo: headerCollectionView.bottomAnchor, constant: 5)
+        ])
+    }
+    
+    /*
+     Because the removeConstraints() function only removes constraints belonging to that view, it did not remove ALL constraints.
+     Adding alignment insets is also exceedingly difficult for UICollectionViews.
+     So currently, I am removing and re-adding the collection views to reset ALL constraints.
+     */
+    func removeViews() {
+        headerCollectionView.removeFromSuperview()
+        view.addSubview(headerCollectionView)
+    }
+
     
     func setupFeedbackListener() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.animateBanner), name:NSNotification.Name(rawValue: "AnimateBanner"), object: nil)
     }
     
+    func setDefaultHeaderCell() {
+        headerCollectionView.selectItem(
+            at: .init(item: 0, section: 0),
+            animated: true,
+            scrollPosition: .centeredHorizontally
+        )
+    }
+    
+    //MARK: - OBJC Functions
     @objc func animateBanner() {
         let banner = BannerView()
         view.addSubview(banner)
@@ -104,73 +205,105 @@ class ViewController: UIViewController {
         ])
         banner.show()
     }
+    
+    @objc func handleAddFeedbackItemRightTap() {
+        let vc = UINavigationController(rootViewController: FeedbackViewController())
+        self.present(vc, animated: true, completion: nil)
+    }
         
-    @objc func handleNavigationBarRightTap() {
-        let isEvenNumTaps = countEditTaps % 2 == 0
-        feedbackTableView.setEditing(isEvenNumTaps, animated: true)
-        countEditTaps += 1
+    @objc func handleSearchItemRightTap() {
+        searchController.delegate?.willPresentSearchController?(searchController)
     }
     
 }
 
-// MARK: - TableViewDelegate
-extension ViewController: UITableViewDelegate {
+// MARK: - UICollectionView DataSource
+extension ViewController: UICollectionViewDataSource {
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let _ = feedbackTableView.cellForRow(at: indexPath) as! FeedbackTableViewCell
-        var _ = feedbackData[indexPath.row]
-        // TODO: navigate to the messaging page
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            feedbackData.remove(at: indexPath.row)
-            feedbackTableView.deleteRows(at: [indexPath], with: .fade)
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if collectionView == headerCollectionView {
+            return headersData.count
+        } else {
+            return 1
         }
-        tableView.reloadData()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if collectionView == headerCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HeaderCollectionViewCell.reuseID, for: indexPath) as! HeaderCollectionViewCell
+            let header = headersData[indexPath.item]
+            cell.configure(with: header)
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FeedbackCollectionViewCell.reuseIdentifier, for: indexPath) as! FeedbackCollectionViewCell
+            let data = searchController.isActive ? filteredFeedbackData : feedbackData
+            cell.configure(section: isTwoway ? .customerService : .bugsAndRequests, items: data)
+            return cell
+        }
+    }
+        
+}
+
+// MARK: - UICollectionView Delegate
+extension ViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == headerCollectionView {
+            feedbackCollectionView.reloadData()
+        }
     }
     
 }
 
-// MARK: - TableViewDataSource
-extension ViewController: UITableViewDataSource {
+// MARK: - UICollectionView DelegateFlowLayout
+extension ViewController: UICollectionViewDelegateFlowLayout {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return feedbackData.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: FeedbackTableViewCell.reuseID, for: indexPath) as! FeedbackTableViewCell
-        let feedback = feedbackData[indexPath.row]
-        cell.configure(feedback: feedback)
-        cell.selectionStyle = .none
-        return cell
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if collectionView == headerCollectionView {
+            return CGSize(width: (view.frame.width - 60) / 2, height: 40)
+        } else {
+            return CGSize(width: feedbackCollectionView.frame.width, height: feedbackCollectionView.frame.height)
+        }
     }
     
 }
 
-// MARK: - DZNEmptyDataSet
-extension ViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+// MARK: - UISearchController Delegate
+extension ViewController: UISearchControllerDelegate {
     
-    func customView(forEmptyDataSet scrollView: UIScrollView) -> UIView? {
-        return NoMessageView(
-            onPress: {
-                let feedbackViewController = UINavigationController(rootViewController: FeedbackViewController())
-                self.present(feedbackViewController, animated: true, completion: nil)
+    func willDismissSearchController(_ searchController: UISearchController) {
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        setupConstraints()
+    }
+    
+    func willPresentSearchController(_ searchController: UISearchController) {
+        navigationController?.setNavigationBarHidden(true, animated: true)
+        setupSearchingConstraints()
+        present(searchController, animated: true, completion: nil)
+    }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        headerCollectionView.delegate?.collectionView?(self.headerCollectionView, didSelectItemAt: [0,0])
+    }
+    
+}
+
+// MARK: - UISearchResultsUpdating
+extension ViewController: UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text?.lowercased(), !searchText.isEmpty {
+            filteredFeedbackData = feedbackData.filter { feedback in
+                return (feedback.isTwoWay == isTwoway) &&
+                    (feedback.message.lowercased().contains(searchText)
+                        || feedback.title.lowercased().contains(searchText))
             }
-        )
+        }
+        feedbackCollectionView.reloadData()
     }
     
-    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
-        return false
-    }
-    
-    func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {
-        return true
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        feedbackCollectionView.reloadData()
     }
     
 }

@@ -17,12 +17,18 @@
 		228DC1DD23F8A06500DE95E6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228DC1DC23F8A06500DE95E6 /* ViewController.swift */; };
 		228DC1E223F8A06600DE95E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 228DC1E123F8A06600DE95E6 /* Assets.xcassets */; };
 		228DC1E523F8A06600DE95E6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 228DC1E323F8A06600DE95E6 /* LaunchScreen.storyboard */; };
+		7E2B5E48246639DE00C9E1E7 /* FeedbackCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2B5E47246639DE00C9E1E7 /* FeedbackCollectionViewCell.swift */; };
+		7E2B5E4A24663F8E00C9E1E7 /* BugsRequestsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2B5E4924663F8E00C9E1E7 /* BugsRequestsTableViewCell.swift */; };
+		7E2B5E4C24664C8A00C9E1E7 /* CustomerServiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2B5E4B24664C8A00C9E1E7 /* CustomerServiceTableViewCell.swift */; };
+		7E520542246741AB00E9EB9D /* NoResultsEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E520541246741AB00E9EB9D /* NoResultsEmptyStateView.swift */; };
+		7E60FD812464C7E0006A5FC3 /* HeaderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E60FD802464C7E0006A5FC3 /* HeaderCollectionViewCell.swift */; };
 		7E775DE42450FFED00BFAC31 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E775DE32450FFED00BFAC31 /* FeedbackView.swift */; };
 		7EA364532419C6ED00BCDE72 /* NoMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA364522419C6ED00BCDE72 /* NoMessageView.swift */; };
 		7EB3DDBC23FA296600994B68 /* UIFont+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB3DDBB23FA296600994B68 /* UIFont+Extensions.swift */; };
 		7EB3DDBF23FA2C2000994B68 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB3DDBE23FA2C2000994B68 /* UIColor+Extensions.swift */; };
 		7EB5E7E623F8CDB10051F209 /* FeedbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB5E7E523F8CDB10051F209 /* FeedbackTableViewCell.swift */; };
 		7EB5E7E923F8D0AE0051F209 /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB5E7E823F8D0AE0051F209 /* Feedback.swift */; };
+		7EBBFF8D2468486B00DABE4E /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBBFF8C2468486B00DABE4E /* Date+Extensions.swift */; };
 		7EC955132452234000C3E79B /* MaskedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC955122452234000C3E79B /* MaskedButton.swift */; };
 		7ECA085923F8BB6800BBFD51 /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7ECA084B23F8BAB500BBFD51 /* Roboto-BlackItalic.ttf */; };
 		7ECA085A23F8BB6800BBFD51 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7ECA084C23F8BAB500BBFD51 /* Roboto-Bold.ttf */; };
@@ -54,12 +60,18 @@
 		228DC1E423F8A06600DE95E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		228DC1E623F8A06600DE95E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4E295BBE13ECDC2B7EB9A550 /* Pods-SupportClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SupportClient.debug.xcconfig"; path = "Target Support Files/Pods-SupportClient/Pods-SupportClient.debug.xcconfig"; sourceTree = "<group>"; };
+		7E2B5E47246639DE00C9E1E7 /* FeedbackCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackCollectionViewCell.swift; sourceTree = "<group>"; };
+		7E2B5E4924663F8E00C9E1E7 /* BugsRequestsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugsRequestsTableViewCell.swift; sourceTree = "<group>"; };
+		7E2B5E4B24664C8A00C9E1E7 /* CustomerServiceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerServiceTableViewCell.swift; sourceTree = "<group>"; };
+		7E520541246741AB00E9EB9D /* NoResultsEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoResultsEmptyStateView.swift; sourceTree = "<group>"; };
+		7E60FD802464C7E0006A5FC3 /* HeaderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCollectionViewCell.swift; sourceTree = "<group>"; };
 		7E775DE32450FFED00BFAC31 /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
 		7EA364522419C6ED00BCDE72 /* NoMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMessageView.swift; sourceTree = "<group>"; };
 		7EB3DDBB23FA296600994B68 /* UIFont+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
 		7EB3DDBE23FA2C2000994B68 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		7EB5E7E523F8CDB10051F209 /* FeedbackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackTableViewCell.swift; sourceTree = "<group>"; };
 		7EB5E7E823F8D0AE0051F209 /* Feedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feedback.swift; sourceTree = "<group>"; };
+		7EBBFF8C2468486B00DABE4E /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		7EC955122452234000C3E79B /* MaskedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskedButton.swift; sourceTree = "<group>"; };
 		7ECA084923F8BAB500BBFD51 /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
 		7ECA084A23F8BAB500BBFD51 /* Roboto-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Italic.ttf"; sourceTree = "<group>"; };
@@ -136,11 +148,33 @@
 			path = SupportClient;
 			sourceTree = "<group>";
 		};
+		7E52053F2467417F00E9EB9D /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				7E60FD802464C7E0006A5FC3 /* HeaderCollectionViewCell.swift */,
+				7EB5E7E523F8CDB10051F209 /* FeedbackTableViewCell.swift */,
+				7EDA42B22413628B004EB07F /* FileCollectionViewCell.swift */,
+				7E2B5E47246639DE00C9E1E7 /* FeedbackCollectionViewCell.swift */,
+				7E2B5E4924663F8E00C9E1E7 /* BugsRequestsTableViewCell.swift */,
+				7E2B5E4B24664C8A00C9E1E7 /* CustomerServiceTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		7E5205402467418C00E9EB9D /* EmptyStates */ = {
+			isa = PBXGroup;
+			children = (
+				7E520541246741AB00E9EB9D /* NoResultsEmptyStateView.swift */,
+			);
+			path = EmptyStates;
+			sourceTree = "<group>";
+		};
 		7EB3DDBD23FA2A2700994B68 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				7EB3DDBB23FA296600994B68 /* UIFont+Extensions.swift */,
 				7EB3DDBE23FA2C2000994B68 /* UIColor+Extensions.swift */,
+				7EBBFF8C2468486B00DABE4E /* Date+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -148,8 +182,8 @@
 		7EB5E7E423F8CD9A0051F209 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				7EB5E7E523F8CDB10051F209 /* FeedbackTableViewCell.swift */,
-				7EDA42B22413628B004EB07F /* FileCollectionViewCell.swift */,
+				7E5205402467418C00E9EB9D /* EmptyStates */,
+				7E52053F2467417F00E9EB9D /* Cells */,
 				7EA364522419C6ED00BCDE72 /* NoMessageView.swift */,
 				7E775DE32450FFED00BFAC31 /* FeedbackView.swift */,
 				7EC955122452234000C3E79B /* MaskedButton.swift */,
@@ -340,20 +374,26 @@
 				7EDA42B32413628B004EB07F /* FileCollectionViewCell.swift in Sources */,
 				7EDA42B32413628B004EB07F /* ErrorFileCollectionViewCell.swift in Sources */,
 				22374757246773850017F0AB /* Network.swift in Sources */,
+				7E60FD812464C7E0006A5FC3 /* HeaderCollectionViewCell.swift in Sources */,
 				7EB5E7E623F8CDB10051F209 /* FeedbackTableViewCell.swift in Sources */,
 				7EB5E7E923F8D0AE0051F209 /* Feedback.swift in Sources */,
 				7EF44ECB24134A0D00393BE9 /* FeedbackViewController.swift in Sources */,
+				7E2B5E4A24663F8E00C9E1E7 /* BugsRequestsTableViewCell.swift in Sources */,
 				7EB3DDBC23FA296600994B68 /* UIFont+Extensions.swift in Sources */,
 				2237475B246778AE0017F0AB /* AdminRep.swift in Sources */,
 				228DC1D923F8A06500DE95E6 /* AppDelegate.swift in Sources */,
 				223747592467786A0017F0AB /* TwoWayFeedback.swift in Sources */,
+				7E520542246741AB00E9EB9D /* NoResultsEmptyStateView.swift in Sources */,
 				228DC1DB23F8A06500DE95E6 /* SceneDelegate.swift in Sources */,
+				7EBBFF8D2468486B00DABE4E /* Date+Extensions.swift in Sources */,
 				7E775DE42450FFED00BFAC31 /* FeedbackView.swift in Sources */,
 				7EEF774624554F3D00C8D10A /* BannerView.swift in Sources */,
 				7EC955132452234000C3E79B /* MaskedButton.swift in Sources */,
 				2237475F246824FF0017F0AB /* ImageUploader.swift in Sources */,
 				2237475D2467C4560017F0AB /* OneWayFeedback.swift in Sources */,
+				7E2B5E48246639DE00C9E1E7 /* FeedbackCollectionViewCell.swift in Sources */,
 				7EB3DDBF23FA2C2000994B68 /* UIColor+Extensions.swift in Sources */,
+				7E2B5E4C24664C8A00C9E1E7 /* CustomerServiceTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -165,7 +165,6 @@ PODS:
     - BoringSSL-GRPC/Interface (= 0.0.3)
   - BoringSSL-GRPC/Interface (0.0.3)
   - BSImagePicker (3.1.7)
-  - DZNEmptyDataSet (1.8.1)
   - Firebase/CoreOnly (6.23.0):
     - FirebaseCore (= 6.6.7)
   - Firebase/Firestore (6.23.0):
@@ -241,7 +240,6 @@ PODS:
 
 DEPENDENCIES:
   - BSImagePicker
-  - DZNEmptyDataSet (from `https://github.com/cuappdev/DZNEmptyDataSet.git`)
   - Firebase/Firestore
   - Firebase/Storage
   - FirebaseFirestoreSwift
@@ -269,20 +267,10 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
 
-EXTERNAL SOURCES:
-  DZNEmptyDataSet:
-    :git: https://github.com/cuappdev/DZNEmptyDataSet.git
-
-CHECKOUT OPTIONS:
-  DZNEmptyDataSet:
-    :commit: a4a007e7ade7d9711f067f4d6510085fa1d92629
-    :git: https://github.com/cuappdev/DZNEmptyDataSet.git
-
 SPEC CHECKSUMS:
   abseil: 18063d773f5366ff8736a050fe035a28f635fd27
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
   BSImagePicker: 403ef8cd6f45b3fcdd75419e85e1ec11ecb6fdea
-  DZNEmptyDataSet: b94434220f87d9dda46660eb4f07a424778e93b4
   Firebase: 585ae467b3edda6a5444e788fda6888f024d8d6f
   FirebaseAuthInterop: a0f37ae05833af156e72028f648d313f7e7592e9
   FirebaseCore: a2788a0d5f6c1dff17b8f79b4a73654a8d4bfdbd
@@ -301,6 +289,6 @@ SPEC CHECKSUMS:
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
 
-PODFILE CHECKSUM: ed5ddb1d8992c0c7c88c3f2942839ad90acaa6e0
+PODFILE CHECKSUM: 33c039a640764d2062777d822f28adf13a38f43d
 
 COCOAPODS: 1.8.4
