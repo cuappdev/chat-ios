@@ -14,20 +14,30 @@ enum FeedbackType: String, Codable {
     case featureRequest = "Feature Request"
 }
 
-class Feedback: Codable {
+struct Feedback: Codable {
     
+    let adminRep: AdminRep?
     let createdAt: Date
+    let hasRead: Bool?
     let imageUrls: [String]
     let message: String
-    let tag: String
+    let tags: [String]
     let type: FeedbackType
     
-    init(imageUrls: [String], message: String, tag: String, type: FeedbackType) {
+    func isTwoWay() -> Bool {
+        return type == .customerService
+    }
+    
+    init(imageUrls: [String], message: String, tags: [String], type: FeedbackType) {
         self.createdAt = Date()
         self.imageUrls = imageUrls
         self.message = message
-        self.tag = tag
+        self.tags = tags
         self.type = type
+        self.hasRead = self.type == .customerService ? false : nil
+        self.adminRep = nil
     }
     
 }
+
+

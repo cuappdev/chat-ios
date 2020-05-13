@@ -8,9 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		22374757246773850017F0AB /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22374756246773850017F0AB /* Network.swift */; };
-		223747592467786A0017F0AB /* TwoWayFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223747582467786A0017F0AB /* TwoWayFeedback.swift */; };
 		2237475B246778AE0017F0AB /* AdminRep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2237475A246778AE0017F0AB /* AdminRep.swift */; };
-		2237475D2467C4560017F0AB /* OneWayFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2237475C2467C4560017F0AB /* OneWayFeedback.swift */; };
 		2237475F246824FF0017F0AB /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2237475E246824FF0017F0AB /* ImageUploader.swift */; };
 		228DC1D923F8A06500DE95E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228DC1D823F8A06500DE95E6 /* AppDelegate.swift */; };
 		228DC1DB23F8A06500DE95E6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228DC1DA23F8A06500DE95E6 /* SceneDelegate.swift */; };
@@ -48,9 +46,7 @@
 
 /* Begin PBXFileReference section */
 		22374756246773850017F0AB /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
-		223747582467786A0017F0AB /* TwoWayFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoWayFeedback.swift; sourceTree = "<group>"; };
 		2237475A246778AE0017F0AB /* AdminRep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminRep.swift; sourceTree = "<group>"; };
-		2237475C2467C4560017F0AB /* OneWayFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneWayFeedback.swift; sourceTree = "<group>"; };
 		2237475E246824FF0017F0AB /* ImageUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploader.swift; sourceTree = "<group>"; };
 		228DC1D523F8A06500DE95E6 /* SupportClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SupportClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		228DC1D823F8A06500DE95E6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -196,9 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				7EB5E7E823F8D0AE0051F209 /* Feedback.swift */,
-				223747582467786A0017F0AB /* TwoWayFeedback.swift */,
 				2237475A246778AE0017F0AB /* AdminRep.swift */,
-				2237475C2467C4560017F0AB /* OneWayFeedback.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -372,7 +366,7 @@
 				228DC1DD23F8A06500DE95E6 /* ViewController.swift in Sources */,
 				7EA364532419C6ED00BCDE72 /* NoMessageView.swift in Sources */,
 				7EDA42B32413628B004EB07F /* FileCollectionViewCell.swift in Sources */,
-				7EDA42B32413628B004EB07F /* ErrorFileCollectionViewCell.swift in Sources */,
+				7EDA42B32413628B004EB07F /* FileCollectionViewCell.swift in Sources */,
 				22374757246773850017F0AB /* Network.swift in Sources */,
 				7E60FD812464C7E0006A5FC3 /* HeaderCollectionViewCell.swift in Sources */,
 				7EB5E7E623F8CDB10051F209 /* FeedbackTableViewCell.swift in Sources */,
@@ -382,7 +376,6 @@
 				7EB3DDBC23FA296600994B68 /* UIFont+Extensions.swift in Sources */,
 				2237475B246778AE0017F0AB /* AdminRep.swift in Sources */,
 				228DC1D923F8A06500DE95E6 /* AppDelegate.swift in Sources */,
-				223747592467786A0017F0AB /* TwoWayFeedback.swift in Sources */,
 				7E520542246741AB00E9EB9D /* NoResultsEmptyStateView.swift in Sources */,
 				228DC1DB23F8A06500DE95E6 /* SceneDelegate.swift in Sources */,
 				7EBBFF8D2468486B00DABE4E /* Date+Extensions.swift in Sources */,
@@ -390,7 +383,6 @@
 				7EEF774624554F3D00C8D10A /* BannerView.swift in Sources */,
 				7EC955132452234000C3E79B /* MaskedButton.swift in Sources */,
 				2237475F246824FF0017F0AB /* ImageUploader.swift in Sources */,
-				2237475D2467C4560017F0AB /* OneWayFeedback.swift in Sources */,
 				7E2B5E48246639DE00C9E1E7 /* FeedbackCollectionViewCell.swift in Sources */,
 				7EB3DDBF23FA2C2000994B68 /* UIColor+Extensions.swift in Sources */,
 				7E2B5E4C24664C8A00C9E1E7 /* CustomerServiceTableViewCell.swift in Sources */,

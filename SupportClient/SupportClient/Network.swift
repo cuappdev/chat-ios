@@ -17,27 +17,20 @@ class Network {
     private let commonPath = "Patch/data"
     static private let db = Firestore.firestore()
 
-    func addFeedback(images: [UIImage], message: String, tag: String, type: FeedbackType, completion: ((Feedback) -> Void)?) {
+    func addFeedback(images: [UIImage], message: String, tags: [String], type: FeedbackType, completion: ((Feedback) -> Void)?) {
         ImageUploader(images: images).startUploading { urls in
-
             let jsonEncoder = JSONEncoder()
             jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
 
-            var model: Feedback
-            switch type {
-            case .customerService:
-                model = TwoWayFeedback(imageUrls: urls, message: message, tag: tag, type: type)
-            case .bugReport, .featureRequest:
-                model = OneWayFeedback(imageUrls: urls, message: message, tag: tag, type: type)
-            }
+            let feedback = Feedback(imageUrls: urls, message: message, tags: tags, type: type)
 
-            if let data = try? jsonEncoder.encode(model),
+            if let data = try? jsonEncoder.encode(feedback),
                 let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] {
                 Network.db.collection("\(self.commonPath)/Feedback").document().setData(json) { err in
                     if let err = err {
                         print("Error writing document: \(err)")
                     } else {
-                        completion?(model)
+                        completion?(feedback)
                     }
                 }
             }
@@ -53,7 +46,7 @@ class Network {
                 print("Error getting documents: \(err)")
             } else {
                 let feedback = querySnapshot?.documents.compactMap { document -> Feedback? in
-                    if let data = try? JSONSerialization.data(withJSONObject: document.data(), options: []), let feedback = try? jsonDecoder.decode(OneWayFeedback.self, from: data) {
+                    if let data = try? JSONSerialization.data(withJSONObject: document.data(), options: []), let feedback = try? jsonDecoder.decode(Feedback.self, from: data) {
                         return feedback
                     }
                     return nil

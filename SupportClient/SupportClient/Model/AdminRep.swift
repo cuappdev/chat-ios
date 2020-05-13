@@ -9,8 +9,7 @@
 import Foundation
 
 struct AdminRep: Codable {
-    
-    let imageUrl: String
+
     let name: String
 
 }

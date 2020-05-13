@@ -72,9 +72,9 @@ class BugsRequestsTableViewCell: UITableViewCell {
 
     func configure(for item: Feedback) {
         tagsLabel.text = item.tags.isEmpty
-            ? item.type
-            : item.type + "    " + item.tags.joined(separator: "    ")
-        timeLabel.text = item.time.convertToTimestamp()
+            ? item.type.rawValue
+            : item.type.rawValue + "    " + item.tags.joined(separator: "    ")
+        timeLabel.text = item.createdAt.convertToTimestamp()
         messageLabel.text = item.message
     }
     
