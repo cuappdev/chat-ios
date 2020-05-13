@@ -76,6 +76,9 @@ class ViewController: UIViewController {
         let jsonDecoder = JSONDecoder()
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
         
+        let jsonDecoder = JSONDecoder()
+        jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+        
         guard let twoWayJsonData = twoWayFeedbackJson.data(using: .utf8) else { return }
         let twoWayDummyFeedback = try! jsonDecoder.decode(TwoWayFeedback.self, from: twoWayJsonData)
         guard let oneWayJsonData = oneWayFeedbackJson.data(using: .utf8) else { return }

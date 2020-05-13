@@ -14,9 +14,11 @@ enum FeedbackType: String, Codable {
     case featureRequest = "Feature Request"
 }
 
-class Feedback: Codable {
+struct Feedback: Codable {
     
+    let adminRep: AdminRep?
     let createdAt: Date
+    let hasRead: Bool?
     let imageUrls: [String]
     let message: String
     let tags: [String]
@@ -32,6 +34,8 @@ class Feedback: Codable {
         self.message = message
         self.tags = tags
         self.type = type
+        self.hasRead = self.type == .customerService ? false : nil
+        self.adminRep = nil
     }
     
 }
