@@ -20,6 +20,7 @@ class FeedbackCollectionViewCell: UICollectionViewCell {
     private let emptyStateView = NoResultsEmptyStateView()
     private var feedbackSection: FeedbackSection = .customerService
     private var items: [Feedback] = []
+    private var onTapRow: (() -> Void)?
     private let tableView = UITableView()
 
     override init(frame: CGRect) {
@@ -60,11 +61,12 @@ class FeedbackCollectionViewCell: UICollectionViewCell {
         ])
     }
 
-    func configure(section: FeedbackSection, items: [Feedback]) {
+    func configure(section: FeedbackSection, items: [Feedback], onTapRow: (() -> Void)? = nil) {
         self.feedbackSection = section
         self.items = items
         self.tableView.reloadData()
         self.emptyStateView.isHidden = !items.isEmpty
+        self.onTapRow = onTapRow
     }
 
     required init?(coder: NSCoder) {
@@ -79,7 +81,7 @@ extension FeedbackCollectionViewCell: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // TODO: open chat / details
+        onTapRow?()
     }
 
 }

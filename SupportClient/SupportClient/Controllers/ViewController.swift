@@ -261,7 +261,7 @@ extension ViewController: UICollectionViewDataSource {
              TODO: Don't think we rly need this section param. Potentially refactor
              BusRequestsCell and CustomerServiceCell into one
             */
-            cell.configure(section: isTwoway ? .customerService : .bugsAndRequests, items: data)
+            cell.configure(section: isTwoway ? .customerService : .bugsAndRequests, items: data, onTapRow: {navigationController?.pushViewController(OneWayFeedbackDetailViewController(feedback: <#T##Feedback#>), animated: <#T##Bool#>)})
             return cell
         }
     }
