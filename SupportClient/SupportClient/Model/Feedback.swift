@@ -6,19 +6,28 @@
 //  Copyright © 2020 Cornell Appdev. All rights reserved.
 //
 
-// TODO: replace this class once we hook up to database
-
 import Foundation
 
-struct Feedback: Codable {
+enum FeedbackType: String, Codable {
+    case bugReport = "Bug Report"
+    case customerService = "Customer Service"
+    case featureRequest = "Feature Request"
+}
 
-    var adminName: String
-    var hasRead: Bool
-    let isTwoWay: Bool
+class Feedback: Codable {
+    
+    let createdAt: Date
+    let imageUrls: [String]
     let message: String
-    var tags: [String]
-    var time: Date
-    let title: String
-    let type: String
+    let tag: String
+    let type: FeedbackType
+    
+    init(imageUrls: [String], message: String, tag: String, type: FeedbackType) {
+        self.createdAt = Date()
+        self.imageUrls = imageUrls
+        self.message = message
+        self.tag = tag
+        self.type = type
+    }
     
 }
