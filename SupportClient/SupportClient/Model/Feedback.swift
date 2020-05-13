@@ -6,13 +6,19 @@
 //  Copyright © 2020 Cornell Appdev. All rights reserved.
 //
 
+// TODO: replace this class once we hook up to database
 
+import Foundation
 
 struct Feedback: Codable {
-    
+
+    var adminName: String
     var hasRead: Bool
-    var message: String
-    var title: String
-    var isTwoWay: Bool
+    let isTwoWay: Bool
+    let message: String
+    var tags: [String]
+    var time: Date
+    let title: String
+    let type: String
     
 }
