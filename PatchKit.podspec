@@ -22,5 +22,8 @@ Pod::Spec.new do |spec|
   spec.source_files  = "SupportClient/**/*.swift"
   
   spec.dependency "BSImagePicker", "~> 3.1"
+  spec.dependency "Firebase/Firestore"
+  spec.dependency "FirebaseFirestoreSwift"
+  spec.dependency "Firebase/Storage"
 
 end
