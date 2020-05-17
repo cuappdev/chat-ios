@@ -14,16 +14,25 @@ Pod::Spec.new do |spec|
 
   spec.homepage     = "https://github.com/cuappdev/chat-ios"
   spec.license      = "MIT"
-  spec.author             = { "Cornell AppDev" => "team@cornellappdev.com" }
+  spec.author       = { "Cornell AppDev" => "team@cornellappdev.com" }
   spec.platform     = :ios, "13.0"
   spec.swift_version = "5.0"
   
   spec.source       = { :git => "https://github.com/cuappdev/chat-ios.git", :tag => "#{spec.version}" }
-  spec.source_files  = "SupportClient/**/*.swift"
+  spec.source_files  = "SupportClient/SupportClient/**/*.swift"
+  
+  spec.static_framework = true
+  spec.frameworks = "Foudation", "UIKit"
   
   spec.dependency "BSImagePicker", "~> 3.1"
   spec.dependency "Firebase/Firestore"
-  spec.dependency "FirebaseFirestoreSwift"
   spec.dependency "Firebase/Storage"
+  spec.dependency "FirebaseCore"
+  spec.dependency "FirebaseCoreDiagnostics"
+  spec.dependency "FirebaseFirestore"
+  spec.dependency "FirebaseFirestoreSwift"
+  spec.dependency "FirebaseStorage"
+  spec.dependency "GoogleDataTransport"
+  spec.dependency "GoogleDataTransportCCTSupport"
 
 end
