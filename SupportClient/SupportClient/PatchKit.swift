@@ -6,7 +6,8 @@
 //  Copyright © 2020 Cornell Appdev. All rights reserved.
 //
 
-import Firebase
+import FirebaseCore
+import FirebaseFirestore
 
 open class PatchKit {
     
@@ -19,11 +20,11 @@ open class PatchKit {
     public static func configure() {
         let filePath = Bundle.main.path(forResource: "GoogleService-PatchKit", ofType: "plist")
         guard let fileopts = FirebaseOptions(contentsOfFile: filePath!) else {
-            assert(false, "Could not load config file")
+            fatalError("Could not properly local plist file")
         }
         FirebaseApp.configure(name: "PatchKit", options: fileopts)
         guard let app = FirebaseApp.app(name: "PatchKit") else {
-            assert(false, "Could not configure FirebaseApp")
+            fatalError("Could not configure FirebaseApp")
         }
         db = Firestore.firestore(app: app)
     }
