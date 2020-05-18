@@ -21,11 +21,6 @@ class ViewController: UIViewController {
     private let headersData = ["Customer Service", "Bugs & Requests"]
     
     private(set) var countEditTaps: Int = 0
-    
-    // True is the current header is set to Customer Service, false otherwise
-    private var isTwoway: Bool {
-        return headersData[headerCollectionView.indexPathsForSelectedItems?[0].item ?? 0] == "Customer Service"
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -174,7 +169,6 @@ class ViewController: UIViewController {
             feedbackCollectionView.topAnchor.constraint(equalTo: headerCollectionView.bottomAnchor, constant: 5)
         ])
     }
-    
 
     func setupSearchingConstraints() {
         removeViews()
@@ -203,7 +197,6 @@ class ViewController: UIViewController {
         view.addSubview(headerCollectionView)
     }
 
-    
     func setupFeedbackListener() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.animateBanner), name:NSNotification.Name(rawValue: "AnimateBanner"), object: nil)
     }
@@ -258,12 +251,19 @@ extension ViewController: UICollectionViewDataSource {
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FeedbackCollectionViewCell.reuseIdentifier, for: indexPath) as! FeedbackCollectionViewCell
-            let data = searchController.isActive ? (isTwoway ? filteredCustomerServiceData : filteredBugsRequestsData) : (isTwoway ? customerServiceData : bugsRequestsData)
-            /*
-             TODO: Don't think we rly need this section param. Potentially refactor
-             BusRequestsCell and CustomerServiceCell into one
-            */
-            cell.configure(section: isTwoway ? .customerService : .bugsAndRequests, items: data)
+
+            if indexPath.row == 0 {
+                let data = searchController.isActive ? filteredCustomerServiceData : customerServiceData
+                /*
+                 TODO: Don't think we rly need this section param. Potentially refactor
+                 BusRequestsCell and CustomerServiceCell into one
+                */
+                cell.configure(section: .customerService, items: data)
+            } else {
+                let data = searchController.isActive ? filteredBugsRequestsData : bugsRequestsData
+                cell.configure(section: .bugsAndRequests, items: data)
+            }
+
             return cell
         }
     }
@@ -275,7 +275,7 @@ extension ViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == headerCollectionView {
-            feedbackCollectionView.reloadData()
+            feedbackCollectionView.scrollToItem(at: indexPath, at: [], animated: true)
         }
     }
     

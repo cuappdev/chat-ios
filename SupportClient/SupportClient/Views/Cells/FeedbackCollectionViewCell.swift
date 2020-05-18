@@ -34,6 +34,7 @@ class FeedbackCollectionViewCell: UICollectionViewCell {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
         tableView.register(BugsRequestsTableViewCell.self, forCellReuseIdentifier: BugsRequestsTableViewCell.reuseIdentifier)
         tableView.register(CustomerServiceTableViewCell.self, forCellReuseIdentifier: CustomerServiceTableViewCell.reuseIdentifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
