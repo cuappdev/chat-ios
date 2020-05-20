@@ -13,7 +13,8 @@ class ViewController: UIViewController {
     private var headerCollectionView: UICollectionView!
     private var feedbackCollectionView: UICollectionView!
     private let searchController = UISearchController(searchResultsController: nil) // TODO: For later
-        
+    private let titleLabel = UILabel()
+    
     private var bugsRequestsData = [Feedback]()
     private var customerServiceData = [Feedback]()
     private var filteredBugsRequestsData = [Feedback]()
@@ -35,9 +36,15 @@ class ViewController: UIViewController {
         setupHeaderCollectionView()
         setupFeedbackCollectionView()
         setupSearchController()
+        setupTitleLabel()
         setupConstraints()
         setupFeedbackListener()
         setDefaultHeaderCell()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        removeBottomOfNavBar()
     }
     
     deinit {
@@ -87,16 +94,11 @@ class ViewController: UIViewController {
     
     func setupNavigationBar() {
         navigationController?.navigationBar.barTintColor = .white
-        navigationController?.navigationBar.prefersLargeTitles = true
-        let attributes = [
-            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 32),
-            NSAttributedString.Key.foregroundColor: UIColor.black
-        ]
-        let attributedTitle = NSAttributedString(string: "Feedback", attributes: attributes)
-        title = attributedTitle.string
+        removeBottomOfNavBar()
+
         // Set navigation bar items
-        navigationItem.backBarButtonItem = UIBarButtonItem(
-            image: UIImage(named: "back"),
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(named: "back")?.withTintColor(.black),
             style: .plain,
             target: nil,
             action: nil
@@ -156,12 +158,29 @@ class ViewController: UIViewController {
         searchController.obscuresBackgroundDuringPresentation = false
     }
     
+    func setupTitleLabel() {
+        let attributes = [
+            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 32),
+            NSAttributedString.Key.foregroundColor: UIColor.black
+        ]
+        let attributedTitle = NSAttributedString(string: "Feedback", attributes: attributes)
+        titleLabel.attributedText = attributedTitle
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(titleLabel)
+    }
+    
     func setupConstraints() {
         removeViews()
         NSLayoutConstraint.activate([
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24)
+        ])
+
+        NSLayoutConstraint.activate([
             headerCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30),
             headerCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
-            headerCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
+            headerCollectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 18),
             headerCollectionView.heightAnchor.constraint(equalToConstant: 40)
         ])
 

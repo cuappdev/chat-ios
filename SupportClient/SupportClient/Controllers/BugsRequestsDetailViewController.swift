@@ -20,6 +20,8 @@ class BugsRequestsDetailViewController: UIViewController {
         title = "Bug Report ° UX/UI"
         view.backgroundColor = .white
         
+        addBottomOfNavBar()
+        
         setupScrollView()
         setupMessageTextView()
         setupTimesLabel()
@@ -27,8 +29,14 @@ class BugsRequestsDetailViewController: UIViewController {
         setupConstraints()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addBottomOfNavBar()
+    }
+    
     func setupScrollView() {
         scrollView.contentInset = UIEdgeInsets(top: 20, left: 24, bottom: 20, right: 24)
+        scrollView.contentSize.width = UIScreen.main.bounds.width
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(scrollView)
     }
@@ -57,21 +65,21 @@ class BugsRequestsDetailViewController: UIViewController {
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.widthAnchor.constraint(equalToConstant: view.frame.width),
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
         NSLayoutConstraint.activate([
             timeLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            timeLabel.topAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.topAnchor),
+            timeLabel.topAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.topAnchor, constant: 20),
             timeLabel.trailingAnchor.constraint(lessThanOrEqualTo: scrollView.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
             messageLabel.leadingAnchor.constraint(equalTo: timeLabel.leadingAnchor),
             messageLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 12),
-            messageLabel.trailingAnchor.constraint(lessThanOrEqualTo: scrollView.trailingAnchor)
+            messageLabel.trailingAnchor.constraint(lessThanOrEqualTo: scrollView.trailingAnchor),
+            messageLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 48)
         ])
     }
 }
