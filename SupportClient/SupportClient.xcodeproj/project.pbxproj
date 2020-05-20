@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		221BDFA3246BF75500F97218 /* BugsRequestsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221BDFA2246BF75500F97218 /* BugsRequestsDetailViewController.swift */; };
 		22374757246773850017F0AB /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22374756246773850017F0AB /* Network.swift */; };
 		2237475B246778AE0017F0AB /* AdminRep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2237475A246778AE0017F0AB /* AdminRep.swift */; };
 		2237475F246824FF0017F0AB /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2237475E246824FF0017F0AB /* ImageUploader.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		221BDFA2246BF75500F97218 /* BugsRequestsDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugsRequestsDetailViewController.swift; sourceTree = "<group>"; };
 		22374756246773850017F0AB /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		2237475A246778AE0017F0AB /* AdminRep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminRep.swift; sourceTree = "<group>"; };
 		2237475E246824FF0017F0AB /* ImageUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploader.swift; sourceTree = "<group>"; };
@@ -235,7 +237,7 @@
 			children = (
 				228DC1DC23F8A06500DE95E6 /* ViewController.swift */,
 				7EF44ECA24134A0D00393BE9 /* FeedbackViewController.swift */,
-				221BDFA2246BF75500F97218 /* OneWayFeedbackDetailViewController.swift */,
+				221BDFA2246BF75500F97218 /* BugsRequestsDetailViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -372,7 +374,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				221BDFA3246BF75500F97218 /* OneWayFeedbackDetailViewController.swift in Sources */,
+				221BDFA3246BF75500F97218 /* BugsRequestsDetailViewController.swift in Sources */,
 				228DC1DD23F8A06500DE95E6 /* ViewController.swift in Sources */,
 				7EA364532419C6ED00BCDE72 /* NoMessageView.swift in Sources */,
 				7EDA42B32413628B004EB07F /* FileCollectionViewCell.swift in Sources */,
