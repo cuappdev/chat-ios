@@ -14,9 +14,11 @@ class ViewController: UIViewController {
     private var feedbackCollectionView: UICollectionView!
     private let searchController = UISearchController(searchResultsController: nil) // TODO: For later
         
+    private var bugsRequestsData = [Feedback]()
+    private var customerServiceData = [Feedback]()
+    private var filteredBugsRequestsData = [Feedback]()
+    private var filteredCustomerServiceData = [Feedback]()
     private let headersData = ["Customer Service", "Bugs & Requests"]
-    private var feedbackData = [Feedback]()
-    private var filteredFeedbackData = [Feedback]()
     
     private(set) var countEditTaps: Int = 0
     
@@ -46,23 +48,41 @@ class ViewController: UIViewController {
     // This is dummy data for testing
     // Add variables to feedbackData to show the tableView + editing functionality
     func setupData() {
-        let jsonString = """
+        let twoWayFeedbackJson = """
         {
-            "adminName" : "Admin Name",
-            "hasRead" : false,
-            "isTwoWay" : true,
+            "admin_rep" : {
+                "name": "Admin Name"
+            },
+            "has_read" : false,
             "message" : "This app sometimes glitches out on me and shows the wrong bus times",
             "tags" : [],
-            "time" : 1589112659,
+            "image_urls": [],
+            "created_at" : 1589112659,
+            "title" : "Ithaca Transit Bug",
+            "type" : "Customer Service"
+        }
+        """
+        let oneWayFeedbackJson = """
+        {
+            "message" : "This app sometimes glitches out on me and shows the wrong bus times",
+            "tags" : [],
+            "image_urls": [],
+            "created_at" : 1589112659,
             "title" : "Ithaca Transit Bug",
             "type" : "Customer Service"
         }
         """
         
-        guard let jsonData = jsonString.data(using: .utf8) else { return }
-        let dummyFeedback = try! JSONDecoder().decode(Feedback.self, from: jsonData)
+        let jsonDecoder = JSONDecoder()
+        jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
         
-        feedbackData = [dummyFeedback, dummyFeedback]
+        guard let twoWayJsonData = twoWayFeedbackJson.data(using: .utf8) else { return }
+        let twoWayDummyFeedback = try! jsonDecoder.decode(TwoWayFeedback.self, from: twoWayJsonData)
+        guard let oneWayJsonData = oneWayFeedbackJson.data(using: .utf8) else { return }
+        let oneWayDummyFeedback = try! jsonDecoder.decode(OneWayFeedback.self, from: oneWayJsonData)
+        
+        bugsRequestsData = [oneWayDummyFeedback, oneWayDummyFeedback]
+        customerServiceData = [twoWayDummyFeedback, twoWayDummyFeedback]
     }
     
     func setupNavigationBar() {
@@ -236,7 +256,11 @@ extension ViewController: UICollectionViewDataSource {
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FeedbackCollectionViewCell.reuseIdentifier, for: indexPath) as! FeedbackCollectionViewCell
-            let data = searchController.isActive ? filteredFeedbackData : feedbackData
+            let data = searchController.isActive ? (isTwoway ? filteredCustomerServiceData : filteredBugsRequestsData) : (isTwoway ? customerServiceData : bugsRequestsData)
+            /*
+             TODO: Don't think we rly need this section param. Potentially refactor
+             BusRequestsCell and CustomerServiceCell into one
+            */
             cell.configure(section: isTwoway ? .customerService : .bugsAndRequests, items: data)
             return cell
         }
@@ -293,10 +317,13 @@ extension ViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text?.lowercased(), !searchText.isEmpty {
-            filteredFeedbackData = feedbackData.filter { feedback in
-                return (feedback.isTwoWay == isTwoway) &&
-                    (feedback.message.lowercased().contains(searchText)
-                        || feedback.title.lowercased().contains(searchText))
+            filteredBugsRequestsData = bugsRequestsData.filter { feedback in
+                return (feedback.isTwoWay() == isTwoway) &&
+                    feedback.message.lowercased().contains(searchText)
+            }
+            filteredCustomerServiceData = customerServiceData.filter { feedback in
+                return (feedback.isTwoWay() == isTwoway) &&
+                    feedback.message.lowercased().contains(searchText)
             }
         }
         feedbackCollectionView.reloadData()

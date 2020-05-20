@@ -108,9 +108,9 @@ class CustomerServiceTableViewCell: UITableViewCell {
         ])
     }
 
-    func configure(for item: Feedback) {
-        nameLabel.text = item.adminName
-        timeLabel.text = item.time.convertToTimestamp()
+    func configure(for item: TwoWayFeedback) {
+        nameLabel.text = item.adminRep?.name
+        timeLabel.text = item.createdAt.convertToTimestamp()
         messageLabel.text = item.message
         unreadImageView.isHidden = item.hasRead
     }
