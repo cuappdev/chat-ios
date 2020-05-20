@@ -372,7 +372,6 @@
 				228DC1DD23F8A06500DE95E6 /* ViewController.swift in Sources */,
 				7EA364532419C6ED00BCDE72 /* NoMessageView.swift in Sources */,
 				7EDA42B32413628B004EB07F /* FileCollectionViewCell.swift in Sources */,
-				7EDA42B32413628B004EB07F /* FileCollectionViewCell.swift in Sources */,
 				22374757246773850017F0AB /* Network.swift in Sources */,
 				7E60FD812464C7E0006A5FC3 /* HeaderCollectionViewCell.swift in Sources */,
 				7EB5E7E623F8CDB10051F209 /* FeedbackTableViewCell.swift in Sources */,

@@ -23,9 +23,10 @@ class Network {
             jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
 
             var model: Feedback
-            if type == .customerService {
+            switch type {
+            case .customerService:
                 model = TwoWayFeedback(imageUrls: urls, message: message, tags: tags, type: type)
-            } else {
+            case .bugReport, .featureRequest:
                 model = OneWayFeedback(imageUrls: urls, message: message, tags: tags, type: type)
             }
 
