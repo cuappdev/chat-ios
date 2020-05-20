@@ -30,13 +30,13 @@ class Network {
                 model = OneWayFeedback(imageUrls: urls, message: message, tags: tags, type: type)
             }
 
-            if let data = try? jsonEncoder.encode(feedback),
+            if let data = try? jsonEncoder.encode(model),
                 let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] {
                 Network.db.collection("\(self.commonPath)/Feedback").document().setData(json) { err in
                     if let err = err {
                         print("Error writing document: \(err)")
                     } else {
-                        completion?(feedback)
+                        completion?(model)
                     }
                 }
             }
