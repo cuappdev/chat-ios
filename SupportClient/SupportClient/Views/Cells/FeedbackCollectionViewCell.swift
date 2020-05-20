@@ -94,14 +94,18 @@ extension FeedbackCollectionViewCell: UITableViewDataSource {
         switch feedbackSection {
         case .customerService:
             let cell = tableView.dequeueReusableCell(withIdentifier: CustomerServiceTableViewCell.reuseIdentifier, for: indexPath) as! CustomerServiceTableViewCell
-            cell.configure(for: items[indexPath.row])
+            if let feedback = items[indexPath.row] as? TwoWayFeedback {
+                cell.configure(for: feedback)
+            }
             cell.selectionStyle = .none
 
             return cell
             
         case .bugsAndRequests:
             let cell = tableView.dequeueReusableCell(withIdentifier: BugsRequestsTableViewCell.reuseIdentifier, for: indexPath) as! BugsRequestsTableViewCell
-            cell.configure(for: items[indexPath.row])
+            if let feedback = items[indexPath.row] as? OneWayFeedback {
+                cell.configure(for: feedback)
+            }
             cell.selectionStyle = .none
 
             return cell

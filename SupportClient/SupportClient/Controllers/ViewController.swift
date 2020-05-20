@@ -53,7 +53,7 @@ class ViewController: UIViewController {
             "admin_rep" : {
                 "name": "Admin Name"
             },
-            "hasRead" : false,
+            "has_read" : false,
             "message" : "This app sometimes glitches out on me and shows the wrong bus times",
             "tags" : [],
             "image_urls": [],
@@ -77,9 +77,9 @@ class ViewController: UIViewController {
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
         
         guard let twoWayJsonData = twoWayFeedbackJson.data(using: .utf8) else { return }
-        let twoWayDummyFeedback = try! jsonDecoder.decode(Feedback.self, from: twoWayJsonData)
+        let twoWayDummyFeedback = try! jsonDecoder.decode(TwoWayFeedback.self, from: twoWayJsonData)
         guard let oneWayJsonData = oneWayFeedbackJson.data(using: .utf8) else { return }
-        let oneWayDummyFeedback = try! jsonDecoder.decode(Feedback.self, from: oneWayJsonData)
+        let oneWayDummyFeedback = try! jsonDecoder.decode(OneWayFeedback.self, from: oneWayJsonData)
         
         bugsRequestsData = [oneWayDummyFeedback, oneWayDummyFeedback]
         customerServiceData = [twoWayDummyFeedback, twoWayDummyFeedback]
@@ -319,13 +319,11 @@ extension ViewController: UISearchResultsUpdating {
         if let searchText = searchController.searchBar.text?.lowercased(), !searchText.isEmpty {
             filteredBugsRequestsData = bugsRequestsData.filter { feedback in
                 return (feedback.isTwoWay() == isTwoway) &&
-                    (feedback.message.lowercased().contains(searchText)
-                        || feedback.message.lowercased().contains(searchText))
+                    feedback.message.lowercased().contains(searchText)
             }
             filteredCustomerServiceData = customerServiceData.filter { feedback in
                 return (feedback.isTwoWay() == isTwoway) &&
-                    (feedback.message.lowercased().contains(searchText)
-                        || feedback.message.lowercased().contains(searchText))
+                    feedback.message.lowercased().contains(searchText)
             }
         }
         feedbackCollectionView.reloadData()

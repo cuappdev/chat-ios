@@ -22,15 +22,20 @@ class Network {
             let jsonEncoder = JSONEncoder()
             jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
 
-            let feedback = Feedback(imageUrls: urls, message: message, tags: tags, type: type)
+            var model: Feedback
+            if type == .customerService {
+                model = TwoWayFeedback(imageUrls: urls, message: message, tags: tags, type: type)
+            } else {
+                model = OneWayFeedback(imageUrls: urls, message: message, tags: tags, type: type)
+            }
 
-            if let data = try? jsonEncoder.encode(feedback),
+            if let data = try? jsonEncoder.encode(model),
                 let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] {
                 Network.db.collection("\(self.commonPath)/Feedback").document().setData(json) { err in
                     if let err = err {
                         print("Error writing document: \(err)")
                     } else {
-                        completion?(feedback)
+                        completion?(model)
                     }
                 }
             }
@@ -46,7 +51,8 @@ class Network {
                 print("Error getting documents: \(err)")
             } else {
                 let feedback = querySnapshot?.documents.compactMap { document -> Feedback? in
-                    if let data = try? JSONSerialization.data(withJSONObject: document.data(), options: []), let feedback = try? jsonDecoder.decode(Feedback.self, from: data) {
+                    let model = document.data()["has_read"] != nil ? TwoWayFeedback.self : OneWayFeedback.self
+                    if let data = try? JSONSerialization.data(withJSONObject: document.data(), options: []), let feedback = try? jsonDecoder.decode(model, from: data) {
                         return feedback
                     }
                     return nil
