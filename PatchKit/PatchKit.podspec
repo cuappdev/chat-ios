@@ -30,7 +30,7 @@ DESC
   s.ios.deployment_target = '13.0'
 
   s.source_files = 'PatchKit/Classes/**/*'
-  s.resources = 'PatchKit/Assets/**/*'
+  # s.resources = 'PatchKit/Assets/**/*'
   
   s.static_framework = true
   s.frameworks = 'UIKit'
