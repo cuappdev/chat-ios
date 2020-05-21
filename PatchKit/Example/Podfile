@@ -11,9 +11,4 @@ target 'PatchKit_Example' do
   pod 'FirebaseFirestoreSwift'
   pod 'Firebase/Storage'
   
-  target 'PatchKit_Tests' do
-    inherit! :search_paths
-
-    
-  end
 end
