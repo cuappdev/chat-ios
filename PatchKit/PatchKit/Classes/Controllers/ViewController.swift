@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TestViewController: UIViewController {
+public class TestViewController: UIViewController {
     
     private var headerCollectionView: UICollectionView!
     private var feedbackCollectionView: UICollectionView!
@@ -25,7 +25,7 @@ class TestViewController: UIViewController {
         return headersData[headerCollectionView.indexPathsForSelectedItems?[0].item ?? 0] == "Customer Service"
     }
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ._backgroundColor
         setupData()
@@ -208,7 +208,7 @@ class TestViewController: UIViewController {
 // MARK: - UICollectionView DataSource
 extension TestViewController: UICollectionViewDataSource {
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == headerCollectionView {
             return headersData.count
         } else {
@@ -216,7 +216,7 @@ extension TestViewController: UICollectionViewDataSource {
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == headerCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HeaderCollectionViewCell.reuseID, for: indexPath) as! HeaderCollectionViewCell
             let header = headersData[indexPath.item]
@@ -232,7 +232,7 @@ extension TestViewController: UICollectionViewDataSource {
 // MARK: - UICollectionView Delegate
 extension TestViewController: UICollectionViewDelegate {
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == feedbackCollectionView {
             // TODO: if two way communication, open up chat
         }
@@ -243,7 +243,7 @@ extension TestViewController: UICollectionViewDelegate {
 // MARK: - UICollectionView DelegateFlowLayout
 extension TestViewController: UICollectionViewDelegateFlowLayout {
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == headerCollectionView {
             return CGSize(width: (view.frame.width - 60) / 2, height: 40)
         } else {
@@ -256,18 +256,18 @@ extension TestViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - UISearchController Delegate
 extension TestViewController: UISearchControllerDelegate {
     
-    func willDismissSearchController(_ searchController: UISearchController) {
+    public func willDismissSearchController(_ searchController: UISearchController) {
         navigationController?.setNavigationBarHidden(false, animated: true)
         setupConstraints()
     }
     
-    func willPresentSearchController(_ searchController: UISearchController) {
+    public func willPresentSearchController(_ searchController: UISearchController) {
         navigationController?.setNavigationBarHidden(true, animated: true)
         setupSearchingConstraints()
         present(searchController, animated: true, completion: nil)
     }
     
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         headerCollectionView.delegate?.collectionView?(self.headerCollectionView, didSelectItemAt: [0,0])
     }
     
@@ -276,7 +276,7 @@ extension TestViewController: UISearchControllerDelegate {
 // MARK: - UISearchResultsUpdating
 extension TestViewController: UISearchResultsUpdating {
     
-    func updateSearchResults(for searchController: UISearchController) {
+    public func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text?.lowercased(), !searchText.isEmpty {
             filteredFeedbackData = feedbackData.filter { feedback in
                 return (feedback.isTwoWay == isTwoway) &&

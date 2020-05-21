@@ -11,11 +11,27 @@ import PatchKit
 
 class ViewController: UIViewController {
     
+    let button = UIButton()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view, typically from a nib.
+        view.backgroundColor = .white
+        
+        button.setTitle("Press for portal", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.addTarget(self, action: #selector(presentPortal), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(button)
+        
+        NSLayoutConstraint.activate([
+            button.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            button.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+    }
+    
+    @objc func presentPortal() {
+        navigationController?.pushViewController(TestViewController(), animated: true)
     }
 
     override func didReceiveMemoryWarning() {
