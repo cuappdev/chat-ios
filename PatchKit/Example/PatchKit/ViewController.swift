@@ -10,11 +10,12 @@ import UIKit
 import PatchKit
 
 class ViewController: UIViewController {
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        navigationController?.pushViewController(FeedbackViewController(), animated: true)
         // Do any additional setup after loading the view, typically from a nib.
     }
 

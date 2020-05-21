@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class TestViewController: UIViewController {
     
     private var headerCollectionView: UICollectionView!
     private var feedbackCollectionView: UICollectionView!
@@ -206,7 +206,7 @@ class ViewController: UIViewController {
 }
 
 // MARK: - UICollectionView DataSource
-extension ViewController: UICollectionViewDataSource {
+extension TestViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == headerCollectionView {
@@ -230,7 +230,7 @@ extension ViewController: UICollectionViewDataSource {
 }
 
 // MARK: - UICollectionView Delegate
-extension ViewController: UICollectionViewDelegate {
+extension TestViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == feedbackCollectionView {
@@ -241,7 +241,7 @@ extension ViewController: UICollectionViewDelegate {
 }
 
 // MARK: - UICollectionView DelegateFlowLayout
-extension ViewController: UICollectionViewDelegateFlowLayout {
+extension TestViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == headerCollectionView {
@@ -254,7 +254,7 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
 }
 
 // MARK: - UISearchController Delegate
-extension ViewController: UISearchControllerDelegate {
+extension TestViewController: UISearchControllerDelegate {
     
     func willDismissSearchController(_ searchController: UISearchController) {
         navigationController?.setNavigationBarHidden(false, animated: true)
@@ -274,7 +274,7 @@ extension ViewController: UISearchControllerDelegate {
 }
 
 // MARK: - UISearchResultsUpdating
-extension ViewController: UISearchResultsUpdating {
+extension TestViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text?.lowercased(), !searchText.isEmpty {

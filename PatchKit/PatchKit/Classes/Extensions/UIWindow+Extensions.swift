@@ -71,7 +71,7 @@ extension UIWindow {
                 break
             }
         }
-        return root?.isKind(of: ViewController.self) ?? false || root?.isKind(of: FeedbackViewController.self) ?? false
+        return root?.isKind(of: TestViewController.self) ?? false || root?.isKind(of: FeedbackViewController.self) ?? false
     }
     
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 /**
  A custom BannerView Class
  This displays a notification from the top of the screen with the
