@@ -70,7 +70,7 @@ class BugsRequestsTableViewCell: UITableViewCell {
         ])
     }
 
-    func configure(for item: Feedback) {
+    func configure(for item: OneWayFeedback) {
         tagsLabel.text = item.tags.isEmpty
             ? item.type.rawValue
             : item.type.rawValue + "    " + item.tags.joined(separator: "    ")

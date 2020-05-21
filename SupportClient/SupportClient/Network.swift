@@ -5,15 +5,14 @@
 //  Created by Omar Rasheed on 5/9/20.
 //  Copyright © 2020 Cornell Appdev. All rights reserved.
 //
-
 import Firebase
 import FirebaseFirestore
 import Foundation
 
 class Network {
-    
+
     static let shared = Network()
-    
+
     private let commonPath = "Patch/data"
     static private let db = Firestore.firestore()
 
@@ -22,21 +21,27 @@ class Network {
             let jsonEncoder = JSONEncoder()
             jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
 
-            let feedback = Feedback(imageUrls: urls, message: message, tags: tags, type: type)
+            var model: Feedback
+            switch type {
+            case .customerService:
+                model = TwoWayFeedback(imageUrls: urls, message: message, tags: tags, type: type)
+            case .bugReport, .featureRequest:
+                model = OneWayFeedback(imageUrls: urls, message: message, tags: tags, type: type)
+            }
 
-            if let data = try? jsonEncoder.encode(feedback),
+            if let data = try? jsonEncoder.encode(model),
                 let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] {
                 Network.db.collection("\(self.commonPath)/Feedback").document().setData(json) { err in
                     if let err = err {
                         print("Error writing document: \(err)")
                     } else {
-                        completion?(feedback)
+                        completion?(model)
                     }
                 }
             }
         }
     }
-    
+
     func getFeedback(completion: @escaping (([Feedback]) -> Void)) {
         let jsonDecoder = JSONDecoder()
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -46,7 +51,8 @@ class Network {
                 print("Error getting documents: \(err)")
             } else {
                 let feedback = querySnapshot?.documents.compactMap { document -> Feedback? in
-                    if let data = try? JSONSerialization.data(withJSONObject: document.data(), options: []), let feedback = try? jsonDecoder.decode(Feedback.self, from: data) {
+                    let model = document.data()["has_read"] != nil ? TwoWayFeedback.self : OneWayFeedback.self
+                    if let data = try? JSONSerialization.data(withJSONObject: document.data(), options: []), let feedback = try? jsonDecoder.decode(model, from: data) {
                         return feedback
                     }
                     return nil
@@ -57,7 +63,7 @@ class Network {
             }
         }
     }
-    
+
     func getTags(completion: @escaping (([String]) -> Void)) {
         Network.db.collection("Patch").getDocuments() { (querySnapshot, err) in
             if let err = err {
@@ -70,5 +76,5 @@ class Network {
             }
         }
     }
-    
+
 }
