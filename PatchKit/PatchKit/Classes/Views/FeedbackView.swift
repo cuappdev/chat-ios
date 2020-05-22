@@ -77,7 +77,7 @@ class FeedbackView: UIView {
         addFileButton.layer.cornerRadius = 8
         addFileButton.layer.borderWidth = 0.75
         addFileButton.layer.borderColor = UIColor._darkGray.cgColor
-        let image = UIImage(named: "plus")?.withTintColor(._darkGray)
+        let image = UIImage(named: "plus", in: PatchKitImages.resourceBundle, compatibleWith: nil)?.withTintColor(._darkGray)
         addFileButton.setImage(image, for: .normal)
         addFileButton.addTarget(self, action: #selector(addFiles(_:)), for: .touchUpInside)
         addSubview(addFileButton)
@@ -401,7 +401,7 @@ extension FeedbackView: UIPickerViewDelegate {
         pickerView.reloadAllComponents()
         // Add checkmark to the selected row
         guard let label = pickerView.view(forRow: row, forComponent: component) as? UILabel else { return }
-        let checkMarkImage = UIImage(named: "checkmark")
+        let checkMarkImage = UIImage(named: "checkmark", in: PatchKitImages.resourceBundle, compatibleWith: nil)
         let checkMarkView = UIImageView(frame: CGRect(x: label.frame.width - 40, y: label.frame.height / 2 - 5.5, width: 15, height: 11))
         checkMarkView.image = checkMarkImage
         label.addSubview(checkMarkView)

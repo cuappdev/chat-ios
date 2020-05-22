@@ -51,12 +51,13 @@ class CustomerServiceTableViewCell: UITableViewCell {
         profileBackground.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(profileBackground)
 
-        profileImageView.image = UIImage(named: "sloth")
+        
+        profileImageView.image = UIImage(named: "sloth", in: PatchKitImages.resourceBundle, compatibleWith: nil)
         profileImageView.contentMode = .scaleAspectFit
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(profileImageView)
 
-        unreadImageView.image = UIImage(named: "unreadDot")
+        unreadImageView.image = UIImage(named: "unreadDot", in: PatchKitImages.resourceBundle, compatibleWith: nil)
         unreadImageView.contentMode = .scaleAspectFit
         unreadImageView.isHidden = true
         unreadImageView.translatesAutoresizingMaskIntoConstraints = false

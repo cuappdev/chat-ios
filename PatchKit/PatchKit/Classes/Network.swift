@@ -6,7 +6,6 @@
 //  Copyright © 2020 Cornell Appdev. All rights reserved.
 //
 
-import Firebase
 import FirebaseFirestore
 import Foundation
 

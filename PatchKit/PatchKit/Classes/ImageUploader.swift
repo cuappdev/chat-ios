@@ -6,8 +6,7 @@
 //  Copyright © 2020 Cornell Appdev. All rights reserved.
 //
 
-import Firebase
-import FirebaseFirestore
+import FirebaseStorage
 
 /// Escaping field is an array of urls
 typealias FileCompletion = ([String]) -> Void

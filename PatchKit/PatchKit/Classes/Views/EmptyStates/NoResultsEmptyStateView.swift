@@ -11,7 +11,7 @@ import UIKit
 class NoResultsEmptyStateView: UIView {
 
     private let emptyStateDescriptionLabel = UILabel()
-    private let emptyStateImageView = UIImageView(image: UIImage(named: "noResults"))
+    private let emptyStateImageView = UIImageView(image: UIImage(named: "noResults", in: PatchKitImages.resourceBundle, compatibleWith: nil))
     private let emptyStateTitleLabel = UILabel()
 
     override init(frame: CGRect) {

@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     }
     
     @objc func presentPortal() {
-        navigationController?.pushViewController(TestViewController(), animated: true)
+        navigationController?.pushViewController(PortalViewController(), animated: true)
     }
 
     override func didReceiveMemoryWarning() {

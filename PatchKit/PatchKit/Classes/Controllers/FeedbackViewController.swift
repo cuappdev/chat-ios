@@ -31,7 +31,7 @@ class FeedbackViewController: UIViewController {
     func setupNavigationBar() {
         navigationController?.navigationBar.barTintColor = ._lightGray
         let attributes = [
-            NSAttributedString.Key.font: UIFont._21RobotoMedium!,
+            NSAttributedString.Key.font: UIFont._21RobotoMedium,
             NSAttributedString.Key.foregroundColor: UIColor._darkGray
         ]
         let attributedTitle = NSAttributedString(string: "Submit Feedback", attributes: attributes)

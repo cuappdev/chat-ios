@@ -32,7 +32,7 @@ class FeedbackTableViewCell: UITableViewCell {
     
     func setUpUnreadImage() {
         unreadImageView.translatesAutoresizingMaskIntoConstraints = false
-        unreadImageView.image = UIImage(named: "unreadDot")
+        unreadImageView.image = UIImage(named: "unreadDot", in: PatchKitImages.resourceBundle, compatibleWith: nil)
         unreadImageView.contentMode = .scaleAspectFit
         unreadImageView.isHidden = true
         contentView.addSubview(unreadImageView)
