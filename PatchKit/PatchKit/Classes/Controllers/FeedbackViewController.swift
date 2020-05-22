@@ -15,12 +15,12 @@ protocol FeedbackViewDelegate: class {
     func checkStatus(with status: Status)
 }
 
-public class FeedbackViewController: UIViewController {
+class FeedbackViewController: UIViewController {
     
     private let outerScrollView = UIScrollView()
     private var feedbackView: FeedbackView!
                 
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ._lightGray
         setupNavigationBar()

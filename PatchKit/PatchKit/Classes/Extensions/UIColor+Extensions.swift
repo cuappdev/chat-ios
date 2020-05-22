@@ -18,6 +18,7 @@ extension UIColor {
     @nonobjc static let _mediumGray = UIColor(white: 216/255, alpha: 1)
     @nonobjc static let _darkGray = UIColor(white: 88/255, alpha: 1)
     @nonobjc static let _textGray = UIColor(white: 142/255, alpha: 1)
+    @nonobjc static let _textBlack = UIColor(white: 40/255, alpha: 1)
     
 }
 

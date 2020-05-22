@@ -8,15 +8,17 @@
 
 import UIKit
 
-public class TestViewController: UIViewController {
-    
+class ViewController: UIViewController {
+
     private var headerCollectionView: UICollectionView!
     private var feedbackCollectionView: UICollectionView!
     private let searchController = UISearchController(searchResultsController: nil) // TODO: For later
         
+    private var bugsRequestsData = [Feedback]()
+    private var customerServiceData = [Feedback]()
+    private var filteredBugsRequestsData = [Feedback]()
+    private var filteredCustomerServiceData = [Feedback]()
     private let headersData = ["Customer Service", "Bugs & Requests"]
-    private var feedbackData = [Feedback]()
-    private var filteredFeedbackData = [Feedback]()
     
     private(set) var countEditTaps: Int = 0
     
@@ -25,7 +27,7 @@ public class TestViewController: UIViewController {
         return headersData[headerCollectionView.indexPathsForSelectedItems?[0].item ?? 0] == "Customer Service"
     }
 
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ._backgroundColor
         setupData()
@@ -46,19 +48,41 @@ public class TestViewController: UIViewController {
     // This is dummy data for testing
     // Add variables to feedbackData to show the tableView + editing functionality
     func setupData() {
-        let jsonString = """
+        let twoWayFeedbackJson = """
         {
-            "title" : "Ithaca Transit Bug",
+            "admin_rep" : {
+                "name": "Admin Name"
+            },
+            "has_read" : false,
             "message" : "This app sometimes glitches out on me and shows the wrong bus times",
-            "hasRead" : false,
-            "isTwoWay" : true
+            "tags" : [],
+            "image_urls": [],
+            "created_at" : 1589112659,
+            "title" : "Ithaca Transit Bug",
+            "type" : "Customer Service"
+        }
+        """
+        let oneWayFeedbackJson = """
+        {
+            "message" : "This app sometimes glitches out on me and shows the wrong bus times",
+            "tags" : [],
+            "image_urls": [],
+            "created_at" : 1589112659,
+            "title" : "Ithaca Transit Bug",
+            "type" : "Customer Service"
         }
         """
         
-        guard let jsonData = jsonString.data(using: .utf8) else { return }
-        let _ = try! JSONDecoder().decode(Feedback.self, from: jsonData)
+        let jsonDecoder = JSONDecoder()
+        jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
         
-        feedbackData = []
+        guard let twoWayJsonData = twoWayFeedbackJson.data(using: .utf8) else { return }
+        let twoWayDummyFeedback = try! jsonDecoder.decode(TwoWayFeedback.self, from: twoWayJsonData)
+        guard let oneWayJsonData = oneWayFeedbackJson.data(using: .utf8) else { return }
+        let oneWayDummyFeedback = try! jsonDecoder.decode(OneWayFeedback.self, from: oneWayJsonData)
+        
+        bugsRequestsData = [oneWayDummyFeedback, oneWayDummyFeedback]
+        customerServiceData = [twoWayDummyFeedback, twoWayDummyFeedback]
     }
     
     func setupNavigationBar() {
@@ -120,7 +144,7 @@ public class TestViewController: UIViewController {
         feedbackCollectionView.backgroundColor = .white
         feedbackCollectionView.dataSource = self
         feedbackCollectionView.delegate = self
-        // TODO: register UICollectionViewCells
+        feedbackCollectionView.register(FeedbackCollectionViewCell.self, forCellWithReuseIdentifier: FeedbackCollectionViewCell.reuseIdentifier)
         view.addSubview(feedbackCollectionView)
     }
     
@@ -140,6 +164,7 @@ public class TestViewController: UIViewController {
             headerCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
             headerCollectionView.heightAnchor.constraint(equalToConstant: 40)
         ])
+
         NSLayoutConstraint.activate([
             feedbackCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             feedbackCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
@@ -156,6 +181,13 @@ public class TestViewController: UIViewController {
             headerCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
             headerCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70),
             headerCollectionView.heightAnchor.constraint(equalToConstant: 40)
+        ])
+
+        NSLayoutConstraint.activate([
+            feedbackCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            feedbackCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            feedbackCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            feedbackCollectionView.topAnchor.constraint(equalTo: headerCollectionView.bottomAnchor, constant: 5)
         ])
     }
     
@@ -206,82 +238,92 @@ public class TestViewController: UIViewController {
 }
 
 // MARK: - UICollectionView DataSource
-extension TestViewController: UICollectionViewDataSource {
+extension ViewController: UICollectionViewDataSource {
     
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == headerCollectionView {
             return headersData.count
         } else {
-            return searchController.isActive ? filteredFeedbackData.count : feedbackData.count
+            return 1
         }
     }
     
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == headerCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HeaderCollectionViewCell.reuseID, for: indexPath) as! HeaderCollectionViewCell
             let header = headersData[indexPath.item]
             cell.configure(with: header)
             return cell
         } else {
-            return UICollectionViewCell() // TODO: configure cells for feedbackCollectionView
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FeedbackCollectionViewCell.reuseIdentifier, for: indexPath) as! FeedbackCollectionViewCell
+            let data = searchController.isActive ? (isTwoway ? filteredCustomerServiceData : filteredBugsRequestsData) : (isTwoway ? customerServiceData : bugsRequestsData)
+            /*
+             TODO: Don't think we rly need this section param. Potentially refactor
+             BusRequestsCell and CustomerServiceCell into one
+            */
+            cell.configure(section: isTwoway ? .customerService : .bugsAndRequests, items: data)
+            return cell
         }
     }
         
 }
 
 // MARK: - UICollectionView Delegate
-extension TestViewController: UICollectionViewDelegate {
+extension ViewController: UICollectionViewDelegate {
     
-    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if collectionView == feedbackCollectionView {
-            // TODO: if two way communication, open up chat
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == headerCollectionView {
+            feedbackCollectionView.reloadData()
         }
     }
     
 }
 
 // MARK: - UICollectionView DelegateFlowLayout
-extension TestViewController: UICollectionViewDelegateFlowLayout {
+extension ViewController: UICollectionViewDelegateFlowLayout {
     
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == headerCollectionView {
             return CGSize(width: (view.frame.width - 60) / 2, height: 40)
         } else {
-            return CGSize() // TODO: add proper size later
+            return CGSize(width: feedbackCollectionView.frame.width, height: feedbackCollectionView.frame.height)
         }
     }
     
 }
 
 // MARK: - UISearchController Delegate
-extension TestViewController: UISearchControllerDelegate {
+extension ViewController: UISearchControllerDelegate {
     
-    public func willDismissSearchController(_ searchController: UISearchController) {
+    func willDismissSearchController(_ searchController: UISearchController) {
         navigationController?.setNavigationBarHidden(false, animated: true)
         setupConstraints()
     }
     
-    public func willPresentSearchController(_ searchController: UISearchController) {
+    func willPresentSearchController(_ searchController: UISearchController) {
         navigationController?.setNavigationBarHidden(true, animated: true)
         setupSearchingConstraints()
         present(searchController, animated: true, completion: nil)
     }
     
-    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         headerCollectionView.delegate?.collectionView?(self.headerCollectionView, didSelectItemAt: [0,0])
     }
     
 }
 
 // MARK: - UISearchResultsUpdating
-extension TestViewController: UISearchResultsUpdating {
+extension ViewController: UISearchResultsUpdating {
     
-    public func updateSearchResults(for searchController: UISearchController) {
+    func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text?.lowercased(), !searchText.isEmpty {
-            filteredFeedbackData = feedbackData.filter { feedback in
-                return (feedback.isTwoWay == isTwoway) &&
-                    (feedback.message.lowercased().contains(searchText)
-                        || feedback.title.lowercased().contains(searchText))
+            filteredBugsRequestsData = bugsRequestsData.filter { feedback in
+                return (feedback.isTwoWay() == isTwoway) &&
+                    feedback.message.lowercased().contains(searchText)
+            }
+            filteredCustomerServiceData = customerServiceData.filter { feedback in
+                return (feedback.isTwoWay() == isTwoway) &&
+                    feedback.message.lowercased().contains(searchText)
             }
         }
         feedbackCollectionView.reloadData()
