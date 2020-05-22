@@ -120,6 +120,7 @@
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
 				8FF08B32710874D4116AE4B9 /* [CP] Embed Pods Frameworks */,
+				0604106F30878C35E9603037 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -177,6 +178,26 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0604106F30878C35E9603037 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PatchKit_Example/Pods-PatchKit_Example-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/PatchKit/PatchKitImages.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/PatchKit/PatchKitFonts.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PatchKitImages.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PatchKitFonts.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PatchKit_Example/Pods-PatchKit_Example-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		81E53AE527F13FD28A968540 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

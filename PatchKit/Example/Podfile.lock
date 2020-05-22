@@ -365,7 +365,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
-  PatchKit: bda88179a696300b6e0267b5b79d9a8b9fb79cc2
+  PatchKit: b479c06baf9222d1bbdadf13c2035f8eb7c22e99
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
 
 PODFILE CHECKSUM: c8afe66eae046c8cef0e1d177e530fcb24d9d1be
