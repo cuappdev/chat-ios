@@ -302,7 +302,6 @@ extension ViewController: UIScrollViewDelegate {
         let indexPath = IndexPath(item: Int(page), section: 0)
 
         headerCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
-        feedbackCollectionView.reloadData()
     }
 
 }
