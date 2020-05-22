@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIWindow {
-    
+
     override open var canBecomeFirstResponder: Bool {
         return true
     }
