@@ -1,23 +1,23 @@
 {
   "images" : [
     {
-      "filename" : "ellipse3.png",
       "idiom" : "universal",
+      "filename" : "unreadDot.png",
       "scale" : "1x"
     },
     {
-      "filename" : "ellipse3@2x.png",
+      "scale" : "2x",
       "idiom" : "universal",
-      "scale" : "2x"
+      "filename" : "unreadDot@2x.png"
     },
     {
-      "filename" : "ellipse3@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "scale" : "3x",
+      "filename" : "unreadDot@3x.png",
+      "idiom" : "universal"
     }
   ],
   "info" : {
-    "author" : "xcode",
-    "version" : 1
+    "version" : 1,
+    "author" : "xcode"
   }
 }
