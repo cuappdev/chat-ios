@@ -1,6 +1,6 @@
 # PatchKit
 
-[![CI Status](https://img.shields.io/travis/omarrasheed/PatchKit.svg?style=flat)](https://travis-ci.org/omarrasheed/PatchKit)
+[![CI Status](https://img.shields.io/travis/omarrasheed/PatchKit.svg?style=flat)](https://travis-ci.org/cuappdev/chat-ios)
 [![Version](https://img.shields.io/cocoapods/v/PatchKit.svg?style=flat)](https://cocoapods.org/pods/PatchKit)
 [![License](https://img.shields.io/cocoapods/l/PatchKit.svg?style=flat)](https://cocoapods.org/pods/PatchKit)
 [![Platform](https://img.shields.io/cocoapods/p/PatchKit.svg?style=flat)](https://cocoapods.org/pods/PatchKit)
@@ -22,7 +22,7 @@ pod 'PatchKit'
 
 ## Author
 
-omarrasheed, oyr2@cornell.edu
+Cornell AppDev
 
 ## License
 
