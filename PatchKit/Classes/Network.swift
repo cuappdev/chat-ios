@@ -5,14 +5,13 @@
 //  Created by Omar Rasheed on 5/9/20.
 //  Copyright © 2020 Cornell Appdev. All rights reserved.
 //
-
 import FirebaseFirestore
 import Foundation
 
 class Network {
-    
+
     static let shared = Network()
-    
+
     private let commonPath = "Patch/data"
     static private let db = Firestore.firestore()
 
@@ -41,7 +40,7 @@ class Network {
             }
         }
     }
-    
+
     func getFeedback(completion: @escaping (([Feedback]) -> Void)) {
         let jsonDecoder = JSONDecoder()
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -63,7 +62,7 @@ class Network {
             }
         }
     }
-    
+
     func getTags(completion: @escaping (([String]) -> Void)) {
         Network.db.collection("Patch").getDocuments() { (querySnapshot, err) in
             if let err = err {
@@ -76,5 +75,5 @@ class Network {
             }
         }
     }
-    
+
 }

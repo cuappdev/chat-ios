@@ -22,41 +22,55 @@ class CustomerServiceTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        setupViews()
+        setupNameLabel()
+        setupTimeLabel()
+        setupMessageLabel()
+        setupProfileBackground()
+        setupProfileImageView()
+        setupUnreadImageView()
         setupConstraints()
     }
 
-    func setupViews() {
+    func setupNameLabel() {
         nameLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         nameLabel.textColor = ._textGray
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(nameLabel)
+    }
 
+    func setupTimeLabel() {
         timeLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         timeLabel.textColor = ._textGray
         timeLabel.textAlignment = .right
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(timeLabel)
+    }
 
+    func setupMessageLabel() {
         messageLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         messageLabel.textColor = ._textBlack
         messageLabel.numberOfLines = 2
         messageLabel.lineBreakMode = .byTruncatingTail
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(messageLabel)
+    }
 
+    func setupProfileBackground() {
         profileBackground.layer.cornerRadius = 22
         profileBackground.layer.masksToBounds = true
         profileBackground.backgroundColor = ._mediumGray
         profileBackground.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(profileBackground)
+    }
 
-        
+    func setupProfileImageView() {
         profileImageView.image = UIImage(named: "sloth", in: PatchKitImages.resourceBundle, compatibleWith: nil)
         profileImageView.contentMode = .scaleAspectFit
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(profileImageView)
+    }
 
+    func setupUnreadImageView() {
         unreadImageView.image = UIImage(named: "unreadDot", in: PatchKitImages.resourceBundle, compatibleWith: nil)
         unreadImageView.contentMode = .scaleAspectFit
         unreadImageView.isHidden = true
@@ -65,7 +79,7 @@ class CustomerServiceTableViewCell: UITableViewCell {
     }
 
     func setupConstraints() {
-        let padding: CGFloat = 15
+        let padding: CGFloat = 24
         let profileBackgroundSize: CGFloat = 44
         let profileImageSize: CGFloat = 32
         let unreadImageViewSize: CGFloat = 8
