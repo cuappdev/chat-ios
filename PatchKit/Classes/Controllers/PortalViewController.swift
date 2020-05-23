@@ -279,10 +279,6 @@ extension PortalViewController: UICollectionViewDelegate {
         }
     }
     
-    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        headerCollectionView.delegate?.collectionView?(self.headerCollectionView, didSelectItemAt: [0,0])
-    }
-    
 }
 
 // MARK: - UICollectionView DelegateFlowLayout
@@ -299,20 +295,24 @@ extension PortalViewController: UICollectionViewDelegateFlowLayout {
 }
 
 // MARK: - UIScrollView Delegate
-extension ViewController: UIScrollViewDelegate {
+extension PortalViewController: UIScrollViewDelegate {
 
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let page = targetContentOffset.pointee.x / view.frame.width
         let indexPath = IndexPath(item: Int(page), section: 0)
 
         headerCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
     }
 
+    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        headerCollectionView.delegate?.collectionView?(self.headerCollectionView, didSelectItemAt: [0,0])
+    }
+
 }
 
 // MARK: - UISearchController Delegate
 extension PortalViewController: UISearchControllerDelegate {
-    public func willPresentSearchController(_ searchController: UISearchController) {>>>>>>> master:SupportClient/Controllers/ViewController.swift
+    public func willPresentSearchController(_ searchController: UISearchController) {
         navigationController?.setNavigationBarHidden(true, animated: true)
         searchController.isActive = true
         setupSearchingConstraints()
