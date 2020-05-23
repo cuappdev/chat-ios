@@ -212,6 +212,7 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
+  - Alamofire (5.2.0)
   - BoringSSL-GRPC (0.0.7):
     - BoringSSL-GRPC/Implementation (= 0.0.7)
     - BoringSSL-GRPC/Interface (= 0.0.7)
@@ -299,6 +300,7 @@ PODS:
   - nanopb/decode (1.30905.0)
   - nanopb/encode (1.30905.0)
   - PatchKit (0.0.1):
+    - Alamofire
     - BSImagePicker (~> 3.1)
     - Firebase/Firestore
     - Firebase/Storage
@@ -321,6 +323,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - abseil
+    - Alamofire
     - BoringSSL-GRPC
     - BSImagePicker
     - Firebase
@@ -347,6 +350,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
+  Alamofire: c1ca147559e730bfb2182c8c7aafbdd90a867987
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   BSImagePicker: 403ef8cd6f45b3fcdd75419e85e1ec11ecb6fdea
   Firebase: 5719b4f965f76643241a1bb8244483ff6117db39
@@ -365,7 +369,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
-  PatchKit: b479c06baf9222d1bbdadf13c2035f8eb7c22e99
+  PatchKit: 24a3e1827bd81d6a290a88da7248f769eff9ad4e
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
 
 PODFILE CHECKSUM: c8afe66eae046c8cef0e1d177e530fcb24d9d1be

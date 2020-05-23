@@ -10,8 +10,9 @@ import UIKit
 
 class BugsRequestsDetailViewController: UIViewController {
     
-    private let scrollView = UIScrollView()
+    private var imagesCollectionView: UICollectionView!
     private let messageLabel = UILabel()
+    private let scrollView = UIScrollView()
     private let timeLabel = UILabel()
 
     override func viewDidLoad() {
@@ -22,6 +23,7 @@ class BugsRequestsDetailViewController: UIViewController {
         
         addBottomOfNavBar()
         
+        setupImagesCollectonView()
         setupScrollView()
         setupMessageTextView()
         setupTimesLabel()
@@ -32,6 +34,21 @@ class BugsRequestsDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addBottomOfNavBar()
+        setupBackButton()
+    }
+    
+    func setupImagesCollectonView() {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        imagesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        imagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        imagesCollectionView.backgroundColor = .white
+        imagesCollectionView.isScrollEnabled = false
+        imagesCollectionView.dataSource = self
+//        imagesCollectionView.delegate = self
+        imagesCollectionView.register(FeedbackImageCollectionViewCell.self, forCellWithReuseIdentifier: FeedbackImageCollectionViewCell.reuseID)
+        scrollView.addSubview(imagesCollectionView)
     }
     
     func setupScrollView() {
@@ -56,8 +73,15 @@ class BugsRequestsDetailViewController: UIViewController {
     }
     
     func configure(for feedback: Feedback) {
-        // TODO: Bold first part of time label text
-        timeLabel.text = feedback.createdAt.convertToTimestamp()
+        let createdAtString = feedback.createdAt.formatDateString(format: "MMM d | h:mm a")
+        if let dividerIndex = createdAtString.firstIndex(of: "|") {
+            let createdAtFontSize: CGFloat = 10
+            let boldedText = String(createdAtString.prefix(upTo: dividerIndex))
+            let unBoldedText = String(createdAtString.suffix(from: dividerIndex))
+            timeLabel.attributedText = NSMutableAttributedString()
+                .semibold(boldedText, size: createdAtFontSize)
+                .normal(unBoldedText, size: createdAtFontSize)
+        }
         messageLabel.text = feedback.message
     }
     
@@ -81,5 +105,38 @@ class BugsRequestsDetailViewController: UIViewController {
             messageLabel.trailingAnchor.constraint(lessThanOrEqualTo: scrollView.trailingAnchor),
             messageLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 48)
         ])
+        
+        NSLayoutConstraint.activate([
+            imagesCollectionView.leadingAnchor.constraint(equalTo: timeLabel.leadingAnchor),
+            imagesCollectionView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            imagesCollectionView.heightAnchor.constraint(equalToConstant:500),
+            imagesCollectionView.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 20)
+        ])
     }
 }
+
+// MARK: - UICollectionView DataSource
+extension BugsRequestsDetailViewController: UICollectionViewDataSource {
+    
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FeedbackImageCollectionViewCell.reuseID, for: indexPath) as! FeedbackImageCollectionViewCell
+        cell.configure(with: "", onImageLoad: {
+            collectionView.reloadData()
+        })
+        return cell
+    }
+    
+}
+
+//// MARK: - UICollectionView DelegateFlowLayout
+//extension BugsRequestsDetailViewController: UICollectionViewDelegateFlowLayout {
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        return CGSize(width: 100, height: 100)
+//    }
+//
+//}

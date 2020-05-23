@@ -31,6 +31,7 @@ DESC
   
   s.static_framework = true
   s.frameworks = 'UIKit'
+  s.dependency 'Alamofire'
   s.dependency 'BSImagePicker', '~> 3.1'
   s.dependency 'Firebase/Firestore'
   s.dependency 'Firebase/Storage'

@@ -37,7 +37,7 @@ public class PortalViewController: UIViewController {
         setDefaultHeaderCell()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         removeBottomOfNavBar()
     }
@@ -88,16 +88,18 @@ public class PortalViewController: UIViewController {
     }
     
     func setupNavigationBar() {
-        navigationController?.navigationBar.barTintColor = .white
+//        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.tintColor = .black
         removeBottomOfNavBar()
 
         // Set navigation bar items
-        navigationItem.backBarButtonItem = UIBarButtonItem(
-            image: UIImage(named: "back", in: PatchKitImages.resourceBundle, compatibleWith: nil)?.withTintColor(.black),
-            style: .plain,
-            target: nil,
-            action: nil
-        )
+//        navigationItem.leftBarButtonItem = UIBarButtonItem(
+//            image: UIImage(named: "back", in: PatchKitImages.resourceBundle, compatibleWith: nil)?.withTintColor(.black),
+//            style: .plain,
+//            target: nil,
+//            action: nil
+//        )
+        setupBackButton()
         let addFeedbackButton = UIBarButtonItem(
             image: UIImage(named: "plus", in: PatchKitImages.resourceBundle, compatibleWith: nil)?.withTintColor(.black),
             style: .plain,
