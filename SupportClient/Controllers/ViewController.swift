@@ -21,11 +21,6 @@ class ViewController: UIViewController {
     private let headersData = ["Customer Service", "Bugs & Requests"]
     
     private(set) var countEditTaps: Int = 0
-    
-    // True is the current header is set to Customer Service, false otherwise
-    private var isTwoway: Bool {
-        return headersData[headerCollectionView.indexPathsForSelectedItems?[0].item ?? 0] == "Customer Service"
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,23 +48,23 @@ class ViewController: UIViewController {
             "admin_rep" : {
                 "name": "Admin Name"
             },
-            "has_read" : false,
-            "message" : "This app sometimes glitches out on me and shows the wrong bus times",
+            "hasRead" : false,
+            "message" : "How can I do this?",
             "tags" : [],
             "image_urls": [],
             "created_at" : 1589112659,
-            "title" : "Ithaca Transit Bug",
+            "title" : "Question",
             "type" : "Customer Service"
         }
         """
         let oneWayFeedbackJson = """
         {
             "message" : "This app sometimes glitches out on me and shows the wrong bus times",
-            "tags" : [],
+            "tags" : ["UX/UI"],
             "image_urls": [],
             "created_at" : 1589112659,
             "title" : "Ithaca Transit Bug",
-            "type" : "Customer Service"
+            "type" : "Bug Report"
         }
         """
         
@@ -137,11 +132,13 @@ class ViewController: UIViewController {
     func setupFeedbackCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 10
-        layout.minimumInteritemSpacing = 10
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
         feedbackCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         feedbackCollectionView.translatesAutoresizingMaskIntoConstraints = false
         feedbackCollectionView.backgroundColor = .white
+        feedbackCollectionView.isPagingEnabled = true
+        feedbackCollectionView.showsHorizontalScrollIndicator = false
         feedbackCollectionView.dataSource = self
         feedbackCollectionView.delegate = self
         feedbackCollectionView.register(FeedbackCollectionViewCell.self, forCellWithReuseIdentifier: FeedbackCollectionViewCell.reuseIdentifier)
@@ -172,7 +169,6 @@ class ViewController: UIViewController {
             feedbackCollectionView.topAnchor.constraint(equalTo: headerCollectionView.bottomAnchor, constant: 5)
         ])
     }
-    
 
     func setupSearchingConstraints() {
         removeViews()
@@ -201,7 +197,6 @@ class ViewController: UIViewController {
         view.addSubview(headerCollectionView)
     }
 
-    
     func setupFeedbackListener() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.animateBanner), name:NSNotification.Name(rawValue: "AnimateBanner"), object: nil)
     }
@@ -244,7 +239,7 @@ extension ViewController: UICollectionViewDataSource {
         if collectionView == headerCollectionView {
             return headersData.count
         } else {
-            return 1
+            return 2
         }
     }
     
@@ -256,12 +251,19 @@ extension ViewController: UICollectionViewDataSource {
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FeedbackCollectionViewCell.reuseIdentifier, for: indexPath) as! FeedbackCollectionViewCell
-            let data = searchController.isActive ? (isTwoway ? filteredCustomerServiceData : filteredBugsRequestsData) : (isTwoway ? customerServiceData : bugsRequestsData)
-            /*
-             TODO: Don't think we rly need this section param. Potentially refactor
-             BusRequestsCell and CustomerServiceCell into one
-            */
-            cell.configure(section: isTwoway ? .customerService : .bugsAndRequests, items: data)
+
+            if indexPath.row == 0 {
+                let data = searchController.isActive ? filteredCustomerServiceData : customerServiceData
+                /*
+                 TODO: Don't think we rly need this section param. Potentially refactor
+                 BusRequestsCell and CustomerServiceCell into one
+                */
+                cell.configure(section: .customerService, items: data)
+            } else {
+                let data = searchController.isActive ? filteredBugsRequestsData : bugsRequestsData
+                cell.configure(section: .bugsAndRequests, items: data)
+            }
+
             return cell
         }
     }
@@ -273,7 +275,7 @@ extension ViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == headerCollectionView {
-            feedbackCollectionView.reloadData()
+            feedbackCollectionView.scrollToItem(at: indexPath, at: [], animated: true)
         }
     }
     
@@ -292,22 +294,34 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
     
 }
 
+// MARK: - UIScrollView Delegate
+extension ViewController: UIScrollViewDelegate {
+
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let page = targetContentOffset.pointee.x / view.frame.width
+        let indexPath = IndexPath(item: Int(page), section: 0)
+
+        headerCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
+    }
+
+}
+
 // MARK: - UISearchController Delegate
 extension ViewController: UISearchControllerDelegate {
-    
-    func willDismissSearchController(_ searchController: UISearchController) {
-        navigationController?.setNavigationBarHidden(false, animated: true)
-        setupConstraints()
-    }
-    
+
     func willPresentSearchController(_ searchController: UISearchController) {
         navigationController?.setNavigationBarHidden(true, animated: true)
+        searchController.isActive = true
         setupSearchingConstraints()
+        feedbackCollectionView.reloadData()
         present(searchController, animated: true, completion: nil)
     }
-    
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        headerCollectionView.delegate?.collectionView?(self.headerCollectionView, didSelectItemAt: [0,0])
+
+    func willDismissSearchController(_ searchController: UISearchController) {
+        filteredBugsRequestsData = []
+        filteredCustomerServiceData = []
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        setupConstraints()
     }
     
 }
@@ -316,21 +330,16 @@ extension ViewController: UISearchControllerDelegate {
 extension ViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
-        if let searchText = searchController.searchBar.text?.lowercased(), !searchText.isEmpty {
-            filteredBugsRequestsData = bugsRequestsData.filter { feedback in
-                return (feedback.isTwoWay() == isTwoway) &&
-                    feedback.message.lowercased().contains(searchText)
-            }
+        if let searchText = searchController.searchBar.text?.lowercased() {
             filteredCustomerServiceData = customerServiceData.filter { feedback in
-                return (feedback.isTwoWay() == isTwoway) &&
-                    feedback.message.lowercased().contains(searchText)
+                return feedback.message.lowercased().contains(searchText)
+            }
+
+            filteredBugsRequestsData = bugsRequestsData.filter { feedback in
+                return feedback.message.lowercased().contains(searchText)
             }
         }
         feedbackCollectionView.reloadData()
     }
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        feedbackCollectionView.reloadData()
-    }
-    
+
 }

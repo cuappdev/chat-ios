@@ -50,7 +50,7 @@ class BugsRequestsTableViewCell: UITableViewCell {
     }
 
     func setupConstraints() {
-        let padding: CGFloat = 15
+        let padding: CGFloat = 24
 
         NSLayoutConstraint.activate([
             timeLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),

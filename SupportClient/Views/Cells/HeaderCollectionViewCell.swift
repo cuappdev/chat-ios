@@ -11,7 +11,7 @@ import UIKit
 class HeaderCollectionViewCell: UICollectionViewCell {
     
     static let reuseID = "HeaderCollectionViewCell"
-    
+
     private let headerLabel = UILabel()
     private let underlineView = UIView()
     
