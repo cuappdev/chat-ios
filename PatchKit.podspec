@@ -18,7 +18,7 @@ DESC
   s.homepage         = 'https://github.com/cuappdev/chat-ios'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Cornell AppDev' => 'team@cornellappdev.com' }
-  s.source           = { :git => 'https://github.com/cuappdev/chat-ios.git', :branch => 'omar/podspec' }
+  s.source           = { :git => 'https://github.com/cuappdev/chat-ios.git', :tag => "#{s.version}" }
   
   s.swift_version = '5.0'
   s.ios.deployment_target = '13.0'
