@@ -1,0 +1,14 @@
+platform :ios, '13.0'
+
+target 'PatchKit_Example' do
+  pod 'PatchKit', :path => '../'
+
+  use_frameworks!
+
+  # Pods for SupportClient
+  pod 'BSImagePicker'
+  pod 'Firebase/Firestore'
+  pod 'FirebaseFirestoreSwift'
+  pod 'Firebase/Storage'
+  
+end
