@@ -19,9 +19,7 @@ class BugsRequestsDetailViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-        
-        addBottomOfNavBar()
-        
+
         setupImagesStackView()
         setupScrollView()
         setupMessageTextView()

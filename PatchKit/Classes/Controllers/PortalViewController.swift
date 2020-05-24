@@ -88,7 +88,6 @@ public class PortalViewController: UIViewController {
     }
     
     func setupNavigationBar() {
-//        navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.tintColor = .black
         removeBottomOfNavBar()
 
