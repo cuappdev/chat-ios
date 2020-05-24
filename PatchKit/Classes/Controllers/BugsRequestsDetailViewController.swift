@@ -10,7 +10,7 @@ import UIKit
 
 class BugsRequestsDetailViewController: UIViewController {
     
-    private var imagesCollectionView: UICollectionView!
+    private var imagesStackView = ImagesStackView()
     private let messageLabel = UILabel()
     private let scrollView = UIScrollView()
     private let timeLabel = UILabel()
@@ -23,7 +23,7 @@ class BugsRequestsDetailViewController: UIViewController {
         
         addBottomOfNavBar()
         
-        setupImagesCollectonView()
+        setupImagesStackView()
         setupScrollView()
         setupMessageTextView()
         setupTimesLabel()
@@ -37,18 +37,9 @@ class BugsRequestsDetailViewController: UIViewController {
         setupBackButton()
     }
     
-    func setupImagesCollectonView() {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        imagesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        imagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        imagesCollectionView.backgroundColor = .white
-        imagesCollectionView.isScrollEnabled = false
-        imagesCollectionView.dataSource = self
-//        imagesCollectionView.delegate = self
-        imagesCollectionView.register(FeedbackImageCollectionViewCell.self, forCellWithReuseIdentifier: FeedbackImageCollectionViewCell.reuseID)
-        scrollView.addSubview(imagesCollectionView)
+    func setupImagesStackView() {
+        imagesStackView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(imagesStackView)
     }
     
     func setupScrollView() {
@@ -83,8 +74,9 @@ class BugsRequestsDetailViewController: UIViewController {
                 .normal(unBoldedText, size: createdAtFontSize)
         }
         messageLabel.text = feedback.message
+        imagesStackView.configure(for: ["https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg"], imageSize: CGSize(width: 102, height: 192))
     }
-    
+
     func setupConstraints() {        
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -95,48 +87,23 @@ class BugsRequestsDetailViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             timeLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            timeLabel.topAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.topAnchor, constant: 20),
+            timeLabel.topAnchor.constraint(equalTo: scrollView.topAnchor),
             timeLabel.trailingAnchor.constraint(lessThanOrEqualTo: scrollView.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
             messageLabel.leadingAnchor.constraint(equalTo: timeLabel.leadingAnchor),
             messageLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 12),
-            messageLabel.trailingAnchor.constraint(lessThanOrEqualTo: scrollView.trailingAnchor),
-            messageLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 48)
+            messageLabel.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant:-(scrollView.contentInset.left + scrollView.contentInset.right))
         ])
         
         NSLayoutConstraint.activate([
-            imagesCollectionView.leadingAnchor.constraint(equalTo: timeLabel.leadingAnchor),
-            imagesCollectionView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            imagesCollectionView.heightAnchor.constraint(equalToConstant:500),
-            imagesCollectionView.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 20)
+            imagesStackView.leadingAnchor.constraint(equalTo: timeLabel.leadingAnchor),
+            imagesStackView.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 24),
+            imagesStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            imagesStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant:-(scrollView.contentInset.left + scrollView.contentInset.right)),
+            imagesStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
         ])
     }
 }
 
-// MARK: - UICollectionView DataSource
-extension BugsRequestsDetailViewController: UICollectionViewDataSource {
-    
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
-    }
-    
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FeedbackImageCollectionViewCell.reuseID, for: indexPath) as! FeedbackImageCollectionViewCell
-        cell.configure(with: "", onImageLoad: {
-            collectionView.reloadData()
-        })
-        return cell
-    }
-    
-}
-
-//// MARK: - UICollectionView DelegateFlowLayout
-//extension BugsRequestsDetailViewController: UICollectionViewDelegateFlowLayout {
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize(width: 100, height: 100)
-//    }
-//
-//}
