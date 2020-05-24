@@ -149,19 +149,19 @@ public class PortalViewController: UIViewController {
                         "image_urls": []
                     },
                     {
-                        "created_at": 1589112659,
+                        "created_at": 1590003431,
                         "content": "How can I do this?",
                         "is_from_admin": false,
                         "image_urls": []
                     },
                     {
-                        "created_at": 1589112659,
+                        "created_at": 1590349031,
                         "content": "How can I do this?",
                         "is_from_admin": false,
                         "image_urls": []
                     },
                     {
-                        "created_at": 1589112659,
+                        "created_at": 1590262631,
                         "content": "How can I do this?",
                         "is_from_admin": false,
                         "image_urls": []
@@ -185,6 +185,7 @@ public class PortalViewController: UIViewController {
         
         let jsonDecoder = JSONDecoder()
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+        jsonDecoder.dateDecodingStrategy = .secondsSince1970
         
         guard let twoWayJsonData = twoWayFeedbackJson.data(using: .utf8) else { return }
         let twoWayDummyFeedback = try! jsonDecoder.decode(TwoWayFeedback.self, from: twoWayJsonData)
