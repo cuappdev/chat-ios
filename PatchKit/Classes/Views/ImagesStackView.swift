@@ -35,6 +35,7 @@ class ImagesStackView: UIView {
     private func getImageView(for imageUrl: String, imageSize: CGSize) -> UIImageView {
         let imageView = UIImageView()
         imageView.backgroundColor = ._mediumGray
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 6
         imageView.clipsToBounds = true
         imageView.fetchImage(imageUrl: imageUrl)
@@ -60,10 +61,9 @@ class ImagesStackView: UIView {
         addSubview(imagesStackView)
     }
     
-    func configure(for imageUrls: [String], imageSize: CGSize, onImageTap: ((UIImage) -> Void)? = nil) {
+    func configure(for imageUrls: [String], imageSize: CGSize, numImagesPerRow: Int, onImageTap: ((UIImage) -> Void)? = nil) {
         self.onImageTap = onImageTap
-        let numRows = Int(ceil(Double(imageUrls.count) / 3))
-        let numImagesPerRow = 3
+        let numRows = Int(ceil(Double(imageUrls.count) / Double(numImagesPerRow)))
         (0..<numRows).forEach { row in
             let stackView = getImageRowStackView()
             let numImagesInStackView = min(3, imageUrls.count - row * numImagesPerRow)

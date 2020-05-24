@@ -151,12 +151,9 @@ public class PortalViewController: UIViewController {
     }
     
     func setupTitleLabel() {
-        let attributes = [
-            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 32),
-            NSAttributedString.Key.foregroundColor: UIColor.black
-        ]
-        let attributedTitle = NSAttributedString(string: "Feedback", attributes: attributes)
-        titleLabel.attributedText = attributedTitle
+        titleLabel.text = "Feedback"
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 32)
+        titleLabel.textColor = .black
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(titleLabel)
     }
