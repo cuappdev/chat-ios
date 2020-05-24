@@ -60,7 +60,7 @@ class BugsRequestsDetailViewController: UIViewController {
         scrollView.addSubview(timeLabel)
     }
     
-    func configure(for feedback: Feedback) {
+    func configure(for feedback: OneWayFeedback) {
         let createdAtString = feedback.createdAt.formatDateString(format: "MMM d | h:mm a")
         if let dividerIndex = createdAtString.firstIndex(of: "|") {
             let createdAtFontSize: CGFloat = 10
