@@ -5,6 +5,8 @@
 //  Created by Omar Rasheed on 5/9/20.
 //  Copyright © 2020 Cornell Appdev. All rights reserved.
 //
+
+import Alamofire
 import FirebaseFirestore
 import Foundation
 
@@ -59,6 +61,22 @@ class Network {
                 if let feedback = feedback {
                     completion(feedback)
                 }
+            }
+        }
+    }
+
+    func getImage(imageURL: String, completion: @escaping (UIImage) -> Void) {
+        Alamofire.AF.request(imageURL, method: .get).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                if let image = UIImage(data: data) {
+                    completion(image)
+                } else {
+                    print("Invalid image data")
+                }
+                
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }

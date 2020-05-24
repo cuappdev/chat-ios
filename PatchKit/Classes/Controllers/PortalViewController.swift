@@ -13,6 +13,7 @@ public class PortalViewController: UIViewController {
     private var headerCollectionView: UICollectionView!
     private var feedbackCollectionView: UICollectionView!
     private let searchController = UISearchController(searchResultsController: nil) // TODO: For later
+    private let titleLabel = UILabel()
     
     private var bugsRequestsData = [Feedback]()
     private var customerServiceData = [Feedback]()
@@ -30,9 +31,15 @@ public class PortalViewController: UIViewController {
         setupHeaderCollectionView()
         setupFeedbackCollectionView()
         setupSearchController()
+        setupTitleLabel()
         setupConstraints()
         setupFeedbackListener()
         setDefaultHeaderCell()
+    }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        removeBottomOfNavBar()
     }
     
     deinit {
@@ -51,7 +58,7 @@ public class PortalViewController: UIViewController {
             "hasRead" : false,
             "message" : "How can I do this?",
             "tags" : [],
-            "image_urls": [],
+            "image_urls": ["https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg"],
             "created_at" : 1589112659,
             "title" : "Question",
             "type" : "Customer Service"
@@ -61,7 +68,7 @@ public class PortalViewController: UIViewController {
         {
             "message" : "This app sometimes glitches out on me and shows the wrong bus times",
             "tags" : ["UX/UI"],
-            "image_urls": [],
+            "image_urls": ["https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg"],
             "created_at" : 1589112659,
             "title" : "Ithaca Transit Bug",
             "type" : "Bug Report"
@@ -81,21 +88,11 @@ public class PortalViewController: UIViewController {
     }
     
     func setupNavigationBar() {
-        navigationController?.navigationBar.barTintColor = .white
-        navigationController?.navigationBar.prefersLargeTitles = true
-        let attributes = [
-            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 32),
-            NSAttributedString.Key.foregroundColor: UIColor.black
-        ]
-        let attributedTitle = NSAttributedString(string: "Feedback", attributes: attributes)
-        title = attributedTitle.string
+        navigationController?.navigationBar.tintColor = .black
+        removeBottomOfNavBar()
+
         // Set navigation bar items
-        navigationItem.backBarButtonItem = UIBarButtonItem(
-            image: UIImage(named: "back", in: PatchKitImages.resourceBundle, compatibleWith: nil),
-            style: .plain,
-            target: nil,
-            action: nil
-        )
+        setupBackButton()
         let addFeedbackButton = UIBarButtonItem(
             image: UIImage(named: "plus", in: PatchKitImages.resourceBundle, compatibleWith: nil)?.withTintColor(.black),
             style: .plain,
@@ -153,12 +150,26 @@ public class PortalViewController: UIViewController {
         searchController.obscuresBackgroundDuringPresentation = false
     }
     
+    func setupTitleLabel() {
+        titleLabel.text = "Feedback"
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 32)
+        titleLabel.textColor = .black
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(titleLabel)
+    }
+    
     func setupConstraints() {
         removeViews()
         NSLayoutConstraint.activate([
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24)
+        ])
+
+        NSLayoutConstraint.activate([
             headerCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30),
             headerCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
-            headerCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
+            headerCollectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 18),
             headerCollectionView.heightAnchor.constraint(equalToConstant: 40)
         ])
         
@@ -261,7 +272,13 @@ extension PortalViewController: UICollectionViewDataSource {
                 cell.configure(section: .customerService, items: data)
             } else {
                 let data = searchController.isActive ? filteredBugsRequestsData : bugsRequestsData
-                cell.configure(section: .bugsAndRequests, items: data)
+                cell.configure(section: .bugsAndRequests, items: data, onTapRow: { feedback in
+                    if let feedback = feedback as? OneWayFeedback {
+                        let viewController = BugsRequestsDetailViewController()
+                        viewController.configure(for: feedback)
+                        self.navigationController?.pushViewController(viewController, animated: true)
+                    }
+                })
             }
 
             return cell

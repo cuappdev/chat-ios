@@ -27,5 +27,12 @@ extension Date {
             return formatter.string(from: self)
         }
     }
+    
+    /// Refer to https://nsdateformatter.com/ for formatting options under the "Reference" tab
+    func formatDateString(format: String) -> String {
+        let dateFormatterPrint = DateFormatter()
+        dateFormatterPrint.dateFormat = format
+        return dateFormatterPrint.string(from: self)
+    }
 
 }
