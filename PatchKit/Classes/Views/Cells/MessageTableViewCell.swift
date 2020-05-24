@@ -120,7 +120,6 @@ class MessageTableViewCell: UITableViewCell {
     }
     
     func setupReadLabelConstraints(topAnchor: NSLayoutYAxisAnchor) {
-//        let topAnchor =
         NSLayoutConstraint.activate([
             readLabel.topAnchor.constraint(equalTo: topAnchor, constant: 4),
             readLabel.trailingAnchor.constraint(equalTo: messageBubble.trailingAnchor),
