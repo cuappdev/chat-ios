@@ -44,7 +44,7 @@ class ImagesStackView: UIView {
             let numImagesInStackView = min(3, imageUrls.count - row * numImagesPerRow)
             (0..<numImagesInStackView).forEach { imageNum in
                 let imageView = UIImageView()
-                imageView.backgroundColor = .blue
+                imageView.backgroundColor = ._mediumGray
                 imageView.layer.cornerRadius = 6
                 imageView.clipsToBounds = true
                 imageView.fetchImage(imageUrl: imageUrls[numImagesPerRow * row + imageNum])

@@ -93,12 +93,6 @@ public class PortalViewController: UIViewController {
         removeBottomOfNavBar()
 
         // Set navigation bar items
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(
-//            image: UIImage(named: "back", in: PatchKitImages.resourceBundle, compatibleWith: nil)?.withTintColor(.black),
-//            style: .plain,
-//            target: nil,
-//            action: nil
-//        )
         setupBackButton()
         let addFeedbackButton = UIBarButtonItem(
             image: UIImage(named: "plus", in: PatchKitImages.resourceBundle, compatibleWith: nil)?.withTintColor(.black),
