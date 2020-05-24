@@ -41,6 +41,7 @@ class CustomerServiceDetailViewController: UIViewController {
         messagesTableView.separatorStyle = .none
         messagesTableView.contentInset = UIEdgeInsets(top: 6, left: 0, bottom: 0, right: 0)
         messagesTableView.register(MessageTableViewCell.self, forCellReuseIdentifier: MessageTableViewCell.reuseIdentifier)
+        messagesTableView.transform = CGAffineTransform(scaleX: 1,y: -1);
         messagesTableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(messagesTableView)
     }
@@ -76,8 +77,8 @@ extension CustomerServiceDetailViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MessageTableViewCell.reuseIdentifier, for: indexPath) as! MessageTableViewCell
-        
-        cell.configure(for: messageThread.messages[indexPath.row])
+        cell.configure(for: messageThread.messages[indexPath.row], addTimeStamp: indexPath.row != messageThread.messages.count - 1)
+        cell.contentView.transform = CGAffineTransform(scaleX: 1,y: -1);
         return cell
     }
     

@@ -72,8 +72,68 @@ public class PortalViewController: UIViewController {
                     },
                     {
                         "created_at" : 1589112659,
+                        "content": "How can I do this? How can I do this? How can I do this? How can I do this? How can I do this?",
+                        "is_from_admin": true
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": false
+                    },
+                    {
+                        "created_at": 1589112659,
                         "content": "How can I do this?",
                         "is_from_admin": true
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": false
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": false
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": true
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": true
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": false
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": false
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": false
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": false
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": false
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": false
                     },
                     {
                         "created_at": 1589112659,
