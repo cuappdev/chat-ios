@@ -126,7 +126,7 @@ class CustomerServiceTableViewCell: UITableViewCell {
     func configure(for item: TwoWayFeedback) {
         nameLabel.text = item.adminRep?.name
         timeLabel.text = item.createdAt.convertToTimestamp()
-        messageLabel.text = item.message
+        messageLabel.text = item.messageThread.messages[0].content
         unreadImageView.isHidden = item.hasRead
     }
 
