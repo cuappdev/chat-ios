@@ -9,7 +9,7 @@ import UIKit
 
 class ImagesStackView: UIView {
     
-    private var imagesStackView = UIStackView()
+    private let containerStackView = UIStackView()
     
     private var onImageTap: ((UIImage) -> Void)?
     
@@ -53,12 +53,12 @@ class ImagesStackView: UIView {
     }
     
     private func setupImagesStackView() {
-        imagesStackView.axis = .vertical
-        imagesStackView.distribution = .fillProportionally
-        imagesStackView.alignment = .leading
-        imagesStackView.spacing = 10
-        imagesStackView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(imagesStackView)
+        containerStackView.axis = .vertical
+        containerStackView.distribution = .fillProportionally
+        containerStackView.alignment = .leading
+        containerStackView.spacing = 10
+        containerStackView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(containerStackView)
     }
     
     func configure(for imageUrls: [String], imageSize: CGSize, numImagesPerRow: Int, onImageTap: ((UIImage) -> Void)? = nil) {
@@ -71,17 +71,17 @@ class ImagesStackView: UIView {
                 let imageView = getImageView(for: imageUrls[numImagesPerRow * row + imageNum], imageSize: imageSize)
                 stackView.addArrangedSubview(imageView)
             }
-            imagesStackView.addArrangedSubview(stackView)
+            containerStackView.addArrangedSubview(stackView)
         }
     }
     
     @objc private func imageTapped(sender: UITapGestureRecognizer) {
         // Go through all rows of main stackView
-        imagesStackView.arrangedSubviews.forEach { containerStackView in
+        containerStackView.arrangedSubviews.forEach { imageRowStackView in
             // Cast each row as UIStackView
-            if let containerStackView = containerStackView as? UIStackView {
+            if let imageRowStackView = imageRowStackView as? UIStackView {
                 // Go through all item of subStackView
-                containerStackView.arrangedSubviews.forEach { imageView in
+                imageRowStackView.arrangedSubviews.forEach { imageView in
                     // Cast each column as UIImageView, check if is sender, and pull image if not nil
                     if let imageView = imageView as? UIImageView,
                         imageView == sender.view,
@@ -95,10 +95,10 @@ class ImagesStackView: UIView {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            imagesStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            imagesStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            imagesStackView.topAnchor.constraint(equalTo: topAnchor),
-            imagesStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            containerStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            containerStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            containerStackView.topAnchor.constraint(equalTo: topAnchor),
+            containerStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
     
