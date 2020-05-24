@@ -76,6 +76,7 @@ class BugsRequestsDetailViewController: UIViewController {
             for: feedback.imageUrls,
             imageSize: CGSize(width: 102, height: 192),
             interImageSpacing: 10,
+            numImagesPerRow: 3,
             onImageTap: { image in
                 let vc = ImageDetailViewController()
                 vc.configure(for: image)

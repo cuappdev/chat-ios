@@ -17,6 +17,8 @@ class ImageDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = .white
+
         setupImageView()
         setupDismissButton()
         
@@ -28,7 +30,7 @@ class ImageDetailViewController: UIViewController {
         dismissButton.setImage(UIImage(named: "back", in: PatchKitImages.resourceBundle, compatibleWith: nil), for: .normal)
         dismissButton.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
         dismissButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        dismissButton.layer.cornerRadius = dismissButtonSize + dismissButton.contentEdgeInsets.top + dismissButton.contentEdgeInsets.bottom
+        dismissButton.layer.cornerRadius = (dismissButtonSize + dismissButton.contentEdgeInsets.top + dismissButton.contentEdgeInsets.bottom) / 2
         dismissButton.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(dismissButton)
@@ -36,6 +38,7 @@ class ImageDetailViewController: UIViewController {
     
     private func setupImageView() {
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
         view.addSubview(imageView)
     }
     

@@ -9,7 +9,7 @@ import UIKit
 
 class ImagesStackView: UIView {
     
-    private var imagesStackView = UIStackView()
+    private let containerStackView = UIStackView()
     
     private var onImageTap: ((UIImage) -> Void)?
     
@@ -35,6 +35,7 @@ class ImagesStackView: UIView {
     private func getImageView(for imageUrl: String, imageSize: CGSize) -> UIImageView {
         let imageView = UIImageView()
         imageView.backgroundColor = ._mediumGray
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 6
         imageView.clipsToBounds = true
         imageView.fetchImage(imageUrl: imageUrl)
@@ -56,40 +57,40 @@ class ImagesStackView: UIView {
     }
     
     private func setupImagesStackView() {
-        imagesStackView.axis = .vertical
-        imagesStackView.distribution = .fillProportionally
-        imagesStackView.alignment = .leading
-        imagesStackView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(imagesStackView)
+        containerStackView.axis = .vertical
+        containerStackView.distribution = .fillProportionally
+        containerStackView.alignment = .leading
+        containerStackView.spacing = 10
+        containerStackView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(containerStackView)
     }
     
-    func configure(for imageUrls: [String], imageSize: CGSize, interImageSpacing: CGFloat, onImageTap: ((UIImage) -> Void)? = nil) {
+    func configure(for imageUrls: [String], imageSize: CGSize, interImageSpacing: CGFloat, numImagesPerRow: Int, onImageTap: ((UIImage) -> Void)? = nil) {
         imagesStackView.spacing = interImageSpacing
         self.onImageTap = onImageTap
-        let numRows = Int(ceil(Double(imageUrls.count) / 3))
-        let numImagesPerRow = 3
+        let numRows = Int(ceil(Double(imageUrls.count) / Double(numImagesPerRow)))
         (0..<numRows).forEach { row in
-            let stackView = getImageRowStackView(interImageSpacing: interImageSpacing)
+            let stackView = getImageRowStackView()
             let numImagesInStackView = min(3, imageUrls.count - row * numImagesPerRow)
             (0..<numImagesInStackView).forEach { imageNum in
                 let imageView = getImageView(for: imageUrls[numImagesPerRow * row + imageNum], imageSize: imageSize)
                 stackView.addArrangedSubview(imageView)
             }
-            imagesStackView.addArrangedSubview(stackView)
+            containerStackView.addArrangedSubview(stackView)
         }
     }
-    
+
     func unConfigure() {
         imagesStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
     }
     
     @objc private func imageTapped(sender: UITapGestureRecognizer) {
         // Go through all rows of main stackView
-        imagesStackView.arrangedSubviews.forEach { containerStackView in
+        containerStackView.arrangedSubviews.forEach { imageRowStackView in
             // Cast each row as UIStackView
-            if let containerStackView = containerStackView as? UIStackView {
+            if let imageRowStackView = imageRowStackView as? UIStackView {
                 // Go through all item of subStackView
-                containerStackView.arrangedSubviews.forEach { imageView in
+                imageRowStackView.arrangedSubviews.forEach { imageView in
                     // Cast each column as UIImageView, check if is sender, and pull image if not nil
                     if let imageView = imageView as? UIImageView,
                         imageView == sender.view,

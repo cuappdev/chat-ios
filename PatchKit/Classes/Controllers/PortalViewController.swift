@@ -163,6 +163,10 @@ public class PortalViewController: UIViewController {
                     }
                 ]
             },
+            "hasRead" : false,
+            "message" : "How can I do this?",
+            "tags" : [],
+            "image_urls": ["https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg"],
             "created_at" : 1589112659,
             "type" : "Customer Service"
         }
@@ -255,12 +259,9 @@ public class PortalViewController: UIViewController {
     }
     
     func setupTitleLabel() {
-        let attributes = [
-            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 32),
-            NSAttributedString.Key.foregroundColor: UIColor.black
-        ]
-        let attributedTitle = NSAttributedString(string: "Feedback", attributes: attributes)
-        titleLabel.attributedText = attributedTitle
+        titleLabel.text = "Feedback"
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 32)
+        titleLabel.textColor = .black
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(titleLabel)
     }
@@ -432,10 +433,6 @@ extension PortalViewController: UIScrollViewDelegate {
         let indexPath = IndexPath(item: Int(page), section: 0)
 
         headerCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
-    }
-
-    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        headerCollectionView.delegate?.collectionView?(self.headerCollectionView, didSelectItemAt: [0,0])
     }
 
 }
