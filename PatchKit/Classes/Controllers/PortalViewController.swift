@@ -273,11 +273,7 @@ extension PortalViewController: UICollectionViewDataSource {
                  TODO: Don't think we rly need this section param. Potentially refactor
                  BusRequestsCell and CustomerServiceCell into one
                 */
-                cell.configure(section: .customerService, items: data, onTapRow: { feedback in
-                    let viewController = BugsRequestsDetailViewController()
-                    viewController.configure(for: feedback)
-                    self.navigationController?.pushViewController(viewController, animated: true)
-                })
+                cell.configure(section: .customerService, items: data)
             } else {
                 let data = searchController.isActive ? filteredBugsRequestsData : bugsRequestsData
                 cell.configure(section: .bugsAndRequests, items: data, onTapRow: { feedback in
