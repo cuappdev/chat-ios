@@ -74,7 +74,7 @@ class BugsRequestsDetailViewController: UIViewController {
         }
         title = "\(feedback.type.rawValue)\(feedback.type == .bugReport ? " • \(feedback.tags[0])" : "")"
         messageLabel.text = feedback.message
-        imagesStackView.configure(for: ["https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg"], imageSize: CGSize(width: 102, height: 192), onImageTap: { image in
+        imagesStackView.configure(for: feedback.imageUrls, imageSize: CGSize(width: 102, height: 192), onImageTap: { image in
             let vc = ImageDetailViewController()
             vc.configure(for: image)
             self.present(vc, animated: true, completion: nil)

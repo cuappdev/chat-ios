@@ -58,7 +58,7 @@ public class PortalViewController: UIViewController {
             "hasRead" : false,
             "message" : "How can I do this?",
             "tags" : [],
-            "image_urls": [],
+            "image_urls": ["https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg"],
             "created_at" : 1589112659,
             "title" : "Question",
             "type" : "Customer Service"
@@ -68,7 +68,7 @@ public class PortalViewController: UIViewController {
         {
             "message" : "This app sometimes glitches out on me and shows the wrong bus times",
             "tags" : ["UX/UI"],
-            "image_urls": [],
+            "image_urls": ["https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg"],
             "created_at" : 1589112659,
             "title" : "Ithaca Transit Bug",
             "type" : "Bug Report"
