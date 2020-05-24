@@ -21,7 +21,7 @@ class ImagesStackView: UIView {
         setupConstraints()
     }
     
-    func getImageRowStackView() -> UIStackView {
+    private func getImageRowStackView() -> UIStackView {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.distribution = .equalSpacing
@@ -32,7 +32,7 @@ class ImagesStackView: UIView {
         return stackView
     }
     
-    func getImageView(for imageUrl: String, imageSize: CGSize) -> UIImageView {
+    private func getImageView(for imageUrl: String, imageSize: CGSize) -> UIImageView {
         let imageView = UIImageView()
         imageView.backgroundColor = ._mediumGray
         imageView.layer.cornerRadius = 6
@@ -51,7 +51,7 @@ class ImagesStackView: UIView {
         return imageView
     }
     
-    func setupImagesStackView() {
+    private func setupImagesStackView() {
         imagesStackView.axis = .vertical
         imagesStackView.distribution = .fillProportionally
         imagesStackView.alignment = .leading
@@ -75,7 +75,7 @@ class ImagesStackView: UIView {
         }
     }
     
-    @objc func imageTapped(sender: UITapGestureRecognizer) {
+    @objc private func imageTapped(sender: UITapGestureRecognizer) {
         // Go through all rows of main stackView
         imagesStackView.arrangedSubviews.forEach { containerStackView in
             // Cast each row as UIStackView
@@ -93,7 +93,7 @@ class ImagesStackView: UIView {
         }
     }
     
-    func setupConstraints() {
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             imagesStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             imagesStackView.trailingAnchor.constraint(equalTo: trailingAnchor),

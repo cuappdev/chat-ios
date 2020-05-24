@@ -12,6 +12,8 @@ class ImageDetailViewController: UIViewController {
     private let dismissButton = UIButton()
     private let imageView = UIImageView()
     
+    private let dismissButtonSize: CGFloat = 20
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,16 +25,16 @@ class ImageDetailViewController: UIViewController {
     
     private func setupDismissButton() {
         dismissButton.backgroundColor = .white
-        dismissButton.layer.cornerRadius = 20
         dismissButton.setImage(UIImage(named: "back", in: PatchKitImages.resourceBundle, compatibleWith: nil), for: .normal)
         dismissButton.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
         dismissButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        dismissButton.layer.cornerRadius = dismissButtonSize + dismissButton.contentEdgeInsets.top + dismissButton.contentEdgeInsets.bottom
         dismissButton.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(dismissButton)
     }
     
-    func setupImageView() {
+    private func setupImageView() {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageView)
     }
@@ -45,7 +47,7 @@ class ImageDetailViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    func setupConstraints() {
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -56,8 +58,8 @@ class ImageDetailViewController: UIViewController {
         NSLayoutConstraint.activate([
             dismissButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
             dismissButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
-            dismissButton.heightAnchor.constraint(equalToConstant: 20 + dismissButton.contentEdgeInsets.top + dismissButton.contentEdgeInsets.bottom),
-            dismissButton.widthAnchor.constraint(equalToConstant: 20 + dismissButton.contentEdgeInsets.left + dismissButton.contentEdgeInsets.right)
+            dismissButton.heightAnchor.constraint(equalToConstant: dismissButtonSize + dismissButton.contentEdgeInsets.top + dismissButton.contentEdgeInsets.bottom),
+            dismissButton.widthAnchor.constraint(equalToConstant: dismissButtonSize + dismissButton.contentEdgeInsets.left + dismissButton.contentEdgeInsets.right)
         ])
     }
 

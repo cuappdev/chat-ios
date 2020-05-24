@@ -36,26 +36,26 @@ class BugsRequestsDetailViewController: UIViewController {
         setupBackButton()
     }
     
-    func setupImagesStackView() {
+    private func setupImagesStackView() {
         imagesStackView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(imagesStackView)
     }
     
-    func setupScrollView() {
+    private func setupScrollView() {
         scrollView.contentInset = UIEdgeInsets(top: 20, left: 24, bottom: 20, right: 24)
         scrollView.contentSize.width = UIScreen.main.bounds.width
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(scrollView)
     }
     
-    func setupMessageTextView() {
+    private func setupMessageTextView() {
         messageLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         messageLabel.numberOfLines = 0
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(messageLabel)
     }
     
-    func setupTimesLabel() {
+    private func setupTimesLabel() {
         timeLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
         timeLabel.textColor = ._textGray
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -72,16 +72,19 @@ class BugsRequestsDetailViewController: UIViewController {
                 .semibold(boldedText, size: createdAtFontSize)
                 .normal(unBoldedText, size: createdAtFontSize)
         }
-        title = "\(feedback.type.rawValue)\(feedback.type == .bugReport ? " • \(feedback.tags[0])" : "")"
+        title = "\(feedback.type.rawValue)\(!feedback.tags.isEmpty ? "  •  \(feedback.tags[0])" : "")"
         messageLabel.text = feedback.message
-        imagesStackView.configure(for: feedback.imageUrls, imageSize: CGSize(width: 102, height: 192), onImageTap: { image in
-            let vc = ImageDetailViewController()
-            vc.configure(for: image)
-            self.present(vc, animated: true, completion: nil)
+        imagesStackView.configure(
+            for: feedback.imageUrls,
+            imageSize: CGSize(width: 102, height: 192),
+            onImageTap: { image in
+                let vc = ImageDetailViewController()
+                vc.configure(for: image)
+                self.present(vc, animated: true, completion: nil)
         })
     }
 
-    func setupConstraints() {        
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -109,5 +112,6 @@ class BugsRequestsDetailViewController: UIViewController {
             imagesStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
         ])
     }
+
 }
 
