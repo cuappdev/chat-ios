@@ -15,6 +15,7 @@ class MessageTableViewCell: UITableViewCell {
     private let messageLabel = UILabel()
     private let adminImageView = UIImageView()
     private let timeStampLabel = UILabel()
+    private let imagesStackView = ImagesStackView()
     
     private let verticalPadding: CGFloat = 6
 
@@ -25,6 +26,11 @@ class MessageTableViewCell: UITableViewCell {
         setupMessageBubble()
         setupMessageLabel()
         setupTimeStampLabel()
+        setupImagesStackView()
+    }
+    
+    func setupImagesStackView() {
+        imagesStackView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     func setupMessageLabel() {
@@ -47,19 +53,16 @@ class MessageTableViewCell: UITableViewCell {
         adminImageView.clipsToBounds = true
         adminImageView.contentMode = .scaleAspectFill
         adminImageView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(adminImageView)
     }
     
     func setupTimeStampLabel() {
         timeStampLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(timeStampLabel)
     }
     
     func setupUserMessageConstraints() {
         NSLayoutConstraint.activate([
             messageBubble.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
-//            messageBubble.topAnchor.constraint(equalTo: contentView.topAnchor, constant: verticalPadding),
-            messageBubble.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -verticalPadding),
+//            messageBubble.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -verticalPadding),
             messageBubble.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: 80)
         ])
     }
@@ -74,8 +77,7 @@ class MessageTableViewCell: UITableViewCell {
 
         NSLayoutConstraint.activate([
             messageBubble.leadingAnchor.constraint(equalTo: adminImageView.trailingAnchor, constant: 8),
-//            messageBubble.topAnchor.constraint(equalTo: contentView.topAnchor, constant: verticalPadding),
-            messageBubble.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -verticalPadding),
+//            messageBubble.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -verticalPadding),
             messageBubble.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -80)
         ])
     }
@@ -100,39 +102,60 @@ class MessageTableViewCell: UITableViewCell {
             messageBubble.topAnchor.constraint(equalTo: timeStampLabel.bottomAnchor, constant: 8)
         ])
     }
+    
+    func setupImagesStackViewConstraints() {
+        NSLayoutConstraint.activate([
+            imagesStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
+            imagesStackView.topAnchor.constraint(equalTo: messageBubble.bottomAnchor, constant: 8),
+            imagesStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -verticalPadding)
+        ])
+    }
 
     func configure(for message: Message, addTimeStamp: Bool) {
         messageLabel.text = message.content
+
         if message.isFromAdmin {
             messageBubble.backgroundColor = ._lightGray
             messageLabel.textColor = .black
+            contentView.addSubview(adminImageView)
             setupAdminMessageConstraints()
         } else {
             messageBubble.backgroundColor = ._messageBlue
             messageLabel.textColor = .white
             setupUserMessageConstraints()
         }
+
         if addTimeStamp {
             timeStampLabel.attributedText = NSMutableAttributedString()
                 .semibold(message.createdAt.convertToTimestamp(), size: 10)
                 .normal(message.createdAt.convertToTimestamp(), size: 10)
+            contentView.addSubview(timeStampLabel)
             setupTimeStampLabelConstraints()
         } else {
-            timeStampLabel.attributedText = nil
             NSLayoutConstraint.activate([
                 messageBubble.topAnchor.constraint(equalTo: contentView.topAnchor, constant: verticalPadding)
+            ])
+        }
+        
+        if !message.imageUrls.isEmpty {
+            imagesStackView.configure(for: message.imageUrls, imageSize: CGSize(width: 88, height: 88), interImageSpacing: 4)
+            contentView.addSubview(imagesStackView)
+            setupImagesStackViewConstraints()
+        } else {
+            NSLayoutConstraint.activate([
+                messageBubble.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -verticalPadding)
             ])
         }
         setupMessageLabelConstraints()
     }
     
     override func prepareForReuse() {
-        adminImageView.removeAllConstraints()
+        adminImageView.removeFromSuperview()
+        timeStampLabel.removeFromSuperview()
+        imagesStackView.removeFromSuperview()
+        imagesStackView.unConfigure()
         messageBubble.removeAllConstraints()
-        timeStampLabel.removeAllConstraints()
-        adminImageView.translatesAutoresizingMaskIntoConstraints = false
         messageBubble.translatesAutoresizingMaskIntoConstraints = false
-        timeStampLabel.translatesAutoresizingMaskIntoConstraints = false
     }
     
     required init?(coder: NSCoder) {

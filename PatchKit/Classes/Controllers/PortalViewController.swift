@@ -73,72 +73,98 @@ public class PortalViewController: UIViewController {
                     {
                         "created_at" : 1589112659,
                         "content": "How can I do this? How can I do this? How can I do this? How can I do this? How can I do this?",
-                        "is_from_admin": true
+                        "is_from_admin": true,
+                        "image_urls": []
                     },
                     {
                         "created_at": 1589112659,
                         "content": "How can I do this?",
-                        "is_from_admin": false
+                        "is_from_admin": false,
+                        "image_urls": [
+                            "https://random.dog/15038-13875-14202.jpg",
+                            "https://random.dog/15038-13875-14202.jpg",
+                            "https://random.dog/15038-13875-14202.jpg",
+                            "https://random.dog/15038-13875-14202.jpg",
+                            "https://random.dog/15038-13875-14202.jpg"
+                        ]
                     },
                     {
                         "created_at": 1589112659,
                         "content": "How can I do this?",
-                        "is_from_admin": true
+                        "is_from_admin": true,
+                        "image_urls": []
                     },
                     {
                         "created_at": 1589112659,
                         "content": "How can I do this?",
-                        "is_from_admin": false
+                        "is_from_admin": false,
+                        "image_urls": []
                     },
                     {
                         "created_at": 1589112659,
                         "content": "How can I do this?",
-                        "is_from_admin": false
+                        "is_from_admin": false,
+                        "image_urls": []
                     },
                     {
                         "created_at": 1589112659,
                         "content": "How can I do this?",
-                        "is_from_admin": true
+                        "is_from_admin": true,
+                        "image_urls": []
                     },
                     {
                         "created_at": 1589112659,
                         "content": "How can I do this?",
-                        "is_from_admin": true
+                        "is_from_admin": true,
+                        "image_urls": []
                     },
                     {
                         "created_at": 1589112659,
                         "content": "How can I do this?",
-                        "is_from_admin": false
+                        "is_from_admin": false,
+                        "image_urls": [
+                            "https://random.dog/15038-13875-14202.jpg",
+                            "https://random.dog/15038-13875-14202.jpg",
+                            "https://random.dog/15038-13875-14202.jpg",
+                            "https://random.dog/15038-13875-14202.jpg",
+                            "https://random.dog/15038-13875-14202.jpg"
+                        ]
                     },
                     {
                         "created_at": 1589112659,
                         "content": "How can I do this?",
-                        "is_from_admin": false
+                        "is_from_admin": false,
+                        "image_urls": []
                     },
                     {
                         "created_at": 1589112659,
                         "content": "How can I do this?",
-                        "is_from_admin": false
+                        "is_from_admin": false,
+                        "image_urls": []
                     },
                     {
                         "created_at": 1589112659,
                         "content": "How can I do this?",
-                        "is_from_admin": false
+                        "is_from_admin": false,
+                        "image_urls": []
                     },
                     {
                         "created_at": 1589112659,
                         "content": "How can I do this?",
-                        "is_from_admin": false
+                        "is_from_admin": false,
+                        "image_urls": []
                     },
                     {
                         "created_at": 1589112659,
                         "content": "How can I do this?",
-                        "is_from_admin": false
+                        "is_from_admin": false,
+                        "image_urls": []
                     },
                     {
                         "created_at": 1589112659,
                         "content": "How can I do this?",
-                        "is_from_admin": false
+                        "is_from_admin": false,
+                        "image_urls": []
                     }
                 ]
             },
