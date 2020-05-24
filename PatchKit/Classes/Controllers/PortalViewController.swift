@@ -304,10 +304,6 @@ extension PortalViewController: UIScrollViewDelegate {
         headerCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
     }
 
-    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        headerCollectionView.delegate?.collectionView?(self.headerCollectionView, didSelectItemAt: [0,0])
-    }
-
 }
 
 // MARK: - UISearchController Delegate
