@@ -78,7 +78,7 @@ extension CustomerServiceDetailViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MessageTableViewCell.reuseIdentifier, for: indexPath) as! MessageTableViewCell
-        cell.configure(for: messageThread.messages[indexPath.row])
+        cell.configure(for: messageThread.messages[indexPath.row], showReadLabel: messageThread.hasAdminRead && indexPath.row == 0)
         cell.contentView.transform = CGAffineTransform(scaleX: 1,y: -1);
         return cell
     }

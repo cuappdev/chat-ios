@@ -127,7 +127,7 @@ class CustomerServiceTableViewCell: UITableViewCell {
         nameLabel.text = item.adminRep?.name
         timeLabel.text = item.createdAt.convertToTimestamp()
         messageLabel.text = item.messageThread.messages[0].content
-        unreadImageView.isHidden = item.hasRead
+        unreadImageView.isHidden = item.messageThread.hasUserRead
     }
 
     required init?(coder: NSCoder) {

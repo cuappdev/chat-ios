@@ -10,5 +10,7 @@ import Foundation
 struct MessageThread: Codable {
     
     let messages: [Message]
+    let hasAdminRead: Bool
+    let hasUserRead: Bool
     
 }
