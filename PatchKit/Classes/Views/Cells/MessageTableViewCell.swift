@@ -163,7 +163,7 @@ class MessageTableViewCell: UITableViewCell {
         setTimestampLabelText(createdAt: message.createdAt)
 
         if !message.imageUrls.isEmpty {
-            imagesStackView.configure(for: message.imageUrls, imageSize: CGSize(width: 88, height: 88), interImageSpacing: 4)
+            imagesStackView.configure(for: message.imageUrls, imageSize: CGSize(width: 88, height: 88), interImageSpacing: 4, numImagesPerRow: 3)
             contentView.addSubview(imagesStackView)
             setupImagesStackViewConstraints()
             if !showReadLabel {

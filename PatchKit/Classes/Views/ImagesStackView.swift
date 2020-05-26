@@ -66,11 +66,11 @@ class ImagesStackView: UIView {
     }
     
     func configure(for imageUrls: [String], imageSize: CGSize, interImageSpacing: CGFloat, numImagesPerRow: Int, onImageTap: ((UIImage) -> Void)? = nil) {
-        imagesStackView.spacing = interImageSpacing
+        containerStackView.spacing = interImageSpacing
         self.onImageTap = onImageTap
         let numRows = Int(ceil(Double(imageUrls.count) / Double(numImagesPerRow)))
         (0..<numRows).forEach { row in
-            let stackView = getImageRowStackView()
+            let stackView = getImageRowStackView(interImageSpacing: interImageSpacing)
             let numImagesInStackView = min(3, imageUrls.count - row * numImagesPerRow)
             (0..<numImagesInStackView).forEach { imageNum in
                 let imageView = getImageView(for: imageUrls[numImagesPerRow * row + imageNum], imageSize: imageSize)
@@ -81,7 +81,7 @@ class ImagesStackView: UIView {
     }
 
     func unConfigure() {
-        imagesStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        containerStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
     }
     
     @objc private func imageTapped(sender: UITapGestureRecognizer) {
@@ -104,14 +104,14 @@ class ImagesStackView: UIView {
     
     private func setupConstraints() {
         // Doing this to fix constraint errors with auto sizing tableview
-        let bottomConstraint = imagesStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        let bottomConstraint = containerStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         bottomConstraint.isActive = true
         bottomConstraint.priority = UILayoutPriority(rawValue: 999)
 
         NSLayoutConstraint.activate([
-            imagesStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            imagesStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            imagesStackView.topAnchor.constraint(equalTo: topAnchor),
+            containerStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            containerStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            containerStackView.topAnchor.constraint(equalTo: topAnchor),
         ])
     }
     
