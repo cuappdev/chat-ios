@@ -40,7 +40,7 @@ extension Date {
     }
     
     func isBetween(date date1: Date, andDate date2: Date) -> Bool {
-        return date1.compare(self).rawValue * self.compare(date2).rawValue >= 0
+        return (min(date1, date2) ... max(date1, date2)).contains(self)
     }
 
 }

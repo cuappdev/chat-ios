@@ -29,7 +29,7 @@
 		<string>armv7</string>
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Wanna steal ur data</string>
+	<string>This app requires access to the photo library.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

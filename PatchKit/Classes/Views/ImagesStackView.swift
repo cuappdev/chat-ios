@@ -80,7 +80,7 @@ class ImagesStackView: UIView {
         }
     }
 
-    func unConfigure() {
+    func deconfigure() {
         containerStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
     }
     

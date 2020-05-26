@@ -16,7 +16,7 @@ class CustomerServiceDetailViewController: UIViewController {
     private let sendButton = UIButton()
     
     private var messageThread: MessageThread!
-    private var messageTextViewHeightConstraint: NSLayoutConstraint!
+    private var messageTextViewHeightConstraint: NSLayoutConstraint?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,15 +37,15 @@ class CustomerServiceDetailViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
-    func setupKeyboardListeners() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addBottomOfNavBar()
         setupBackButton()
+    }
+    
+    private func setupKeyboardListeners() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     private func setupSendButton() {
@@ -90,20 +90,19 @@ class CustomerServiceDetailViewController: UIViewController {
         view.addSubview(messagesTableView)
     }
     
-    func configure(for feedback: TwoWayFeedback) {
+    private func configure(for feedback: TwoWayFeedback) {
         messageThread = feedback.messageThread
         title = "\(feedback.adminRep?.name ?? feedback.type.rawValue)"
     }
     
-    @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y == 0 {
-                self.view.frame.origin.y -= keyboardSize.height
-            }
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, self.view.frame.origin.y == 0 {
+            self.view.frame.origin.y -= keyboardSize.height
+            
         }
     }
 
-    @objc func keyboardWillHide(notification: NSNotification) {
+    @objc private func keyboardWillHide(notification: NSNotification) {
         if self.view.frame.origin.y != 0 {
             self.view.frame.origin.y = 0
         }
@@ -138,7 +137,7 @@ class CustomerServiceDetailViewController: UIViewController {
         ])
         
         messageTextViewHeightConstraint =             messageTextView.heightAnchor.constraint(equalToConstant: 32)
-        messageTextViewHeightConstraint.isActive = true
+        messageTextViewHeightConstraint?.isActive = true
 
         NSLayoutConstraint.activate([
             messageTextView.leadingAnchor.constraint(equalTo: addImageButton.trailingAnchor, constant: 16),
@@ -170,6 +169,6 @@ extension CustomerServiceDetailViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         let fixedWidth = textView.frame.size.width
         let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
-        messageTextViewHeightConstraint.constant = min(100, newSize.height)
+        messageTextViewHeightConstraint?.constant = min(100, newSize.height)
     }
 }
