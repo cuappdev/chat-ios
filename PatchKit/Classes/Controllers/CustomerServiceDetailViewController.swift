@@ -15,13 +15,19 @@ class CustomerServiceDetailViewController: UIViewController {
     private let messageTextView = UITextView()
     private let sendButton = UIButton()
     
-    private var messageThread: MessageThread!
+    private var feedback: TwoWayFeedback
     private var messageTextViewHeightConstraint: NSLayoutConstraint?
+    
+    init(feedback: TwoWayFeedback) {
+        self.feedback = feedback
+        super.init(nibName: nil, bundle: nil)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
+        title = "\(feedback.adminRep?.name ?? feedback.type.rawValue)"
         
         setupKeyboardListeners()
         
@@ -32,15 +38,15 @@ class CustomerServiceDetailViewController: UIViewController {
         setupSendButton()
         setupConstraints()
     }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addBottomOfNavBar()
         setupBackButton()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     private func setupKeyboardListeners() {
@@ -88,11 +94,6 @@ class CustomerServiceDetailViewController: UIViewController {
         messagesTableView.transform = CGAffineTransform(scaleX: 1,y: -1);
         messagesTableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(messagesTableView)
-    }
-    
-    private func configure(for feedback: TwoWayFeedback) {
-        messageThread = feedback.messageThread
-        title = "\(feedback.adminRep?.name ?? feedback.type.rawValue)"
     }
     
     @objc private func keyboardWillShow(notification: NSNotification) {
@@ -147,17 +148,21 @@ class CustomerServiceDetailViewController: UIViewController {
         ])
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 }
 
 extension CustomerServiceDetailViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messageThread.messages.count
+        return feedback.messageThread.messages.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MessageTableViewCell.reuseIdentifier, for: indexPath) as! MessageTableViewCell
-        cell.configure(for: messageThread.messages[indexPath.row], showReadLabel: messageThread.hasAdminRead && indexPath.row == 0)
+        cell.configure(for: feedback.messageThread.messages[indexPath.row], showReadLabel: feedback.messageThread.hasAdminRead && indexPath.row == 0)
         cell.contentView.transform = CGAffineTransform(scaleX: 1,y: -1);
         return cell
     }

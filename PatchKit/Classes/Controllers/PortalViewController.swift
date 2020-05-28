@@ -379,8 +379,7 @@ extension PortalViewController: UICollectionViewDataSource {
                 */
                 cell.configure(section: .customerService, items: data, onTapRow: { feedback in
                     if let feedback = feedback as? TwoWayFeedback {
-                        let viewController = CustomerServiceDetailViewController()
-                        viewController.configure(for: feedback)
+                        let viewController = CustomerServiceDetailViewController(feedback: feedback)
                         self.navigationController?.pushViewController(viewController, animated: true)
                     }
                 })

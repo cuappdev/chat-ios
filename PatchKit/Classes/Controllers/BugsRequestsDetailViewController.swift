@@ -14,15 +14,24 @@ class BugsRequestsDetailViewController: UIViewController {
     private let messageLabel = UILabel()
     private let scrollView = UIScrollView()
     private let timeLabel = UILabel()
-
+    
+    private let feedback: OneWayFeedback
+    
+    init(feedback: OneWayFeedback) {
+        self.feedback = feedback
+        super.init(nibName: nil, bundle: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setViewControllerTitle()
         
         view.backgroundColor = .white
 
         setupImagesStackView()
         setupScrollView()
-        setupMessageTextView()
+        setupMessageLabel()
         setupTimesLabel()
         
         setupConstraints()
@@ -34,7 +43,30 @@ class BugsRequestsDetailViewController: UIViewController {
         setupBackButton()
     }
     
+    private func setViewControllerTitle() {
+        let createdAtString = feedback.createdAt.formatDateString(format: "MMM d | h:mm a")
+        if let dividerIndex = createdAtString.firstIndex(of: "|") {
+            let createdAtFontSize: CGFloat = 10
+            let boldedText = String(createdAtString.prefix(upTo: dividerIndex))
+            let unBoldedText = String(createdAtString.suffix(from: dividerIndex))
+            timeLabel.attributedText = NSMutableAttributedString()
+                .semibold(boldedText, size: createdAtFontSize)
+                .normal(unBoldedText, size: createdAtFontSize)
+        }
+        title = "\(feedback.type.rawValue)\(!feedback.tags.isEmpty ? "  •  \(feedback.tags[0])" : "")"
+    }
+    
     private func setupImagesStackView() {
+        imagesStackView.configure(
+            for: feedback.imageUrls,
+            imageSize: CGSize(width: 102, height: 192),
+            interImageSpacing: 10,
+            numImagesPerRow: 3,
+            onImageTap: { image in
+                let vc = ImageDetailViewController()
+                vc.configure(for: image)
+                self.present(vc, animated: true, completion: nil)
+        })
         imagesStackView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(imagesStackView)
     }
@@ -46,7 +78,8 @@ class BugsRequestsDetailViewController: UIViewController {
         view.addSubview(scrollView)
     }
     
-    private func setupMessageTextView() {
+    private func setupMessageLabel() {
+        messageLabel.text = feedback.message
         messageLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         messageLabel.numberOfLines = 0
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -58,30 +91,6 @@ class BugsRequestsDetailViewController: UIViewController {
         timeLabel.textColor = ._textGray
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(timeLabel)
-    }
-    
-    func configure(for feedback: OneWayFeedback) {
-        let createdAtString = feedback.createdAt.formatDateString(format: "MMM d | h:mm a")
-        if let dividerIndex = createdAtString.firstIndex(of: "|") {
-            let createdAtFontSize: CGFloat = 10
-            let boldedText = String(createdAtString.prefix(upTo: dividerIndex))
-            let unBoldedText = String(createdAtString.suffix(from: dividerIndex))
-            timeLabel.attributedText = NSMutableAttributedString()
-                .semibold(boldedText, size: createdAtFontSize)
-                .normal(unBoldedText, size: createdAtFontSize)
-        }
-        title = "\(feedback.type.rawValue)\(!feedback.tags.isEmpty ? "  •  \(feedback.tags[0])" : "")"
-        messageLabel.text = feedback.message
-        imagesStackView.configure(
-            for: feedback.imageUrls,
-            imageSize: CGSize(width: 102, height: 192),
-            interImageSpacing: 10,
-            numImagesPerRow: 3,
-            onImageTap: { image in
-                let vc = ImageDetailViewController()
-                vc.configure(for: image)
-                self.present(vc, animated: true, completion: nil)
-        })
     }
 
     private func setupConstraints() {
@@ -111,6 +120,10 @@ class BugsRequestsDetailViewController: UIViewController {
             imagesStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant:-(scrollView.contentInset.left + scrollView.contentInset.right)),
             imagesStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
         ])
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
 }
