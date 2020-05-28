@@ -15,10 +15,10 @@ public class PortalViewController: UIViewController {
     private let searchController = UISearchController(searchResultsController: nil) // TODO: For later
     private let titleLabel = UILabel()
     
-    private var bugsRequestsData = [Feedback]()
-    private var customerServiceData = [Feedback]()
-    private var filteredBugsRequestsData = [Feedback]()
-    private var filteredCustomerServiceData = [Feedback]()
+    private var bugsRequestsData = [OneWayFeedback]()
+    private var customerServiceData = [TwoWayFeedback]()
+    private var filteredBugsRequestsData = [OneWayFeedback]()
+    private var filteredCustomerServiceData = [TwoWayFeedback]()
     private let headersData = ["Customer Service", "Bugs & Requests"]
     
     private(set) var countEditTaps: Int = 0
@@ -53,14 +53,121 @@ public class PortalViewController: UIViewController {
         let twoWayFeedbackJson = """
         {
             "admin_rep" : {
-                "name": "Admin Name"
+                "name": "Lil YANZ"
+            },
+            "message_thread" : {
+                "has_user_read" : false,
+                "has_admin_read" : true,
+                "messages": [
+                    {
+                        "created_at" : 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": false,
+                        "image_urls": []
+                    },
+                    {
+                        "created_at" : 1589112659,
+                        "content": "How can I do this? How can I do this? How can I do this? How can I do this? How can I do this?",
+                        "is_from_admin": true,
+                        "image_urls": []
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": false,
+                        "image_urls": [
+                            "https://random.dog/15038-13875-14202.jpg",
+                            "https://random.dog/15038-13875-14202.jpg",
+                            "https://random.dog/15038-13875-14202.jpg",
+                            "https://random.dog/15038-13875-14202.jpg",
+                            "https://random.dog/15038-13875-14202.jpg"
+                        ]
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": true,
+                        "image_urls": []
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": false,
+                        "image_urls": []
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": false,
+                        "image_urls": []
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": true,
+                        "image_urls": []
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": true,
+                        "image_urls": []
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": false,
+                        "image_urls": [
+                            "https://random.dog/15038-13875-14202.jpg",
+                            "https://random.dog/15038-13875-14202.jpg",
+                            "https://random.dog/15038-13875-14202.jpg",
+                            "https://random.dog/15038-13875-14202.jpg",
+                            "https://random.dog/15038-13875-14202.jpg"
+                        ]
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": false,
+                        "image_urls": []
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": false,
+                        "image_urls": []
+                    },
+                    {
+                        "created_at": 1589112659,
+                        "content": "How can I do this?",
+                        "is_from_admin": false,
+                        "image_urls": []
+                    },
+                    {
+                        "created_at": 1590003431,
+                        "content": "How can I do this?",
+                        "is_from_admin": false,
+                        "image_urls": []
+                    },
+                    {
+                        "created_at": 1590349031,
+                        "content": "How can I do this?",
+                        "is_from_admin": false,
+                        "image_urls": []
+                    },
+                    {
+                        "created_at": 1590262631,
+                        "content": "How can I do this?",
+                        "is_from_admin": false,
+                        "image_urls": []
+                    }
+                ]
             },
             "hasRead" : false,
             "message" : "How can I do this?",
             "tags" : [],
             "image_urls": ["https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg", "https://random.dog/15038-13875-14202.jpg"],
             "created_at" : 1589112659,
-            "title" : "Question",
             "type" : "Customer Service"
         }
         """
@@ -77,6 +184,7 @@ public class PortalViewController: UIViewController {
         
         let jsonDecoder = JSONDecoder()
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+        jsonDecoder.dateDecodingStrategy = .secondsSince1970
         
         guard let twoWayJsonData = twoWayFeedbackJson.data(using: .utf8) else { return }
         let twoWayDummyFeedback = try! jsonDecoder.decode(TwoWayFeedback.self, from: twoWayJsonData)
@@ -269,7 +377,12 @@ extension PortalViewController: UICollectionViewDataSource {
                  TODO: Don't think we rly need this section param. Potentially refactor
                  BusRequestsCell and CustomerServiceCell into one
                 */
-                cell.configure(section: .customerService, items: data)
+                cell.configure(section: .customerService, items: data, onTapRow: { feedback in
+                    if let feedback = feedback as? TwoWayFeedback {
+                        let viewController = CustomerServiceDetailViewController(feedback: feedback)
+                        self.navigationController?.pushViewController(viewController, animated: true)
+                    }
+                })
             } else {
                 let data = searchController.isActive ? filteredBugsRequestsData : bugsRequestsData
                 cell.configure(section: .bugsAndRequests, items: data, onTapRow: { feedback in
@@ -347,9 +460,10 @@ extension PortalViewController: UISearchResultsUpdating {
     
     public func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text?.lowercased() {
-            filteredCustomerServiceData = customerServiceData.filter { feedback in
-                return feedback.message.lowercased().contains(searchText)
-            }
+            // TODO: Fix searching for customer service
+//            filteredCustomerServiceData = customerServiceData.filter { feedback in
+//                return feedback.message.lowercased().contains(searchText)
+//            }
 
             filteredBugsRequestsData = bugsRequestsData.filter { feedback in
                 return feedback.message.lowercased().contains(searchText)

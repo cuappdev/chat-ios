@@ -10,25 +10,25 @@ import Foundation
 
 class TwoWayFeedback: Feedback {
 
-    let hasRead: Bool
     let adminRep: AdminRep?
+    let messageThread: MessageThread
 
     enum CodingKeys: String, CodingKey {
-        case hasRead
         case adminRep
+        case messageThread
     }
 
-    override init(imageUrls: [String], message: String, tags: [String], type: FeedbackType) {
-        self.hasRead = true
+    init(imageUrls: [String], message: String, tags: [String], type: FeedbackType) {
         self.adminRep = nil
-        super.init(imageUrls: imageUrls, message: message, tags: tags, type: type)
+        self.messageThread = MessageThread(messages: [Message(content: message, imageUrls: imageUrls, isFromAdmin: false)], hasAdminRead: false, hasUserRead: true)
+        super.init(type: type)
     }
 
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        hasRead = try container.decode(Bool.self, forKey: .hasRead)
         adminRep = try? container.decode(AdminRep.self, forKey: .adminRep)
+        messageThread = try container.decode(MessageThread.self, forKey: .messageThread)
         try super.init(from: decoder)
     }
 

@@ -9,6 +9,10 @@
 import Foundation
 
 extension Date {
+    
+    static func -(lhs: Date, rhs: Int) -> Date {
+        return Calendar.current.date(byAdding: .day, value: -rhs, to: lhs)!
+    }
 
     func convertToTimestamp() -> String {
         let formatter = DateFormatter()
@@ -33,6 +37,10 @@ extension Date {
         let dateFormatterPrint = DateFormatter()
         dateFormatterPrint.dateFormat = format
         return dateFormatterPrint.string(from: self)
+    }
+    
+    func isBetween(date date1: Date, andDate date2: Date) -> Bool {
+        return (min(date1, date2) ... max(date1, date2)).contains(self)
     }
 
 }

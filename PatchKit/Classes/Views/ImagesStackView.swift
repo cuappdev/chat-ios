@@ -21,11 +21,11 @@ class ImagesStackView: UIView {
         setupConstraints()
     }
     
-    private func getImageRowStackView() -> UIStackView {
+    private func getImageRowStackView(interImageSpacing: CGFloat) -> UIStackView {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.distribution = .equalSpacing
-        stackView.spacing = 10.5
+        stackView.spacing = interImageSpacing
         stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -44,8 +44,12 @@ class ImagesStackView: UIView {
         imageView.addGestureRecognizer(tapGestureRecognizer)
         imageView.translatesAutoresizingMaskIntoConstraints = false
 
+        // Doing this to fix constraint errors with auto sizing tableview
+        let heightConstraint = imageView.heightAnchor.constraint(equalToConstant: imageSize.height)
+        heightConstraint.isActive = true
+        heightConstraint.priority = UILayoutPriority(rawValue: 999)
+        
         NSLayoutConstraint.activate([
-            imageView.heightAnchor.constraint(equalToConstant: imageSize.height),
             imageView.widthAnchor.constraint(equalToConstant: imageSize.width)
         ])
         
@@ -61,11 +65,12 @@ class ImagesStackView: UIView {
         addSubview(containerStackView)
     }
     
-    func configure(for imageUrls: [String], imageSize: CGSize, numImagesPerRow: Int, onImageTap: ((UIImage) -> Void)? = nil) {
+    func configure(for imageUrls: [String], imageSize: CGSize, interImageSpacing: CGFloat, numImagesPerRow: Int, onImageTap: ((UIImage) -> Void)? = nil) {
+        containerStackView.spacing = interImageSpacing
         self.onImageTap = onImageTap
         let numRows = Int(ceil(Double(imageUrls.count) / Double(numImagesPerRow)))
         (0..<numRows).forEach { row in
-            let stackView = getImageRowStackView()
+            let stackView = getImageRowStackView(interImageSpacing: interImageSpacing)
             let numImagesInStackView = min(3, imageUrls.count - row * numImagesPerRow)
             (0..<numImagesInStackView).forEach { imageNum in
                 let imageView = getImageView(for: imageUrls[numImagesPerRow * row + imageNum], imageSize: imageSize)
@@ -73,6 +78,10 @@ class ImagesStackView: UIView {
             }
             containerStackView.addArrangedSubview(stackView)
         }
+    }
+
+    func deconfigure() {
+        containerStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
     }
     
     @objc private func imageTapped(sender: UITapGestureRecognizer) {
@@ -94,11 +103,15 @@ class ImagesStackView: UIView {
     }
     
     private func setupConstraints() {
+        // Doing this to fix constraint errors with auto sizing tableview
+        let bottomConstraint = containerStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        bottomConstraint.isActive = true
+        bottomConstraint.priority = UILayoutPriority(rawValue: 999)
+
         NSLayoutConstraint.activate([
             containerStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             containerStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             containerStackView.topAnchor.constraint(equalTo: topAnchor),
-            containerStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
     
