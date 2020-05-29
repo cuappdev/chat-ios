@@ -15,31 +15,48 @@ import UIKit
  */
 class BannerView: UIView {
     
-    private let bannerTextField = UITextField()
+    private let bannerTitle = UILabel()
+    private let bannerMessage = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.translatesAutoresizingMaskIntoConstraints = false
-        setupBannerTextField()
+        layer.cornerRadius = 8
+        setupBannerLabels()
         setupConstraints()
     }
-    
-    func setupBannerTextField() {
-        bannerTextField.translatesAutoresizingMaskIntoConstraints = false
-        bannerTextField.layer.cornerRadius = 5
-        bannerTextField.backgroundColor = ._green
-        bannerTextField.text = "Thank you for your feedback"
-        bannerTextField.font = UIFont.systemFont(ofSize: 14)
-        bannerTextField.textAlignment = .center
-        addSubview(bannerTextField)
+
+    /**
+     Banner text must be set up using this convenience initializer
+     */
+    convenience init(backgroundColor: UIColor, title: String, message: String) {
+        self.init(frame: .zero)
+        self.backgroundColor = backgroundColor
+        bannerTitle.text = title
+        bannerMessage.text = message
+    }
+
+    func setupBannerLabels() {
+        bannerTitle.translatesAutoresizingMaskIntoConstraints = false
+        bannerTitle.textColor = .white
+        bannerTitle.font = UIFont.boldSystemFont(ofSize: 14)
+        addSubview(bannerTitle)
+
+        bannerMessage.translatesAutoresizingMaskIntoConstraints = false
+        bannerMessage.textColor = .white
+        bannerMessage.font = UIFont.systemFont(ofSize: 12)
+        addSubview(bannerMessage)
     }
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            bannerTextField.leadingAnchor.constraint(equalTo: leadingAnchor),
-            bannerTextField.trailingAnchor.constraint(equalTo: trailingAnchor),
-            bannerTextField.topAnchor.constraint(equalTo: topAnchor),
-            bannerTextField.heightAnchor.constraint(equalToConstant: 50)
+            bannerTitle.topAnchor.constraint(equalTo: topAnchor, constant: 12),
+            bannerTitle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12)
+        ])
+
+        NSLayoutConstraint.activate([
+            bannerMessage.topAnchor.constraint(equalTo: bannerTitle.bottomAnchor, constant: 8),
+            bannerMessage.leadingAnchor.constraint(equalTo: bannerTitle.leadingAnchor)
         ])
     }
     
@@ -53,12 +70,12 @@ class BannerView: UIView {
      */
     func show() {
         UIView.animate(
-            withDuration: 3.0,
+            withDuration: 1.5,
             animations: {
                 self.center.y = 100
             },
             completion: { finished in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                     self.hide()
                 }
             }

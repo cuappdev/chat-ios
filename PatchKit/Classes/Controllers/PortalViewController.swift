@@ -222,12 +222,20 @@ public class PortalViewController: UIViewController {
     
     //MARK: - OBJC Functions
     @objc func animateBanner() {
-        let banner = BannerView()
-        view.addSubview(banner)
+        // TODO: connect to backend and their custom messages
+        let banner = BannerView(
+            backgroundColor: ._thankYouGreen, 
+            title: "Feedback Submitted", 
+            message: "Thank you for the feedback"
+        )
+        navigationController?.navigationBar.addSubview(banner)
+        
+        let navBar = navigationController!.navigationBar
         NSLayoutConstraint.activate([
-            banner.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            banner.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            banner.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5)
+            banner.topAnchor.constraint(equalTo: navBar.topAnchor),
+            banner.leadingAnchor.constraint(equalTo: navBar.leadingAnchor, constant: 12),
+            banner.trailingAnchor.constraint(equalTo: navBar.trailingAnchor, constant: -12),
+            banner.heightAnchor.constraint(equalToConstant: 64)
         ])
         banner.show()
     }
@@ -325,6 +333,7 @@ extension PortalViewController: UIScrollViewDelegate {
 
 // MARK: - UISearchController Delegate
 extension PortalViewController: UISearchControllerDelegate {
+
     public func willPresentSearchController(_ searchController: UISearchController) {
         navigationController?.setNavigationBarHidden(true, animated: true)
         searchController.isActive = true
