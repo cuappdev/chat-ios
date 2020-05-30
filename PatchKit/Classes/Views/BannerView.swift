@@ -20,8 +20,7 @@ class BannerView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.translatesAutoresizingMaskIntoConstraints = false
-        layer.cornerRadius = 8
+        setupViewProperties()
         setupBannerLabels()
         setupConstraints()
     }
@@ -34,6 +33,14 @@ class BannerView: UIView {
         self.backgroundColor = backgroundColor
         bannerTitle.text = title
         bannerMessage.text = message
+    }
+
+    func setupViewProperties() {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        layer.cornerRadius = 8
+        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(hide(_:)))
+        swipeGesture.direction = .up
+        addGestureRecognizer(swipeGesture)
     }
 
     func setupBannerLabels() {
@@ -85,11 +92,13 @@ class BannerView: UIView {
     /**
      Dismisses the presenting banner view
      */
-    func hide() {
+    @objc func hide(_ sender: UISwipeGestureRecognizer? = nil) {
+        let duration = sender != nil ? 0.1 : 2.0 
         UIView.animate(
-            withDuration: 2.0,
+            withDuration: duration,
             animations: {
-                self.center.y = -self.frame.height / 2
+                let padding = UIApplication.shared.windows[0].safeAreaInsets.top
+                self.center.y = -self.frame.height / 2 - padding
             },
             completion: { finished in
                 self.removeFromSuperview()
