@@ -15,8 +15,8 @@ import UIKit
  */
 class BannerView: UIView {
     
-    private let bannerTitle = UILabel()
     private let bannerMessage = UILabel()
+    private let bannerTitle = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)

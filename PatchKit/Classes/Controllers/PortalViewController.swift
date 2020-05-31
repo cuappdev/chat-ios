@@ -224,7 +224,7 @@ public class PortalViewController: UIViewController {
     @objc func animateBanner() {
         // TODO: connect to backend and their custom messages
         let banner = BannerView(
-            backgroundColor: ._thankYouGreen, 
+            backgroundColor: ._responseGreen, 
             title: "Feedback Submitted", 
             message: "Thank you for the feedback"
         )
