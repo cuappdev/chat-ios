@@ -69,7 +69,7 @@ class FeedbackView: UIView {
     }
     
     func setupData() {
-        typeData = ["Hello", "World"]  // TODO: Connect with actual data
+        typeData = ["", "Hello", "World"]  // TODO: Connect with actual data
     }
     
     func setupAddFileButton() {
@@ -213,6 +213,7 @@ class FeedbackView: UIView {
         typeTextField.placeholder = "Choose type"
         typeTextField.font = UIFont.systemFont(ofSize: 14)
         typeTextField.inputView = typePickerView
+        typeTextField.delegate = self
         addSubview(typeTextField)
     }
     
@@ -267,6 +268,10 @@ class FeedbackView: UIView {
         ])
     }
     
+    /**
+     Checks to see whether the user has made a valid selection.
+     Requires the first element in the component to be an invalid choice.
+     */
     func checkStatus() {
         if typePickerView.selectedRow(inComponent: 0) != -1 {
             if messageTextView.textColor != .lightGray || attachedFiles.count > 0 {
@@ -399,25 +404,20 @@ extension FeedbackView: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         // Reload components to remove the checkmark from previous selection
         pickerView.reloadAllComponents()
-        // Add checkmark to the selected row
-        guard let label = pickerView.view(forRow: row, forComponent: component) as? UILabel else { return }
-        let checkMarkImage = UIImage(named: "checkmark", in: PatchKitImages.resourceBundle, compatibleWith: nil)
-        let checkMarkView = UIImageView(frame: CGRect(x: label.frame.width - 40, y: label.frame.height / 2 - 5.5, width: 15, height: 11))
-        checkMarkView.image = checkMarkImage
-        label.addSubview(checkMarkView)
+        
         // Update the typeTextField and recheck whether the message is ready to send
         typeTextField.text = typeData[row]
         checkStatus()
     }
         
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        var label = UILabel()
-        if let v = view as? UILabel {
-            label = v
-        }
-        label.font = UIFont.systemFont(ofSize: 18)
-        label.text = "    \(typeData[row])"
-        return label
+        let pvr = PickerViewRow()
+        pvr.setup(withText: typeData[row], withView: view)
+        return pvr
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 32
     }
     
 }
@@ -430,6 +430,17 @@ extension FeedbackView: RemoveFileDelegate {
         attachmentsCollectionView.reloadData()
         attachmentsCollectionView.collectionViewLayout.invalidateLayout()
         checkStatus()
+    }
+    
+}
+
+// MARK: - TextField Delegate
+extension FeedbackView: UITextFieldDelegate {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == typeTextField {
+            setupTypePickerView()
+        }
     }
     
 }

@@ -387,8 +387,8 @@ extension PortalViewController: UICollectionViewDataSource {
                 let data = searchController.isActive ? filteredBugsRequestsData : bugsRequestsData
                 cell.configure(section: .bugsAndRequests, items: data, onTapRow: { feedback in
                     if let feedback = feedback as? OneWayFeedback {
-                        let viewController = BugsRequestsDetailViewController()
-                        viewController.configure(for: feedback)
+                        let viewController = BugsRequestsDetailViewController(feedback: feedback)
+                        // TODO: viewController.configure(for: feedback)
                         self.navigationController?.pushViewController(viewController, animated: true)
                     }
                 })
