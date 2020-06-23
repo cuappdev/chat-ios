@@ -38,7 +38,7 @@ class FeedbackView: UIView {
     private let typePickerView = UIPickerView()
     private let typeSelectionLabel = UILabel()
     
-    private var tf = UITextField(frame: .zero)
+    private var pickerViewtextField = UITextField(frame: .zero)
     
     public var status = Status.incomplete {
         didSet {
@@ -221,9 +221,9 @@ class FeedbackView: UIView {
         typePickerView.layer.addSublayer(border)
         typePickerView.reloadAllComponents()
         
-        tf.inputAccessoryView = toolbar
-        tf.inputView = typePickerView
-        addSubview(tf)
+        pickerViewtextField.inputAccessoryView = toolbar
+        pickerViewtextField.inputView = typePickerView
+        addSubview(pickerViewtextField)
     }
     
     func setupGestureRecognizer() {
@@ -317,22 +317,28 @@ class FeedbackView: UIView {
     @objc func didTapDone() {
         let row = typePickerView.selectedRow(inComponent: 0)
         typePickerView.selectRow(row, inComponent: 0, animated: true)
-        typeSelectionLabel.text = typeData[row].trimmingCharacters(in: .whitespaces).isEmpty ? "Choose type" : typeData[row]
-        typeSelectionLabel.textColor = typeSelectionLabel.text == "Choose type" ? .lightGray : .black
-        tf.resignFirstResponder()
+        typeSelectionLabel.text =
+            typeData[row].trimmingCharacters(in: .whitespaces).isEmpty
+            ? "Choose type"
+            : typeData[row]
+        typeSelectionLabel.textColor =
+            typeSelectionLabel.text == "Choose type"
+            ? .lightGray
+            : .black
+        pickerViewtextField.resignFirstResponder()
     }
     
     @objc func didTapCancel() {
         typeSelectionLabel.text = "Choose type"
         typeSelectionLabel.textColor = .lightGray
-        tf.resignFirstResponder()
+        pickerViewtextField.resignFirstResponder()
     }
     
     @objc func showPickerView(_ sender: UIToolbar) {
         let row = typePickerView.selectedRow(inComponent: 0)
         typeSelectionLabel.text = typeData[row > -1 ? row : 0]
         typeSelectionLabel.textColor = .black
-        tf.becomeFirstResponder()
+        pickerViewtextField.becomeFirstResponder()
     }
     
     required init?(coder: NSCoder) {
@@ -424,9 +430,9 @@ extension FeedbackView: UIPickerViewDelegate {
         pickerView.reloadAllComponents()
 
         // Hide the checkmark for any non-selected rows
-        for r in 0..<typeData.count {
-            if let rowview = pickerView.view(forRow: r, forComponent: component) as? PickerViewRow {
-                rowview.checkMarkImageView.isHidden = r != row
+        for index in 0..<typeData.count {
+            if let rowView = pickerView.view(forRow: index, forComponent: component) as? PickerViewRow {
+                rowView.checkMarkImageView.isHidden = index != row
             }
         }
         
