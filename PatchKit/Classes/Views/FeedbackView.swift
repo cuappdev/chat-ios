@@ -36,7 +36,9 @@ class FeedbackView: UIView {
     private var typeData = [String]()
     private let typeLabel = UILabel()
     private let typePickerView = UIPickerView()
-    private let typeTextField = UITextField()
+    private let typeSelectionLabel = UILabel()
+    
+    private var tf = UITextField(frame: .zero)
     
     public var status = Status.incomplete {
         didSet {
@@ -57,8 +59,8 @@ class FeedbackView: UIView {
         setupMessageTextView()
         setupOverviewLabel()
         setupTypeLabel()
+        setuptypeSelectionLabel()
         setupTypePickerView()
-        setupTypeTextField()
         setupGestureRecognizer()
         setupConstraints()
     }
@@ -168,6 +170,19 @@ class FeedbackView: UIView {
         addSubview(typeLabel)
     }
     
+    func setuptypeSelectionLabel() {
+        typeSelectionLabel.translatesAutoresizingMaskIntoConstraints = false
+        typeSelectionLabel.backgroundColor = ._lightGray
+        typeSelectionLabel.text = "Choose type"
+        typeSelectionLabel.textColor = .lightGray
+        typeSelectionLabel.font = UIFont.systemFont(ofSize: 14)
+        addSubview(typeSelectionLabel)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(showPickerView(_:)))
+        typeSelectionLabel.isUserInteractionEnabled = true
+        typeSelectionLabel.addGestureRecognizer(tapGesture)
+    }
+    
     func setupTypePickerView() {
         typePickerView.translatesAutoresizingMaskIntoConstraints = false
         typePickerView.dataSource = self
@@ -204,17 +219,11 @@ class FeedbackView: UIView {
         // Set up horizontal line to distinguish between UIPickerView and ToolBar
         let border = drawTopBorder(width: frame.size.width, spacing: false)
         typePickerView.layer.addSublayer(border)
-        typeTextField.inputAccessoryView = toolbar
         typePickerView.reloadAllComponents()
-    }
-    
-    func setupTypeTextField() {
-        typeTextField.translatesAutoresizingMaskIntoConstraints = false
-        typeTextField.placeholder = "Choose type"
-        typeTextField.font = UIFont.systemFont(ofSize: 14)
-        typeTextField.inputView = typePickerView
-        typeTextField.delegate = self
-        addSubview(typeTextField)
+        
+        tf.inputAccessoryView = toolbar
+        tf.inputView = typePickerView
+        addSubview(tf)
     }
     
     func setupGestureRecognizer() {
@@ -235,10 +244,10 @@ class FeedbackView: UIView {
             typeLabel.topAnchor.constraint(equalTo: overviewLabel.bottomAnchor, constant: 2 * padding)
         ])
         NSLayoutConstraint.activate([
-            typeTextField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            typeTextField.leadingAnchor.constraint(equalTo: typeLabel.trailingAnchor, constant: padding),
-            typeTextField.centerYAnchor.constraint(equalTo: typeLabel.centerYAnchor, constant: 2),
-            typeTextField.heightAnchor.constraint(equalToConstant: 32)
+            typeSelectionLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -padding),
+            typeSelectionLabel.leadingAnchor.constraint(equalTo: typeLabel.trailingAnchor, constant: padding),
+            typeSelectionLabel.centerYAnchor.constraint(equalTo: typeLabel.centerYAnchor, constant: 2),
+            typeSelectionLabel.heightAnchor.constraint(equalToConstant: 32)
         ])
         NSLayoutConstraint.activate([
             messageLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
@@ -274,7 +283,8 @@ class FeedbackView: UIView {
      */
     func checkStatus() {
         if typePickerView.selectedRow(inComponent: 0) != -1 {
-            if messageTextView.textColor != .lightGray || attachedFiles.count > 0 {
+            if messageTextView.textColor != .lightGray || attachedFiles.count > 0,
+            !typeData[typePickerView.selectedRow(inComponent: 0)].trimmingCharacters(in: .whitespaces).isEmpty {
                 status = .complete
             } else {
                 status = .incomplete
@@ -307,14 +317,22 @@ class FeedbackView: UIView {
     @objc func didTapDone() {
         let row = typePickerView.selectedRow(inComponent: 0)
         typePickerView.selectRow(row, inComponent: 0, animated: true)
-        typeTextField.text = typeData[row]
-        typeTextField.resignFirstResponder()
+        typeSelectionLabel.text = typeData[row].trimmingCharacters(in: .whitespaces).isEmpty ? "Choose type" : typeData[row]
+        typeSelectionLabel.textColor = typeSelectionLabel.text == "Choose type" ? .lightGray : .black
+        tf.resignFirstResponder()
     }
     
     @objc func didTapCancel() {
-        typeTextField.resignFirstResponder()
-        typeTextField.text = nil
-        typeTextField.placeholder = "Choose type"
+        typeSelectionLabel.text = "Choose type"
+        typeSelectionLabel.textColor = .lightGray
+        tf.resignFirstResponder()
+    }
+    
+    @objc func showPickerView(_ sender: UIToolbar) {
+        let row = typePickerView.selectedRow(inComponent: 0)
+        typeSelectionLabel.text = typeData[row > -1 ? row : 0]
+        typeSelectionLabel.textColor = .black
+        tf.becomeFirstResponder()
     }
     
     required init?(coder: NSCoder) {
@@ -404,22 +422,36 @@ extension FeedbackView: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         // Reload components to remove the checkmark from previous selection
         pickerView.reloadAllComponents()
+
+        // Hide the checkmark for any non-selected rows
+        for r in 0..<typeData.count {
+            if let rowview = pickerView.view(forRow: r, forComponent: component) as? PickerViewRow {
+                rowview.checkMarkImageView.isHidden = r != row
+            }
+        }
         
         // Update the typeTextField and recheck whether the message is ready to send
-        typeTextField.text = typeData[row]
+        typeSelectionLabel.text = typeData[row]
         checkStatus()
     }
         
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        let pvr = PickerViewRow()
-        pvr.setup(withText: typeData[row], withView: view)
-        return pvr
+        if pickerView == typePickerView {
+            let pvr = PickerViewRow()
+            pvr.setup(withText: typeData[row], withView: view)
+            
+            // When re-opening the pickerView, the checkmark is not hidden for the previous selection
+            pvr.checkMarkImageView.isHidden = typeData[row] != typeSelectionLabel.text
+            return pvr
+        } else {
+            return UIView()
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
         return 32
     }
-    
+        
 }
 
 // MARK: - RemoveFile Delegate
@@ -430,17 +462,6 @@ extension FeedbackView: RemoveFileDelegate {
         attachmentsCollectionView.reloadData()
         attachmentsCollectionView.collectionViewLayout.invalidateLayout()
         checkStatus()
-    }
-    
-}
-
-// MARK: - TextField Delegate
-extension FeedbackView: UITextFieldDelegate {
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == typeTextField {
-            setupTypePickerView()
-        }
     }
     
 }

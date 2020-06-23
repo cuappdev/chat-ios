@@ -9,7 +9,8 @@ import UIKit
 
 class PickerViewRow: UIView {
     
-    public var isSelected = false
+    public let checkMarkImageView = UIImageView()
+    private var label = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -17,7 +18,6 @@ class PickerViewRow: UIView {
     }
     
     public func setup(withText text: String, withView view: UIView?) {
-        var label = UILabel()
         if let v = view as? UILabel {
             label = v
         }
@@ -32,7 +32,6 @@ class PickerViewRow: UIView {
         ])
         
         if !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            let checkMarkImageView = UIImageView()
             checkMarkImageView.translatesAutoresizingMaskIntoConstraints = false
             checkMarkImageView.image = UIImage(named: "checkmark", in: PatchKitImages.resourceBundle, compatibleWith: nil)
             
@@ -48,10 +47,6 @@ class PickerViewRow: UIView {
         NSLayoutConstraint.activate([
             self.heightAnchor.constraint(equalToConstant: 32)
         ])
-    }
-    
-    public func hideCheckMark() {
-        
     }
     
     required init?(coder: NSCoder) {
