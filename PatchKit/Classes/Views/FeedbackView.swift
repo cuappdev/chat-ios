@@ -36,7 +36,9 @@ class FeedbackView: UIView {
     private var typeData = [String]()
     private let typeLabel = UILabel()
     private let typePickerView = UIPickerView()
-    private let typeTextField = UITextField()
+    private let typeSelectionLabel = UILabel()
+    
+    private var pickerViewtextField = UITextField(frame: .zero)
     
     public var status = Status.incomplete {
         didSet {
@@ -57,8 +59,8 @@ class FeedbackView: UIView {
         setupMessageTextView()
         setupOverviewLabel()
         setupTypeLabel()
+        setuptypeSelectionLabel()
         setupTypePickerView()
-        setupTypeTextField()
         setupGestureRecognizer()
         setupConstraints()
     }
@@ -69,7 +71,7 @@ class FeedbackView: UIView {
     }
     
     func setupData() {
-        typeData = ["Hello", "World"]  // TODO: Connect with actual data
+        typeData = ["", "Hello", "World"]  // TODO: Connect with actual data
     }
     
     func setupAddFileButton() {
@@ -168,6 +170,19 @@ class FeedbackView: UIView {
         addSubview(typeLabel)
     }
     
+    func setuptypeSelectionLabel() {
+        typeSelectionLabel.translatesAutoresizingMaskIntoConstraints = false
+        typeSelectionLabel.backgroundColor = ._lightGray
+        typeSelectionLabel.text = "Choose type"
+        typeSelectionLabel.textColor = .lightGray
+        typeSelectionLabel.font = UIFont.systemFont(ofSize: 14)
+        addSubview(typeSelectionLabel)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(showPickerView(_:)))
+        typeSelectionLabel.isUserInteractionEnabled = true
+        typeSelectionLabel.addGestureRecognizer(tapGesture)
+    }
+    
     func setupTypePickerView() {
         typePickerView.translatesAutoresizingMaskIntoConstraints = false
         typePickerView.dataSource = self
@@ -204,16 +219,11 @@ class FeedbackView: UIView {
         // Set up horizontal line to distinguish between UIPickerView and ToolBar
         let border = drawTopBorder(width: frame.size.width, spacing: false)
         typePickerView.layer.addSublayer(border)
-        typeTextField.inputAccessoryView = toolbar
         typePickerView.reloadAllComponents()
-    }
-    
-    func setupTypeTextField() {
-        typeTextField.translatesAutoresizingMaskIntoConstraints = false
-        typeTextField.placeholder = "Choose type"
-        typeTextField.font = UIFont.systemFont(ofSize: 14)
-        typeTextField.inputView = typePickerView
-        addSubview(typeTextField)
+        
+        pickerViewtextField.inputAccessoryView = toolbar
+        pickerViewtextField.inputView = typePickerView
+        addSubview(pickerViewtextField)
     }
     
     func setupGestureRecognizer() {
@@ -234,10 +244,10 @@ class FeedbackView: UIView {
             typeLabel.topAnchor.constraint(equalTo: overviewLabel.bottomAnchor, constant: 2 * padding)
         ])
         NSLayoutConstraint.activate([
-            typeTextField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-            typeTextField.leadingAnchor.constraint(equalTo: typeLabel.trailingAnchor, constant: padding),
-            typeTextField.centerYAnchor.constraint(equalTo: typeLabel.centerYAnchor, constant: 2),
-            typeTextField.heightAnchor.constraint(equalToConstant: 32)
+            typeSelectionLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -padding),
+            typeSelectionLabel.leadingAnchor.constraint(equalTo: typeLabel.trailingAnchor, constant: padding),
+            typeSelectionLabel.centerYAnchor.constraint(equalTo: typeLabel.centerYAnchor, constant: 2),
+            typeSelectionLabel.heightAnchor.constraint(equalToConstant: 32)
         ])
         NSLayoutConstraint.activate([
             messageLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
@@ -267,9 +277,14 @@ class FeedbackView: UIView {
         ])
     }
     
+    /**
+     Checks to see whether the user has made a valid selection.
+     Requires the first element in the component to be an invalid choice.
+     */
     func checkStatus() {
         if typePickerView.selectedRow(inComponent: 0) != -1 {
-            if messageTextView.textColor != .lightGray || attachedFiles.count > 0 {
+            if messageTextView.textColor != .lightGray || attachedFiles.count > 0,
+            !typeData[typePickerView.selectedRow(inComponent: 0)].trimmingCharacters(in: .whitespaces).isEmpty {
                 status = .complete
             } else {
                 status = .incomplete
@@ -302,14 +317,28 @@ class FeedbackView: UIView {
     @objc func didTapDone() {
         let row = typePickerView.selectedRow(inComponent: 0)
         typePickerView.selectRow(row, inComponent: 0, animated: true)
-        typeTextField.text = typeData[row]
-        typeTextField.resignFirstResponder()
+        typeSelectionLabel.text =
+            typeData[row].trimmingCharacters(in: .whitespaces).isEmpty
+            ? "Choose type"
+            : typeData[row]
+        typeSelectionLabel.textColor =
+            typeSelectionLabel.text == "Choose type"
+            ? .lightGray
+            : .black
+        pickerViewtextField.resignFirstResponder()
     }
     
     @objc func didTapCancel() {
-        typeTextField.resignFirstResponder()
-        typeTextField.text = nil
-        typeTextField.placeholder = "Choose type"
+        typeSelectionLabel.text = "Choose type"
+        typeSelectionLabel.textColor = .lightGray
+        pickerViewtextField.resignFirstResponder()
+    }
+    
+    @objc func showPickerView(_ sender: UIToolbar) {
+        let row = typePickerView.selectedRow(inComponent: 0)
+        typeSelectionLabel.text = typeData[row > -1 ? row : 0]
+        typeSelectionLabel.textColor = .black
+        pickerViewtextField.becomeFirstResponder()
     }
     
     required init?(coder: NSCoder) {
@@ -399,27 +428,36 @@ extension FeedbackView: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         // Reload components to remove the checkmark from previous selection
         pickerView.reloadAllComponents()
-        // Add checkmark to the selected row
-        guard let label = pickerView.view(forRow: row, forComponent: component) as? UILabel else { return }
-        let checkMarkImage = UIImage(named: "checkmark", in: PatchKitImages.resourceBundle, compatibleWith: nil)
-        let checkMarkView = UIImageView(frame: CGRect(x: label.frame.width - 40, y: label.frame.height / 2 - 5.5, width: 15, height: 11))
-        checkMarkView.image = checkMarkImage
-        label.addSubview(checkMarkView)
+
+        // Hide the checkmark for any non-selected rows
+        for index in 0..<typeData.count {
+            if let rowView = pickerView.view(forRow: index, forComponent: component) as? PickerViewRow {
+                rowView.checkMarkImageView.isHidden = index != row
+            }
+        }
+        
         // Update the typeTextField and recheck whether the message is ready to send
-        typeTextField.text = typeData[row]
+        typeSelectionLabel.text = typeData[row]
         checkStatus()
     }
         
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        var label = UILabel()
-        if let v = view as? UILabel {
-            label = v
+        if pickerView == typePickerView {
+            let pvr = PickerViewRow()
+            pvr.setup(withText: typeData[row], withView: view)
+            
+            // When re-opening the pickerView, the checkmark is not hidden for the previous selection
+            pvr.checkMarkImageView.isHidden = typeData[row] != typeSelectionLabel.text
+            return pvr
+        } else {
+            return UIView()
         }
-        label.font = UIFont.systemFont(ofSize: 18)
-        label.text = "    \(typeData[row])"
-        return label
     }
     
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 32
+    }
+        
 }
 
 // MARK: - RemoveFile Delegate
